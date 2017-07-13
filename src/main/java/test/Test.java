@@ -43,6 +43,13 @@ public class Test {
 		assert (a > 0) : "error!!";
 	}
 
+	public static void testBase() {
+		//Short s = 98S; //error
+		//float z = 1.0; //error
+		int t = "abc".length();
+		//char c = 175c; //error
+	}
+
 	public static void testTryCatch() {
 		try{//without catch 
 			int i = 0;
