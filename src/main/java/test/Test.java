@@ -2,9 +2,16 @@ package test;
 
 import java.io.*;
 
-// assert debug
-//compile:javac -source 1.7 test/Test.java
-//run:java -ea test.Test
+
+
+
+/**
+ * Created by Weiguang Chen(chen2621978@gmail.com) on 2017/7/13 21:48.
+ * This Class is a Test class that test some syntax rules and the spacial feature
+ * If you debug "assert“ keyword，you should operate as follow:
+ * compile:javac -source 1.7 test/Test.java
+ * run:java -ea test.Test
+ */
 
 //abstract class have main method
 abstract 
@@ -28,14 +35,21 @@ public class Test {
 		}
 	}
 
-	//overloaded main
+    /**
+     * @Author Weiguang Chen(chen2621978@gmail.com) on 2017/7/13 21:57
+     * @description overloaded main
+     */
 	synchronized public static void main(int a){
 		System.out.println(a);
 	}
 
-	//test Assert
-	//compile:javac -source 1.7 test/Test.java
-	//run: java -ea tets/Test
+
+    /**
+     * @Author Weiguang Chen(chen2621978@gmail.com) on 2017/7/13 21:56
+     * @description test Assert
+     * 	compile:javac -source 1.7 test/Test.java
+     *  run: java -ea tets/Test
+     */
 	public static void testAssert() {
 		System.out.println("testAssert start!");
 		int a = 1;
@@ -43,12 +57,17 @@ public class Test {
 		assert (a > 0) : "error!!";
 	}
 
+    /**
+     * @Author Weiguang Chen(chen2621978@gmail.com) on 2017/7/13 21:58
+     * @description test basic data type
+     */
 	public static void testBase() {
 		//Short s = 98S; //error
 		//float z = 1.0; //error
 		int t = "abc".length();
 		//char c = 175c; //error
-	}
+
+    }
 
 	public static void testTryCatch() {
 		try{//without catch 
