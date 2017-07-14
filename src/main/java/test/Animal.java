@@ -1,13 +1,16 @@
 package test;
 
 import java.io.*;
+import java.util.Date;
 
 public class Animal implements Serializable{
 	String name;
 	//transient don't Serialize
 	String passwd;
+
+	final Date born;
 	public Animal(String name){
-		this.name = name;
+		this.name = name; born = new Date();
 	}
 
 	public String getName(){

@@ -1,8 +1,7 @@
 package test;
 
 import java.io.*;
-
-
+import java.util.Iterator;
 
 
 /**
@@ -18,14 +17,15 @@ abstract
 public class Test {
 	//synchronized Modify   main
  	synchronized public static void main(String[] args) {
-		int a = 0;
+		int a = 1;
 		main(a);
 		//testString();
 		//testRegular();
-		testSwitch();
-		testAssert();
-		testSerializable();
-		testTryCatch();
+		//testSwitch();
+		//testAssert();
+		//testSerializable();
+		//testTryCatch();
+        testBase();
 		while(true) {
 			try {
 				Thread.sleep(2000);
@@ -39,7 +39,7 @@ public class Test {
      * @Author Weiguang Chen(chen2621978@gmail.com) on 2017/7/13 21:57
      * @description overloaded main
      */
-	synchronized public static void main(int a){
+	synchronized final public static void main(int a){
 		System.out.println(a);
 	}
 
@@ -66,18 +66,45 @@ public class Test {
 		//float z = 1.0; //error
 		int t = "abc".length();
 		//char c = 175c; //error
+        int a = 5;
+        // output is : "value is  = 9.0" , ps: 10.9d is a double var,so 9i is convert to 9.0d
+        System.out.println("value is  = " + ( (a < 5 )? 10.9 : 9 ));
 
     }
+
 
 	public static void testTryCatch() {
 		try{//without catch 
 			int i = 0;
+
 		}finally{
 			System.out.println("finally!");
 		}
 
+        try {// need to catch exception when the method use "throws"
+            testException();
+        }catch (Exception ex){
+		    ex.printStackTrace();
+        }
+
 	}
-	
+
+    /**
+     * @Author Weiguang Chen(chen2621978@gmail.com) on 2017/7/14 10:41
+     * @description
+     */
+    public static void testException() throws Exception{
+        int i = 0;
+        try {
+            // need to catch Exception when use to "throw new Exception"
+            throw new Exception();
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        System.out.println(i);
+    }
+
 	public static void testSwitch() {
 		int b = 0;
 		long l = 1;
@@ -102,11 +129,11 @@ public class Test {
 		o1 = animal;
 		System.out.println(o1.toString());
 		try{
-			animal.setName("dog");
-			//animal.serial("./animal.out");	
-			//Animal an = Animal.reSerial("./animal.out");
-			//System.out.println(an instanceof Animal); 
-			//an.printName();
+            animal.setName("dog");
+			//animal.serial("./animal.out");
+			Animal an = Animal.reSerial("./animal.out");
+			System.out.println(an instanceof Animal);
+			an.printName();
 		}catch(Exception e){
 			e.printStackTrace();	
 		}
