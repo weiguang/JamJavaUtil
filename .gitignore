@@ -23,3 +23,6 @@ hs_err_pid*
 
 #my file
 *.out
+/target/classes/*
+
+/target/generated-sources/*
