@@ -1,11 +1,9 @@
 package util;
 
+
 /**
- *
- *@author jam
- *@e-mail weiguang978@163.com
- *
- *@description: My sort
+ * Created by Weiguang Chen(chen2621978@gmail.com) on 2017/7/14 11:16.
+ * @description: My sort
  * */
 public class Sort{
 	public static void swap(int[] data, int i, int j) {
@@ -56,7 +54,7 @@ public class Sort{
 	public static void insertionSort1(int[] data) {
 		for (int i = 1; i < data.length; i++) {
 			int temp = data[i], j = 0;
-			for (j = i ; j > 0 ; j--) {
+			for (j = i; j > 0; j--) {
 				if(data[j - 1] > temp){
 					data[j] = data[j - 1];
 				}else break;
