@@ -1,5 +1,7 @@
 package test;
 
+import util.RegexUtil;
+
 import java.io.*;
 import java.util.Iterator;
 
@@ -25,7 +27,9 @@ public class Test {
 		//testAssert();
 		//testSerializable();
 		//testTryCatch();
-        testBase();
+        //testBase();
+		testRegex();
+
 		while(true) {
 			try {
 				Thread.sleep(2000);
@@ -33,6 +37,18 @@ public class Test {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * @Author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 17:38
+	 * @param
+	 * @return void
+	 * @description testRegex
+	 */
+	public static void testRegex() {
+		//System.out.println(RegexUtil.checkMobile("18826490653"));
+		System.out.println(RegexUtil.checkChinese("asdf"));
+		System.out.println(RegexUtil.checkChinese("sdf哈哈sf"));
 	}
 
     /**
@@ -119,6 +135,10 @@ public class Test {
 		System.out.println(b);
 	}
 
+	/**
+	 * @Author Weiguang Chen(chen2621978@gmail.com) on 2017/7/15 14:21
+	 * @description 串行化测试
+	 */
 	public static void testSerializable() {
 	   //Serializable
 		Animal animal = new Animal("Cat");
