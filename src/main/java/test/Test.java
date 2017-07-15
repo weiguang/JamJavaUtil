@@ -1,9 +1,12 @@
 package test;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+import util.FileUtil;
 import util.RegexUtil;
 
 import java.io.*;
-import java.util.Iterator;
+
 
 
 /**
@@ -17,6 +20,9 @@ import java.util.Iterator;
 //abstract class have main method
 abstract 
 public class Test {
+
+	private static final Logger LOG = Logger.getLogger(Test.class);
+
 	//synchronized Modify   main
  	synchronized public static void main(String[] args) {
 		int a = 1;
@@ -28,7 +34,13 @@ public class Test {
 		//testSerializable();
 		//testTryCatch();
         //testBase();
-		testRegex();
+		//testRegex();
+
+		BasicConfigurator.configure();
+		//LOG.debug("test log4j, debug!!!!!!!!!!!");
+		//LOG.info("hello this is log4j info log");
+		//LOG.error("test log4j, error!!!!!!!!!!!");
+		testFileUtil();
 
 		while(true) {
 			try {
@@ -37,6 +49,18 @@ public class Test {
 				e.printStackTrace();
 			}
 		}
+	}
+
+
+	/**
+	 * @Author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 20:58
+	 * @param
+	 * @return void
+	 * @description
+	 */
+	public static void testFileUtil() {
+		FileUtil.mkdirs("temp/temp");
+		FileUtil.createNewFile("temp/tt.txt", "123456\n123456\n");
 	}
 
 	/**
@@ -87,7 +111,6 @@ public class Test {
         System.out.println("value is  = " + ( (a < 5 )? 10.9 : 9 ));
 
     }
-
 
 	public static void testTryCatch() {
 		try{//without catch 

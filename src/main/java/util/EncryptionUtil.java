@@ -7,10 +7,10 @@ package util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class EncryptionAndDecryption {
+public class EncryptionUtil {
 
 	
-    private EncryptionAndDecryption() {}
+    private EncryptionUtil() {}
 
     /**
      * @Author Weiguang Chen(chen2621978@gmail.com) on 2017/7/15 17:21
