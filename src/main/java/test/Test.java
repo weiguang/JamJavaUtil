@@ -56,26 +56,26 @@ public class Test {
 
 	/**
 	 * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 20:58
-	 * @param
-	 * @return void
 	 *
 	 */
 	public static void testFileUtil() {
 		//FileUtil.mkdirs("temp/temp");
 		//FileUtil.createNewFile("temp/tt.txt", "123456\n123456\n");
 		try {
-			TextUtil.readFile("temp/t2.txt", "GBK");
-		}catch (IOException e){
+			//TextUtil.readFile("temp/t2.txt", "GBK");
+			//FileUtil.compressedFileZip("temp/t2.txt", null);
+			FileUtil.compressedFile("temp\\tt.txt", ".");
+			FileUtil.compressedFile("temp", ".");
+		}catch (Exception e){
 			e.printStackTrace();
 		}
 
 	}
 
 	/**
+	 * testRegex
+	 *
 	 * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 17:38
-	 * @param
-	 * @return void
-	 *  testRegex
 	 */
 	public static void testRegex() {
 		//System.out.println(RegexUtil.checkMobile("18826490653"));
