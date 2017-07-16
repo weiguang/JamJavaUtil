@@ -5,40 +5,40 @@ import java.io.*;
 import org.apache.log4j.Logger;
 
 /**
- * Created by jam on 17-6-1.
+ * Created by Jam on 17-6-1.
  */
 public class FileUtil {
 
     private static final Logger log = Logger.getLogger(FileUtil.class);
 
     /**
-     * @Author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 19:15
+     *  新建文件夹
+     *
+     * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 19:15
      * @param  dir: new file path
-     * @return
-     * @description 新建文件夹
+     * @return boolean
      */
-    final public static void mkdirs( final String dir) {
+     public static boolean mkdirs( final String dir) {
         try {
             File dirPath = new File(dir);
-            if (!dirPath.exists()) {
-                dirPath.mkdirs();
-            }
+               return dirPath.mkdirs();
         } catch (Exception e) {
             log.error("创建目录操作出错: "+e.getMessage());
             e.printStackTrace();
+            return false;
         }
     }
 
     /**
-     * @Author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:11
-     * @param fileName: String 包含路径的文件名 如:E:\phsftp\src\123.txt
-     * @return File: new File
-     * @description 新建文件
+     * 新建文件
+     *
+     * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:11
+     * @param fileName String 包含路径的文件名 如:E:\phsftp\src\123.txt
+     * @return File new File
      */
-    public final static File createNewFile(final String fileName) {
+    public static File createNewFile(final String fileName) {
         try {
-            String fileNameTemp = fileName;
-            File filePath = new File(fileNameTemp);
+            File filePath = new File(fileName);
             if (!filePath.exists()) {
                 filePath.createNewFile();
             }
@@ -51,13 +51,13 @@ public class FileUtil {
     }
 
     /**
-     * @Author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:01
+     * 新建文件
+     *
+     * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:01
      * @param fileName: String 包含路径的文件名 如:E:\phsftp\src\123.txt
      * @param content: String 文件内容
-     * @return
-     * @description 新建文件
      */
-    public final static void createNewFile(String fileName, String content) {
+    public static void createNewFile(String fileName, String content) {
         try {
             File filePath = createNewFile(fileName);
             if (filePath == null) {
@@ -77,10 +77,10 @@ public class FileUtil {
     }
 
     /**
-     * @Author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:18
+     * 删除文件
+     *
+     * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:18
      * @param  fileName 包含路径的文件名
-     * @return
-     * @description  删除文件
      */
     public static void delFile(String fileName) {
         try {
@@ -94,10 +94,10 @@ public class FileUtil {
     }
 
     /**
-     * @Author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:21
+     * 删除文件夹
+     *
+     * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:21
      * @param  folderPath  文件夹路径
-     * @return  
-     * @description  删除文件夹
      */
     public static void delFolder(String folderPath) {
         try {
@@ -114,10 +114,10 @@ public class FileUtil {
     }
 
     /**
-     * @Author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:21
+     * 删除文件或文件夹
+     *
+     * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:21
      * @param  fileName 包含路径的文件名
-     * @return
-     * @description   删除文件或文件夹
      */
     public static void delFileOrdelFolder(String fileName) {
         try {
@@ -140,10 +140,10 @@ public class FileUtil {
     }
 
     /**
-     * @Author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:22
+     * 删除文件夹里面的所有文件
+     *
+     * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:22
      * @param  path 文件夹路径
-     * @return
-     * @description  删除文件夹里面的所有文件
      */
     public static void delAllFile(String path) {
         File file = new File(path);
@@ -174,14 +174,15 @@ public class FileUtil {
     }
 
     /**
-     * @Author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:23
+     * 复制单个文件
+     *
+     * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:23
      * @param srcFile
      *            包含路径的源文件 如：E:/phsftp/src/abc.txt
      * @param dirDest
      *            目标文件目录；若文件目录不存在则自动创建  如：E:/phsftp/dest
      * @return 新的文件地址
      * @throws IOException
-     * @description  复制单个文件
      */
     public static File copyFile(String srcFile, String dirDest) {
         File newFile = null;
@@ -206,13 +207,13 @@ public class FileUtil {
     }
 
     /**
-     * @Author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:25
+     * 复制文件夹
+     *
+     * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:25
      * @param oldPath
      *            String 源文件夹路径 如：E:/phsftp/src
      * @param newPath
      *            String 目标文件夹路径 如：E:/phsftp/dest
-     * @return
-     * @description  复制文件夹
      */
     public static void copyFolder(String oldPath, String newPath) {
         try {
@@ -252,11 +253,12 @@ public class FileUtil {
     }
 
     /**
-     * @Author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:27
+     * 移动文件到指定目录,返回新的文件对象
+     *
+     * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:27
      * @param oldPath 包含路径的文件名 如：E:/phsftp/src/ljq.txt
      * @param newPath 目标文件目录 如：E:/phsftp/dest
      * @return 新的文件对象
-     * @description  移动文件到指定目录,返回新的文件对象
      */
     public static File moveFile(String oldPath, String newPath) {
         File newFile = copyFile(oldPath, newPath);
@@ -265,11 +267,11 @@ public class FileUtil {
     }
 
     /**
-     * @Author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:28
+     * 移动文件到指定目录，不会删除文件夹
+     *
+     * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:28
      * @param oldPath 源文件目录  如：E:/phsftp/src
      * @param newPath 目标文件目录 如：E:/phsftp/dest
-     * @return
-     * @description 移动文件到指定目录，不会删除文件夹
      */
     public static void moveAndEmptyFolder(String oldPath, String newPath) {
         copyFolder(oldPath, newPath);
@@ -277,10 +279,11 @@ public class FileUtil {
     }
 
     /**
-     * @Author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:28
+     * 移动文件到指定目录，会删除文件夹
+     *
+     * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:28
      * @param oldPath 源文件目录  如：E:/phsftp/src
      * @param newPath 目标文件目录 如：E:/phsftp/dest
-     * @description  移动文件到指定目录，会删除文件夹
      */
     public static void moveAndDelFolder(String oldPath, String newPath) {
         copyFolder(oldPath, newPath);

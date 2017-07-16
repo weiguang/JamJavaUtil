@@ -4,6 +4,7 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import util.FileUtil;
 import util.RegexUtil;
+import util.TextUtil;
 
 import java.io.*;
 
@@ -36,6 +37,7 @@ public class Test {
         //testBase();
 		//testRegex();
 
+		// must add this code before log
 		BasicConfigurator.configure();
 		//LOG.debug("test log4j, debug!!!!!!!!!!!");
 		//LOG.info("hello this is log4j info log");
@@ -53,21 +55,27 @@ public class Test {
 
 
 	/**
-	 * @Author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 20:58
+	 * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 20:58
 	 * @param
 	 * @return void
-	 * @description
+	 *
 	 */
 	public static void testFileUtil() {
-		FileUtil.mkdirs("temp/temp");
-		FileUtil.createNewFile("temp/tt.txt", "123456\n123456\n");
+		//FileUtil.mkdirs("temp/temp");
+		//FileUtil.createNewFile("temp/tt.txt", "123456\n123456\n");
+		try {
+			TextUtil.readFile("temp/t2.txt", "GBK");
+		}catch (IOException e){
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
-	 * @Author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 17:38
+	 * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 17:38
 	 * @param
 	 * @return void
-	 * @description testRegex
+	 *  testRegex
 	 */
 	public static void testRegex() {
 		//System.out.println(RegexUtil.checkMobile("18826490653"));
@@ -76,17 +84,17 @@ public class Test {
 	}
 
     /**
-     * @Author Weiguang Chen(chen2621978@gmail.com) on 2017/7/13 21:57
-     * @description overloaded main
+     * @author Weiguang Chen(chen2621978@gmail.com) on 2017/7/13 21:57
+     *  overloaded main
      */
-	synchronized final public static void main(int a){
+	synchronized  public static void main(int a){
 		System.out.println(a);
 	}
 
 
     /**
-     * @Author Weiguang Chen(chen2621978@gmail.com) on 2017/7/13 21:56
-     * @description test Assert
+     * @author Weiguang Chen(chen2621978@gmail.com) on 2017/7/13 21:56
+     *  test Assert
      * 	compile:javac -source 1.7 test/Test.java
      *  run: java -ea tets/Test
      */
@@ -98,8 +106,8 @@ public class Test {
 	}
 
     /**
-     * @Author Weiguang Chen(chen2621978@gmail.com) on 2017/7/13 21:58
-     * @description test basic data type
+     * @author Weiguang Chen(chen2621978@gmail.com) on 2017/7/13 21:58
+     *  test basic data type
      */
 	public static void testBase() {
 		//Short s = 98S; //error
@@ -129,8 +137,8 @@ public class Test {
 	}
 
     /**
-     * @Author Weiguang Chen(chen2621978@gmail.com) on 2017/7/14 10:41
-     * @description
+     * @author Weiguang Chen(chen2621978@gmail.com) on 2017/7/14 10:41
+     *
      */
     public static void testException() throws Exception{
         int i = 0;
@@ -159,8 +167,8 @@ public class Test {
 	}
 
 	/**
-	 * @Author Weiguang Chen(chen2621978@gmail.com) on 2017/7/15 14:21
-	 * @description 串行化测试
+	 * @author Weiguang Chen(chen2621978@gmail.com) on 2017/7/15 14:21
+	 *  串行化测试
 	 */
 	public static void testSerializable() {
 	   //Serializable
