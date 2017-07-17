@@ -64,8 +64,9 @@ public class Test {
 		try {
 			//TextUtil.readFile("temp/t2.txt", "GBK");
 			//FileUtil.compressedFileZip("temp/t2.txt", null);
-			FileUtil.compressedFile("temp\\tt.txt", ".");
-			FileUtil.compressedFile("temp", ".");
+			//FileUtil.compressedFile("temp\\tt.txt", ".");
+			//FileUtil.compressedFile("哈哈", ".");
+			FileUtil.unZipFiles(new File("哈哈.zip"), "d:\\1\\");
 		}catch (Exception e){
 			e.printStackTrace();
 		}
