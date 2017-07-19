@@ -18,9 +18,17 @@ import java.io.*;
  * run:java -ea test.Test
  */
 
+interface IfTest {
+	int a = 0;
+	// default jdk 1.8
+	default  public  void fun() {
+		System.out.println(" default method!");
+	}
+}
+
 //abstract class have main method
-abstract 
-public class Test {
+//abstract
+public class Test implements IfTest {
 
 	private static final Logger LOG = Logger.getLogger(Test.class);
 
@@ -42,7 +50,9 @@ public class Test {
 		//LOG.debug("test log4j, debug!!!!!!!!!!!");
 		//LOG.info("hello this is log4j info log");
 		//LOG.error("test log4j, error!!!!!!!!!!!");
-		testFileUtil();
+		//testFileUtil();
+
+		new Test().testInterface();
 
 		while(true) {
 			try {
@@ -53,6 +63,16 @@ public class Test {
 		}
 	}
 
+	/**
+	 *  测试接口
+	 *
+	 * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/19 21:57
+	 * @param
+	 * @return
+	 */
+	public void testInterface() {
+		fun();
+	}
 
 	/**
 	 * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 20:58
