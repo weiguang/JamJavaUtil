@@ -1,8 +1,5 @@
-package okayjam;
+package com.okayjam.test;
 
-import util.EncryptionUtil;
-
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;

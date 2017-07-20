@@ -1,4 +1,4 @@
-package collection;
+package com.okayjam.collection;
 
 import java.util.LinkedList;
 

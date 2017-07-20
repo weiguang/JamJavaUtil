@@ -1,4 +1,4 @@
-package util;
+package com.okayjam.util;
 
 import java.util.regex.Pattern;
 

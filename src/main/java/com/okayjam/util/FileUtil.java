@@ -1,4 +1,4 @@
-package util;
+package com.okayjam.util;
 
 import java.io.*;
 import java.nio.charset.Charset;

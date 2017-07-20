@@ -1,4 +1,4 @@
-package util;
+package com.okayjam.util;
 
 /**
  * Created by Weiguang Chen(chen2621978@gmail.com) on 2017/7/15 17:20.
