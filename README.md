@@ -5,7 +5,8 @@
 例如
 
 output is : "value is  = 9.0" , ps: 10.9d is a double var,so 9i is convert to 9.0d
-`System.out.println("value is  = " + ( (a < 5 )? 10.9 : 9 ));`
+
+` System.out.println("value is  = " + ( (a < 5 )? 10.9 : 9 )); `
 
 
 ##一些常用的工具的Java代码实现。
