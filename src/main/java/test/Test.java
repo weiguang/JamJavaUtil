@@ -18,6 +18,11 @@ import java.io.*;
  * run:java -ea test.Test
  */
 
+/**
+ * Created by Weiguang Chen <chen2621978@gmail.com> on 2017/7/20 10:49.
+ *
+ * interface have a default method, request jdk 1.8 over
+ */
 interface IfTest {
 	int a = 0;
 	// default jdk 1.8
