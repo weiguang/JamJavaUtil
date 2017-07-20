@@ -2,10 +2,11 @@ package com.okayjam.util;
 
 
 /**
+ *  My sort
  * Created by Weiguang Chen(chen2621978@gmail.com) on 2017/7/14 11:16.
- * @description: My sort
  * */
 public class Sort{
+
 	public static void swap(int[] data, int i, int j) {
 		int temp = data[i];
 		data[i] = data[j];
@@ -13,7 +14,9 @@ public class Sort{
 	}
 
 	/**
-	* MergeSort
+	 * MergeSort
+	 * 稳定
+	 * nlg(n)
 	**/
 	public static void merge(int[] data, int start, int mid, int end) {
 		int i = start, j = mid + 1, k = 0;
@@ -41,8 +44,11 @@ public class Sort{
 			merge(data, start, mid, end);
 		}
 	}
+
 	/**
-	* InsertionSort
+	 * InsertionSort 1
+	 * 稳定
+	 * n^2
 	**/
 	public static void insertionSort(int[] data) {
 		for (int i = 1; i < data.length; i++) {
@@ -51,6 +57,10 @@ public class Sort{
 			}
 		}
 	}
+
+	/**
+	 * InsertionSort 2
+	 **/
 	public static void insertionSort1(int[] data) {
 		for (int i = 1; i < data.length; i++) {
 			int temp = data[i], j = 0;
@@ -62,9 +72,19 @@ public class Sort{
 			data[j] = temp;
 		}
 	}
-	
+
 	/**
-	* SelectSort
+	 * 选择和冒泡排序的不同
+	 * 冒泡排序是先从一整段开始，从第一个数开始，通过与 相邻的两个数 对比，不断把大的数后移（一般把最大的移到最后，）
+	 *
+	 * 选择排序是先从一整段开始，从第一个数开始，然后和不断比较后面的数，如果发现比第一个数小就与第一个数交换
+	 * 固定 一个位置，然后该位置与后面的数分别对比，如果后面的小就与后面的数交换（一般把最小移到前面）
+	 */
+
+	/**
+	 * SelectSort
+	 * 不稳定
+	 * n^2
 	**/
 	public static void selectSort(int[] data) {
 		for (int i = 0; i < data.length; i++) {
@@ -77,7 +97,9 @@ public class Sort{
 	}
 
 	/**
-	* BubbleSort
+	 * BubbleSort
+	 * 稳定
+	 * n^2
 	**/
 	public static void bubbleSort(int[] data) {
 		boolean exchange = false;  //improved
@@ -98,6 +120,8 @@ public class Sort{
 	
 	/**
 	 * QuickSort
+	 * 不稳定
+	 * nlg(n)
 	 */
 	public static void quickSort(int[] data, int start, int end){
 		if (start >= end) return;
