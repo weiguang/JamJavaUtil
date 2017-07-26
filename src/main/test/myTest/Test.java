@@ -1,10 +1,10 @@
-package com.okayjam.test;
+package myTest;
 
+import com.okayjam.test.Animal;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
-import com.okayjam.test.IfTest;
+import com.okayjam.test.*;
 import com.okayjam.util.RegexUtil;
-import com.okayjam.util.TextUtil;
 import com.okayjam.util.FileUtil;
 
 import java.io.*;
@@ -27,8 +27,8 @@ public class Test implements IfTest {
 
 	//synchronized Modify   main
  	synchronized public static void main(String[] args) {
-		int a = 1;
-		main(a);
+		//int a = 1;
+		//main(a);
 		//testString();
 		//testRegular();
 		//testSwitch();
@@ -45,7 +45,7 @@ public class Test implements IfTest {
 		//LOG.error("test log4j, error!!!!!!!!!!!");
 		//testFileUtil();
 
-		new Test().testInterface();
+		//new Test().testInterface();
 
 		while(true) {
 			try {
@@ -91,7 +91,8 @@ public class Test implements IfTest {
 	 *
 	 * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 17:38
 	 */
-	public static void testRegex() {
+	@org.junit.Test
+	public void testRegex() {
 		//System.out.println(RegexUtil.checkMobile("18826490653"));
 		System.out.println(RegexUtil.checkChinese("asdf"));
 		System.out.println(RegexUtil.checkChinese("sdf哈哈sf"));

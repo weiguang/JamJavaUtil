@@ -5,7 +5,7 @@ package com.okayjam.test;
  *
  * interface have a default method, request jdk 1.8 over
  */
-interface IfTest {
+public interface IfTest {
 	int a = 0;
 	// default jdk 1.8
 	default  public  void fun() {
