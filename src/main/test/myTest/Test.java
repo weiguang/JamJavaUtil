@@ -27,6 +27,17 @@ public class Test implements IfTest {
 
 	//synchronized Modify   main
  	synchronized public static void main(String[] args) {
+		// must add this code before log
+		BasicConfigurator.configure();
+		new Test().testMain();
+	}
+
+	/**
+	 *  測試函數
+	 *
+	 * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/26 15:43
+	 */
+	public void testMain() {
 		//int a = 1;
 		//main(a);
 		//testString();
@@ -35,17 +46,15 @@ public class Test implements IfTest {
 		//testAssert();
 		//testSerializable();
 		//testTryCatch();
-        //testBase();
+		//testBase();
 		//testRegex();
-
-		// must add this code before log
-		BasicConfigurator.configure();
-		//LOG.debug("test log4j, debug!!!!!!!!!!!");
-		//LOG.info("hello this is log4j info log");
-		//LOG.error("test log4j, error!!!!!!!!!!!");
 		//testFileUtil();
 
 		//new Test().testInterface();
+
+		//LOG.debug("test log4j, debug!!!!!!!!!!!");
+		//LOG.info("hello this is log4j info log");
+		//LOG.error("test log4j, error!!!!!!!!!!!");
 
 		while(true) {
 			try {
@@ -54,6 +63,16 @@ public class Test implements IfTest {
 				e.printStackTrace();
 			}
 		}
+	}
+
+
+
+	/**
+	 * @author Weiguang Chen(chen2621978@gmail.com) on 2017/7/13 21:57
+	 *  overloaded main
+	 */
+	synchronized  public static void main(int a){
+		System.out.println(a);
 	}
 
 	/**
@@ -91,20 +110,13 @@ public class Test implements IfTest {
 	 *
 	 * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 17:38
 	 */
-	@org.junit.Test
+	//@org.junit.Test
 	public void testRegex() {
 		//System.out.println(RegexUtil.checkMobile("18826490653"));
 		System.out.println(RegexUtil.checkChinese("asdf"));
 		System.out.println(RegexUtil.checkChinese("sdf哈哈sf"));
 	}
 
-    /**
-     * @author Weiguang Chen(chen2621978@gmail.com) on 2017/7/13 21:57
-     *  overloaded main
-     */
-	synchronized  public static void main(int a){
-		System.out.println(a);
-	}
 
 
     /**
@@ -206,7 +218,62 @@ public class Test implements IfTest {
 		
 	}
 
-	public static void testString()  {
+	/**
+	 *
+	 *
+	 * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/26 15:36
+	 * @param
+	 * @return void
+	 */
+	//@org.junit.Test
+	public void testString() {
+	    String s1 = "aaa123";
+	    String s2 = new String("123");
+	    String s3 = "aaa" + s2;
+	    System.out.println(  s1 == (s3.intern()) );	//true
+		System.out.println(  s1 == s3 );	//false
+	}
+
+	/**
+	 * 一个字符串，按照byte 分割字符，如果遇到分割到的不是首字符，就去到该字符，然后向后移动
+	 * UTF-8 有以下编码规则：
+	 * 1. 如果一个字节，最高位（第 8 位）为 0，表示这是一个 ASCII 字符（00 - 7F）。可见，所有 ASCII 编码已经是 UTF-8 了。
+	 * 2. 如果一个字节，以 11 开头，连续的 1 的个数暗示这个字符的字节数，例如：110xxxxx 代表它是双字节 UTF-8 字符的首字节。
+	 * 3. 如果一个字节，以 10 开始，表示它不是首字节，需要向前查找才能得到当前字符的首字节
+	 *
+	 * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/26 16:40
+	 * @param s	需要分割的字符
+	 * @param splitLength 分割的长度，如果分割的时候刚好是多字节字符的中间，则需要向后移动长度以防出现乱码
+	 * @throws UnsupportedEncodingException
+	 */
+	public void cutStringByByte(String s, int splitLength) throws UnsupportedEncodingException{
+		//String s = "我bd你a"; //jdk 1.8 下测到 中文编码是 3字节
+		System.out.println("字符字节长度（UTF-8）： " + s.getBytes("utf-8").length);
+//		for (byte b : s.getBytes()) {
+//			System.out.print(b + " \t" + Integer.toBinaryString((b & 255) >>> 6));
+//		}
+		byte[] t = s.getBytes();
+		//如果是字节高位是10开头，就说明不是首位字节，找出剩余开始的首字节
+		while ( splitLength < t.length && (t[splitLength] & 255) >>>6 == 2) {
+			splitLength++;
+		}
+		byte[] o = new byte[t.length - splitLength ];
+		for (int j = splitLength; j < t.length; j++) {
+			o[j - splitLength] = t[j];
+		}
+		System.out.println("原字符串:" + s +  " 分割后：" + new String(o, "utf-8"));
+	}
+
+	/**
+	 *
+	 * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/26 16:31
+	 * @throws UnsupportedEncodingException
+	 */
+	@org.junit.Test
+	public void testStringCoding () throws UnsupportedEncodingException {
+			cutStringByByte("as你好呀", 3);
+
+		/*
 		String[] charsetNames={	
 				"utf-8","utf-16","UTF-16BE","UTF-16LE","UTF-32",
 				"UTF-32BE","UTF-32LE","unicode","GBK",
@@ -229,8 +296,10 @@ public class Test implements IfTest {
 		int j = 0;
 		if (b[i - 1] > 0 ) j = i;
 		System.out.println(new String(b, 0, j));
+		*/
 			
 	}
+
 	private static void printByteLength(String charsetName) {
 		String a="a";
 		String b="aa";
