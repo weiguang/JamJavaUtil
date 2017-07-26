@@ -110,11 +110,14 @@ public class Test implements IfTest {
 	 *
 	 * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 17:38
 	 */
-	//@org.junit.Test
+	@org.junit.Test
 	public void testRegex() {
-		//System.out.println(RegexUtil.checkMobile("18826490653"));
+		System.out.println("123gyu13y1g3yu1".replaceAll("\\D","")); //去掉字符串中的数字
+		/*
+		System.out.println(RegexUtil.checkMobile("18826490653"));
 		System.out.println(RegexUtil.checkChinese("asdf"));
 		System.out.println(RegexUtil.checkChinese("sdf哈哈sf"));
+		*/
 	}
 
 
@@ -269,7 +272,7 @@ public class Test implements IfTest {
 	 * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/26 16:31
 	 * @throws UnsupportedEncodingException
 	 */
-	@org.junit.Test
+	//@org.junit.Test
 	public void testStringCoding () throws UnsupportedEncodingException {
 			cutStringByByte("as你好呀", 3);
 
