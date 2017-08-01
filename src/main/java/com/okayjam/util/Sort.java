@@ -13,6 +13,16 @@ public class Sort{
 		data[j] = temp;
 	}
 
+	public  static int compare(int a, int b){
+		return a - b;
+	}
+	public static int compare1(int a, int b){
+		int f = b % 2 - a % 2 ;
+		//if(f == 0) {f = a - b;}
+		return f;
+	}
+
+
 	/**
 	 * MergeSort
 	 * 稳定
@@ -106,7 +116,7 @@ public class Sort{
 		for (int i = data.length - 1; i > 0; i--) {
 			exchange = false;
 			for(int j = 0; j < i; j++ ) {
-				if (data[j] > data[j + 1]) {
+				if (compare1(data[j],data[j + 1]) > 0 ) {
 					swap(data, j, j + 1);
 					exchange = true;
 				}
@@ -129,9 +139,9 @@ public class Sort{
 		int i = start;
 		int j = end;
 		while (i < j) {
-			while (data[j] > key && i < j) j--;
+			while ( compare(data[j],key) >= 0 && i < j) j--;
 			data[i] = data[j];
-			while (data[i] < key && i < j) i++;
+			while (compare(data[i], key) <= 0 && i < j) i++;
 			data[j] = data[i];
 		}
 		data[i] = key;
