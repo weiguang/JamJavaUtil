@@ -9,6 +9,6 @@ public interface IfTest {
 	int a = 0;
 	// default jdk 1.8
 	default  public  void fun() {
-		System.out.println(" default method!");
+		System.out.println(" default method,request jdk 1.8+!");
 	}
 }
