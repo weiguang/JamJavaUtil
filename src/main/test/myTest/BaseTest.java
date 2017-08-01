@@ -21,15 +21,15 @@ import java.io.*;
 
 //abstract class have main method
 //abstract
-public class Test implements IfTest {
+public class BaseTest implements IfTest {
 
-	private static final Logger LOG = Logger.getLogger(Test.class);
+	private static final Logger LOG = Logger.getLogger(BaseTest.class);
 
 	//synchronized Modify   main
  	synchronized public static void main(String[] args) {
 		// must add this code before log
 		BasicConfigurator.configure();
-		new Test().testMain();
+		new BaseTest().testMain();
 	}
 
 	/**
@@ -64,7 +64,6 @@ public class Test implements IfTest {
 			}
 		}
 	}
-
 
 
 	/**
@@ -110,9 +109,10 @@ public class Test implements IfTest {
 	 *
 	 * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 17:38
 	 */
-	@org.junit.Test
+	//@org.junit.Test
 	public void testRegex() {
 		System.out.println("123gyu13y1g3yu1".replaceAll("\\D","")); //去掉字符串中的数字
+
 		/*
 		System.out.println(RegexUtil.checkMobile("18826490653"));
 		System.out.println(RegexUtil.checkChinese("asdf"));

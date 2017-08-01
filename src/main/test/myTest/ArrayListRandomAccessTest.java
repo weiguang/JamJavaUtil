@@ -1,4 +1,4 @@
-package com.okayjam.test;
+package myTest;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -15,8 +15,6 @@ public class ArrayListRandomAccessTest {
         List list = new ArrayList();
         for (int i=0; i<100000; i++)
             list.add(Math.random());
-
-
 
         //sb = new StringBuffer(100000);
         iteratorThroughIterator(list) ;
