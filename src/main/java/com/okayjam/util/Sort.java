@@ -22,6 +22,24 @@ public class Sort{
 		return f;
 	}
 
+	/**
+	 *  二分查找
+	 * @param data
+	 * @param key
+	 * @return  Found:index; Not Found: -1
+	 */
+	public static int binarySearch(final int[] data, int key) {
+		if(data == null || data.length ==0) return -1;
+		int low = 0, high = data.length - 1;
+		int mid;
+		while(low <= high) {
+			mid = (low + high) / 2;
+			if(key < data[mid]) high = mid - 1;
+			else if(key > data[mid]) low = mid + 1;
+			else return mid;
+		}
+		return -1;
+	}
 
 	/**
 	 * MergeSort
@@ -150,7 +168,8 @@ public class Sort{
 	} 
 
 	public static void main(String[] args){
-		int[] array=new int[]{11,213,134,44,77,78,23,43};
+		//int[] array=new int[]{11,213,134,44,77,78,23,43,134,56,100};
+		int[] array=new int[]{11,11,11,11,11,11,11,12,11,11,12};
         	long startTime = System.nanoTime();
 		quickSort(array, 0, array.length-1);
 		//bubbleSort(array);
@@ -164,5 +183,6 @@ public class Sort{
             		System.out.print( array[i] + " ");
         	}
 		System.out.println("\n Time cost(nano):" + diffTime);
+		System.out.println("binary Search:" + binarySearch(array,11) );
 	}
 }
