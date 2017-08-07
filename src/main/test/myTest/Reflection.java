@@ -21,18 +21,32 @@ public class Reflection {
 
         Object obj = new Reflection();
 
+        // 第一種方法
         Class re1 = Reflection.class;
 
+        //第二种方法
         Class re2 = obj.getClass();
+
 
         Class re3;
         try {
+            // 第三种方法
             re3 = Class.forName("myTest.Reflection");
         }catch (Exception e) {
             e.printStackTrace();
         }
 
         Class<?> re = re1;
+
+        //利用Class 的 newInstance() 生成对象
+        try {
+            Reflection obj2 = (Reflection)re.newInstance();
+
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
 
         System.out.println("package : " + re.getPackage());
         System.out.println(re.getClassLoader());
