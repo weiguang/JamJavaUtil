@@ -50,7 +50,7 @@ public class Animal implements Serializable{
 	public static Animal reSerial(String filePath) throws IOException, ClassNotFoundException{
 		//File file  = new File(filePath);
 		ObjectInputStream oin = new ObjectInputStream(new FileInputStream(filePath));
-		Object newObject = oin.readObject(); // û��ǿ��ת����Person����
+		Object newObject = oin.readObject(); //读取对象
 		oin.close();
 		if( newObject instanceof Animal)
 			return (Animal)newObject;
