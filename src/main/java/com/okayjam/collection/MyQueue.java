@@ -11,9 +11,10 @@ import java.util.Queue;
 public class MyQueue<T> {
 
     private Queue<T> storage = new LinkedList<T>();
-    /** 将指定的元素插入队尾 */
-    public void offer(T v) {
-        storage.offer(v);
+    /** 将指定的元素插入队尾，失败会返回false，add()会在插入失败时抛出异常*/
+    public boolean offer(T v) {
+        if (storage.offer(v)) return true;
+        else return false;
     }
     /** 检索，但是不移除队列的头，如果此队列为空，则返回 null */
     public T peek() {
