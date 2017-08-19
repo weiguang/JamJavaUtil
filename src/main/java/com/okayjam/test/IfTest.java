@@ -11,4 +11,9 @@ public interface IfTest {
 	default  public  void fun() {
 		System.out.println(" default method,request jdk 1.8+!");
 	}
+	//jdk 9 支持
+//	private void privateMethod(final String string) {
+//		System.out.println(string);
+//	}
+
 }
