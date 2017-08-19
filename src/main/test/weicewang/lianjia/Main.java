@@ -1,6 +1,7 @@
 package weicewang.lianjia;
 
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 /**
  * Created by Weiguang Chen <chen2621978@gmail.com> on 2017/8/19 16:32.
@@ -8,49 +9,69 @@ import java.util.Scanner;
 public class Main {
     static Scanner sn = new Scanner(System.in);
     public static void main (String[] args) {
-//        int n = sn.nextInt();
-//        int count = 1;
-//        int p = 2;
-//        for (int i = 3; count < n; i+=2) {
-//            if(isPrime(i)){
-//                p = i; count++;
-//            }
-//        }
-//        System.out.println(p);
-        System.out.println(fib(sn.nextInt()));
+        func3();
     }
-    public static void add() {
-        while(sn.hasNextInt()){
-            System.out.println(sn.nextInt() + sn.nextInt());
+
+    public static void func1(){
+       int n = sn.nextInt();
+       int[] a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = sn.nextInt();
+        }
+        int q = sn.nextInt();
+        for (int i = 0; i < q; i++) {
+            int qi = sn.nextInt();
+            int  sum = 0, j = 0;
+            for (j = 0; j < n; j++) {
+                sum+=a[j];
+                if(qi <= sum) break;
+            }
+            System.out.println(j+1);
         }
     }
 
-    public static boolean isPrime(long n) {
-        if(n < 2) return false;
-        if(n == 2) return true;
-        if(n % 2 == 0) return false;
-        for (int i = 3; i <= Math.sqrt(n); i+=2) {
-            if(n % i == 0) return false;
+    public static void func2() {
+        int[] a = new int[10];
+        for (int i = 0; i < 10; i++) {
+            a[i] = sn.nextInt();
         }
-        return true;
+        int cha = 30;
+        int high = sn.nextInt();
+        int sum = 0;
+        for (int i = 0; i < a.length; i++) {
+            if(high + cha >= a[i]) sum++;
+        }
+        System.out.println(sum);
     }
 
-//    public static long fib(long n) {
-//        if(n <= 1) return n;
-//        int[] f = new int[2];
-//        f[0] = 0; f[1] = 1;
-//        int t = 0;
-//        for (int i = 2; i <= n; i++) {
-//            t = f[0] + f[1];
-//            f[0] = f[1];
-//            f[1] = t;
-//        }
-//        return f[1];
-//    }
+    public static void func3()  {
+        Scanner sn1 = sn;
+        try {
+            //sn1 = new Scanner(new BufferedReader(new FileReader("random.in")));
+        TreeSet set = new TreeSet();
+        int n = sn1.nextInt();
+        for (int i = 0; i < n; i++) {
+            set.add(sn1.nextInt());
+        }
+        BufferedWriter out = null;
 
-    public static long fib(long n) {
-        double sqrt5 = Math.sqrt(5);
-        return (long)(Math.pow(((1 + sqrt5) / 2.0),n) / sqrt5 -
-                Math.pow(((1 - sqrt5) / 2.0),n) / sqrt5);
+        //out = new BufferedWriter(new FileWriter("random.out"));
+        //out.write(set.size()+"\n");
+
+        System.out.println(set.size());
+
+        StringBuilder sb = new StringBuilder();
+        for (Object o : set) {
+            sb.append(o+" ");
+        }
+        sb.deleteCharAt(sb.length()-1);
+        System.out.print(sb.toString());
+//        out.write(sb.toString() + "\n");
+//        out.flush();
+//        out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 }
