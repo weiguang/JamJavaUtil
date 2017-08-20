@@ -9,8 +9,9 @@ public class Main {
     static Scanner sn = new Scanner(System.in);
     public static void main (String[] args) {
 
-        seq1();
+        //seq1();
        // System.out.println(find01String(sn.nextLine()));
+        System.out.println(dependent(sn.nextInt(),sn.nextInt(),sn.nextInt(),sn.nextInt()));
     }
 
     static int find01String(String src) {
@@ -87,5 +88,16 @@ public class Main {
             System.out.print(data[i]);
             if(k-- != 1) System.out.print(" ");
         }
+    }
+
+    public static int  dependent(int x,int f,int d,int p){
+        if(x*f > d) return d/x;
+        while (x*f <= d) {
+            if( x*(f+1) <= (d-p)) {
+                f++;
+                d-=p;
+            }else break;
+        }
+        return f;
     }
 }
