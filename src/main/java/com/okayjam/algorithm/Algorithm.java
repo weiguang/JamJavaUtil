@@ -1,5 +1,7 @@
 package com.okayjam.algorithm;
 
+import com.okayjam.util.Sort;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,6 +9,7 @@ import java.util.List;
  * Created by Weiguang Chen <chen2621978@gmail.com> on 2017/8/1 15:19.
  */
 public class Algorithm {
+
     /**
      * 全排列
      *
@@ -81,5 +84,28 @@ public class Algorithm {
 //        }
 //        return f[1];
 //    }
+
+    /**
+     * 全排列
+     * @param data
+     * @param from
+     * @param to
+     */
+    public static void allPermutation(int[] data,int from ,int to) {
+        if(to < 1) return;
+        if(from == to ){
+            for (int datum : data) {
+                System.out.print(datum);
+            }
+            System.out.println();
+        }else{
+            for (int i = from; i < to; i++) {
+                Sort.swap(data, from, i);
+                allPermutation(data, from + 1, to);
+                Sort.swap(data, from, i);
+            }
+        }
+
+    }
 
 }

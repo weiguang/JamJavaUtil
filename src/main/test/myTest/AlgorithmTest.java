@@ -20,9 +20,14 @@ public class AlgorithmTest {
      *
      * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/26 19:43
      */
-    @Test
+//    @Test
     public void yuse() {
        Algorithm.yuse(15);
     }
 
+    @Test
+    public void allPermutation() {
+        int[] data={1,2,3};
+        Algorithm.allPermutation(data,0, data.length);
+    }
 }
