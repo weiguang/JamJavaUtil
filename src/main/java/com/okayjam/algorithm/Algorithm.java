@@ -105,7 +105,8 @@ public class Algorithm {
                 Sort.swap(data, from, i);
             }
         }
-
     }
+
+
 
 }
