@@ -61,4 +61,17 @@ public class MathUtil {
         return ans;
     }
 
+    /**
+     * 判断一个三位数是否是水仙花数
+     * “水仙花数”是指一个三位数，它的各位数字的立方和等于其本身，比如：153=1^3+5^3+3^3
+     * @param n
+     * @return
+     */
+    public static boolean isNarcissisticNumber(int n){
+        if(n<100 || n>999) return false;
+        int a = n % 10, b = n / 10 % 10, c = n / 100;
+        if( a*a*a + b*b*b + c*c*c == n) return true;
+        return false;
+    }
+
 }
