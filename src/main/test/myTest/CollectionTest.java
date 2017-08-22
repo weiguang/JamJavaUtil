@@ -12,7 +12,7 @@ public class CollectionTest {
      * 测试集合 Set
      * @author Weiguang Chen <chen2621978@gmail.com> on 2017/8/8 10:39
      */
-    @Test
+//    @Test
     public void testSet() {
         TreeSet tset = new TreeSet(new Comparator<Integer>() {
             @Override
@@ -43,6 +43,31 @@ public class CollectionTest {
             System.out.println(it.next());
         }
 
+    }
+
+    /**
+     *
+     *
+     * @author Weiguang Chen <chen2621978@gmail.com>
+     * @param
+     * @return void
+     */
+    @Test
+    public void testNull() {
+        TreeSet set = new TreeSet();
+        //set.add(null);    //java.lang.NullPointerException
+        TreeMap map = new TreeMap();
+        //map.put(null,123);    //java.lang.NullPointerException
+        List list = new ArrayList();
+        list.add(null);     //okay!
+        list.add("I am ");
+        list.add(123);
+        System.out.println(list);
+        HashMap hashMap = new HashMap();
+        hashMap.put(null,123);
+        if(hashMap.containsKey(null)) {
+            System.out.println("contain null, size:"+ hashMap.size());
+        }
     }
 
     class MyComparator implements Comparator<Integer>{

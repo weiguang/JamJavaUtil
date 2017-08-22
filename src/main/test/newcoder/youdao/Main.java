@@ -1,5 +1,9 @@
 package newcoder.youdao;
 
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -7,11 +11,16 @@ import java.util.Scanner;
  */
 public class Main {
     static Scanner sn = new Scanner(System.in);
+    static int sum = 0;
+    static List list = new ArrayList();
     public static void main (String[] args) {
 
         //seq1();
        // System.out.println(find01String(sn.nextLine()));
-        System.out.println(dependent(sn.nextInt(),sn.nextInt(),sn.nextInt(),sn.nextInt()));
+        //System.out.println(dependent(sn.nextInt(),sn.nextInt(),sn.nextInt(),sn.nextInt()));
+        String s = sn.next();
+        allPermutation(s.toCharArray(),0,s.length() - 1);
+        System.out.println(sum);
     }
 
     static int find01String(String src) {
@@ -100,4 +109,40 @@ public class Main {
         }
         return f;
     }
+
+    public static void allPermutation(char[] data,int from ,int to) {
+        if(to < 1) return;
+        if(from == to ){
+            if(!list.contains(new String(data))){
+                int start = 0;
+                char before = 0;
+                int dif = 0;
+                for (char datum : data) {
+                    if(start==1 && before != datum) dif++;
+                    if(dif>1) break;
+                    start =1;
+                    before = datum;
+                    // System.out.print(datum);
+                }
+                //System.out.println(new String(data));
+                if(dif <= 1) sum++;
+                //System.out.println();
+                list.add(new String(data));
+            }
+
+        }else{
+            for (int i = from; i < to; i++) {
+                swap(data, from, i);
+                allPermutation(data, from + 1, to);
+                swap(data, from, i);
+            }
+        }
+    }
+
+    public static void swap(char[] data, int i, int j) {
+        char temp = data[i];
+        data[i] = data[j];
+        data[j] = temp;
+    }
+
 }
