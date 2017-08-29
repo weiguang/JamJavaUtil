@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import com.okayjam.test.*;
 import com.okayjam.util.RegexUtil;
 import com.okayjam.util.FileUtil;
+import org.junit.Test;
 
 import java.io.*;
 
@@ -46,7 +47,7 @@ public class BaseTest implements IfTest {
 		//testAssert();
 		//testSerializable();
 		//testTryCatch();
-		//testBase();
+		testBase();
 		//testRegex();
 		//testFileUtil();
 
@@ -139,6 +140,7 @@ public class BaseTest implements IfTest {
      * @author Weiguang Chen(chen2621978@gmail.com) on 2017/7/13 21:58
      *  test basic data type
      */
+
 	public static void testBase() {
 		//Short s = 98S; //error
 		//float z = 1.0; //error
@@ -147,6 +149,10 @@ public class BaseTest implements IfTest {
         int a = 5;
         // output is : "value is  = 9.0" , ps: 10.9d is a double var,so 9i is convert to 9.0d
         System.out.println("value is  = " + ( (a < 5 )? 10.9 : 9 ));
+
+        Integer o1 = 1;
+        Integer o2 = 1;
+		System.out.println(o1 == o2);
 
     }
 
