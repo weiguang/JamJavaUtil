@@ -1,5 +1,7 @@
 package com.okayjam.algorithm;
 
+import java.util.Random;
+
 /**
  * Created by Weiguang Chen <chen2621978@gmail.com> on 2017/8/19 17:10.
  */
@@ -72,6 +74,14 @@ public class MathUtil {
         int a = n % 10, b = n / 10 % 10, c = n / 100;
         if( a*a*a + b*b*b + c*c*c == n) return true;
         return false;
+    }
+
+    public static int random1ToN(int n, Random r) {
+        return r.nextInt(n) + 1;
+    }
+
+    public static int random1ToN(int n) {
+        return 1 + (int)(Math.random()*n);
     }
 
 }
