@@ -2,8 +2,10 @@ package com.okayjam.algorithm;
 
 import com.okayjam.util.Sort;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Weiguang Chen <chen2621978@gmail.com> on 2017/8/1 15:19.
@@ -108,5 +110,23 @@ public class Algorithm {
     }
 
 
+    public static char firstNotRepeatingChar(String s) {
+        if (s == null || s.length() < 1) {
+            throw new IllegalArgumentException("Arg should not be null or empty");
+        }
+        Map<Character, Integer> map = new LinkedHashMap<Character, Integer>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if(map.containsKey(c)) {
+                map.put(c, -1);
+            } else {
+                map.put(c, 1);
+            }
+        }
+        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+            if (entry.getValue() == 1) return entry.getKey();
+        }
+        return '\0';
+    }
 
 }
