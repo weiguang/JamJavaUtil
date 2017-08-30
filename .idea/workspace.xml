@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9169e49c-5b80-4d9c-ac75-1fed2a0553b2" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/algorithm/MathUtil.java" afterPath="$PROJECT_DIR$/src/main/java/com/okayjam/algorithm/MathUtil.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/test/myTest/AlgorithmTest.java" afterPath="$PROJECT_DIR$/src/main/test/myTest/AlgorithmTest.java" />
     </list>
@@ -83,27 +82,30 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MathUtil.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MathUtil.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/algorithm/MathUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="80" column="5" lean-forward="true" selection-start-line="80" selection-start-column="5" selection-end-line="80" selection-end-column="5" />
+            <state relative-caret-position="164">
+              <caret line="79" column="13" lean-forward="false" selection-start-line="79" selection-start-column="13" selection-end-line="79" selection-end-column="13" />
               <folding>
-                <element signature="e#1769#1770#0" expanded="true" />
-                <element signature="e#1808#1809#0" expanded="true" />
                 <element signature="e#1851#1852#0" expanded="true" />
-                <element signature="e#1900#1901#0" expanded="true" />
+                <element signature="e#1890#1891#0" expanded="true" />
+                <element signature="e#1999#2000#0" expanded="true" />
+                <element signature="e#2048#2049#0" expanded="true" />
+                <element signature="e#2188#2189#0" expanded="true" />
+                <element signature="e#2255#2256#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AlgorithmTest.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AlgorithmTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/test/myTest/AlgorithmTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="116">
-              <caret line="26" column="24" lean-forward="true" selection-start-line="26" selection-start-column="24" selection-end-line="26" selection-end-column="24" />
+            <state relative-caret-position="-12">
+              <caret line="19" column="0" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
               <folding>
+                <element signature="e#583#584#0" expanded="true" />
                 <element signature="e#616#617#0" expanded="true" />
               </folding>
             </state>
@@ -199,8 +201,8 @@
         <option value="$PROJECT_DIR$/src/main/test/myTest/BaseTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/okayjam/algorithm/Algorithm.java" />
         <option value="$PROJECT_DIR$/src/main/test/other/duoyi/Main.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/okayjam/algorithm/MathUtil.java" />
         <option value="$PROJECT_DIR$/src/main/test/myTest/AlgorithmTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/okayjam/algorithm/MathUtil.java" />
       </list>
     </option>
   </component>
@@ -1022,7 +1024,7 @@
       <workItem from="1503707022904" duration="17063000" />
       <workItem from="1503988510853" duration="5041000" />
       <workItem from="1504066221253" duration="3204000" />
-      <workItem from="1504094551160" duration="1286000" />
+      <workItem from="1504094551160" duration="2182000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1496319651582</created>
@@ -1035,39 +1037,39 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="AlgorithmTest - 2017.08.30 at 20h 22m 11s.xml">
+    <history-entry file="AlgorithmTest - 2017.08.30 at 20h 34m 22s.xml">
       <configuration name="AlgorithmTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="AlgorithmTest - 2017.08.30 at 20h 22m 12s.xml">
+    <history-entry file="AlgorithmTest - 2017.08.30 at 20h 34m 58s.xml">
       <configuration name="AlgorithmTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="AlgorithmTest - 2017.08.30 at 20h 22m 14s.xml">
+    <history-entry file="AlgorithmTest - 2017.08.30 at 20h 35m 09s.xml">
       <configuration name="AlgorithmTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="AlgorithmTest - 2017.08.30 at 20h 22m 15s.xml">
+    <history-entry file="AlgorithmTest - 2017.08.30 at 20h 35m 15s.xml">
       <configuration name="AlgorithmTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="AlgorithmTest - 2017.08.30 at 20h 22m 23s.xml">
+    <history-entry file="AlgorithmTest - 2017.08.30 at 20h 35m 37s.xml">
       <configuration name="AlgorithmTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="AlgorithmTest - 2017.08.30 at 20h 22m 25s.xml">
+    <history-entry file="AlgorithmTest - 2017.08.30 at 20h 35m 40s.xml">
       <configuration name="AlgorithmTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="AlgorithmTest - 2017.08.30 at 20h 22m 26s.xml">
+    <history-entry file="AlgorithmTest - 2017.08.30 at 20h 35m 42s.xml">
       <configuration name="AlgorithmTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="AlgorithmTest - 2017.08.30 at 20h 22m 28s.xml">
+    <history-entry file="AlgorithmTest - 2017.08.30 at 20h 35m 50s.xml">
       <configuration name="AlgorithmTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="AlgorithmTest - 2017.08.30 at 20h 22m 29s.xml">
+    <history-entry file="AlgorithmTest - 2017.08.30 at 20h 35m 52s.xml">
       <configuration name="AlgorithmTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="AlgorithmTest - 2017.08.30 at 20h 23m 53s.xml">
+    <history-entry file="AlgorithmTest - 2017.08.30 at 20h 35m 53s.xml">
       <configuration name="AlgorithmTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="222715000" />
+    <option name="totallyTimeSpent" value="223611000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1462,25 +1464,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/algorithm/MathUtil.java">
+    <entry file="file://$PROJECT_DIR$/src/main/test/myTest/AlgorithmTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="80" column="5" lean-forward="true" selection-start-line="80" selection-start-column="5" selection-end-line="80" selection-end-column="5" />
+        <state relative-caret-position="-12">
+          <caret line="19" column="0" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
           <folding>
-            <element signature="e#1769#1770#0" expanded="true" />
-            <element signature="e#1808#1809#0" expanded="true" />
-            <element signature="e#1851#1852#0" expanded="true" />
-            <element signature="e#1900#1901#0" expanded="true" />
+            <element signature="e#583#584#0" expanded="true" />
+            <element signature="e#616#617#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/test/myTest/AlgorithmTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/algorithm/MathUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="26" column="24" lean-forward="true" selection-start-line="26" selection-start-column="24" selection-end-line="26" selection-end-column="24" />
+        <state relative-caret-position="164">
+          <caret line="79" column="13" lean-forward="false" selection-start-line="79" selection-start-column="13" selection-end-line="79" selection-end-column="13" />
           <folding>
-            <element signature="e#616#617#0" expanded="true" />
+            <element signature="e#1851#1852#0" expanded="true" />
+            <element signature="e#1890#1891#0" expanded="true" />
+            <element signature="e#1999#2000#0" expanded="true" />
+            <element signature="e#2048#2049#0" expanded="true" />
+            <element signature="e#2188#2189#0" expanded="true" />
+            <element signature="e#2255#2256#0" expanded="true" />
           </folding>
         </state>
       </provider>

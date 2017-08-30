@@ -76,12 +76,33 @@ public class MathUtil {
         return false;
     }
 
+    /**
+     * 生成随机数，1 - N
+     * @param n
+     * @param r
+     * @return
+     */
     public static int random1ToN(int n, Random r) {
         return r.nextInt(n) + 1;
     }
 
+    /**
+     * 生成随机数，1 - N
+     * @param n
+     * @return
+     */
     public static int random1ToN(int n) {
         return 1 + (int)(Math.random()*n);
+    }
+
+    /**
+     * 生成随机数，[min,max]
+     * @param min
+     * @param max
+     * @return
+     */
+    public static int random(int min, int max) {
+        return min + (int)(Math.random() * (max - min + 1));
     }
 
 }

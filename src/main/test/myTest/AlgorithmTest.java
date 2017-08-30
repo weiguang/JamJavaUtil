@@ -36,15 +36,17 @@ public class AlgorithmTest {
     @Test
     public void test () {
 //        System.out.println(MathUtil.random1ToN(2));
+//        System.out.println(MathUtil.random(1,2));
         long startTime = System.nanoTime();
         int sum = 0;
         int all = 1000000;
         Random r = new Random();
         for (int i = 0; i <  all; i++) {
 //            sum += (MathUtil.random1ToN(2) == 1 ? 1 : 0);
-            sum += (MathUtil.random1ToN(2, r) == 1 ? 1 : 0);
+//            sum += (MathUtil.random1ToN(2, r) == 1 ? 1 : 0);
+            sum += (MathUtil.random(1,2) == 2 ? 1 : 0);
         }
-        //System.out.println(1.0*sum/all);
+        System.out.println(1.0*sum/all);
         long endTime = System.nanoTime();
         long diffTime = endTime - startTime;
         System.out.println("\n Time cost(nano):" + 1.0 * diffTime/1000);
