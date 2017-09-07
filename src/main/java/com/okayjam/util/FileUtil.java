@@ -1,7 +1,6 @@
 package com.okayjam.util;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -17,6 +16,10 @@ public class FileUtil {
 
     private static final Logger log = Logger.getLogger(FileUtil.class);
 
+
+    public void getEncode(String filePath) {
+        //String fileEncode = org.apache.commons.io.FileUtils.
+    }
     /**
      * 新建文件夹
      *

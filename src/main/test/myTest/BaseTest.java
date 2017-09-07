@@ -47,7 +47,7 @@ public class BaseTest implements IfTest {
 		//testAssert();
 		//testSerializable();
 		//testTryCatch();
-		testBase();
+		//testBase();
 		//testRegex();
 		//testFileUtil();
 
@@ -56,6 +56,8 @@ public class BaseTest implements IfTest {
 		//LOG.debug("test log4j, debug!!!!!!!!!!!");
 		//LOG.info("hello this is log4j info log");
 		//LOG.error("test log4j, error!!!!!!!!!!!");
+
+		testFunction(1,2,3);
 
 		while(true) {
 			try {
@@ -103,6 +105,16 @@ public class BaseTest implements IfTest {
 			e.printStackTrace();
 		}
 
+	}
+
+	/**
+	 * test varargs,
+	 * @param args
+	 */
+	public static void testFunction (int... args) {
+		for (int arg : args) {
+			System.out.println(arg);
+		}
 	}
 
 	/**
