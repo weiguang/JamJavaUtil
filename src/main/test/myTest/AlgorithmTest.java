@@ -34,6 +34,10 @@ public class AlgorithmTest {
     }
 
     @Test
+    public void testString () {
+        Algorithm.chkRotation("cdab",4,"abcd",4);
+    }
+
     public void test () {
 //        System.out.println(MathUtil.random1ToN(2));
 //        System.out.println(MathUtil.random(1,2));

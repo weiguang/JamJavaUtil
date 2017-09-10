@@ -70,9 +70,14 @@ public class Algorithm {
                 Math.pow(((1 - sqrt5) / 2.0),n) / sqrt5);
     }
 
-//    public static long fib(long n){
-//        return n <= 1 ? n: fib(n - 1) + fib(n - 2);
-//    }
+    /**
+     * Fibonacci 数列递归版本
+     * @param n
+     * @return
+     */
+    public static long fibRecursion(long n){
+        return n <= 1 ? n: fib(n - 1) + fib(n - 2);
+    }
 
 //    public static long fib(long n) {
 //        if(n <= 1) return n;
@@ -109,7 +114,11 @@ public class Algorithm {
         }
     }
 
-
+    /**
+     * 第一个出现的没有重复的单词
+     * @param s
+     * @return
+     */
     public static char firstNotRepeatingChar(String s) {
         if (s == null || s.length() < 1) {
             throw new IllegalArgumentException("Arg should not be null or empty");
@@ -127,6 +136,69 @@ public class Algorithm {
             if (entry.getValue() == 1) return entry.getKey();
         }
         return '\0';
+    }
+
+    /**
+     * 旋转词
+     * 如果对于一个字符串A，将A的前面任意一部分挪到后边去形成的字符串称为A的旋转词。
+     * 比如A="12345",A的旋转词有"12345","23451","34512","45123"和"51234"。
+     * @param A
+     * @param lena
+     * @param B
+     * @param lenb
+     * @return
+     */
+    public static boolean chkRotation(String A, int lena, String B, int lenb) {
+        if (lena != lenb) return false;
+        for (int i = 0; i < lena; i++) {
+            int j;
+            for (j = 0; j < lenb; j++) {
+                if(B.charAt(j) != A.charAt( (i + j) % lena)) break;
+            }
+            if(j == lenb) return true;
+        }
+        return false;
+    }
+
+    public static int LCSubsequence(char[] str1, char[] str2)
+    {
+        int substringLength1 = str1.length;
+        int substringLength2 = str2.length;
+
+        // 构造二维数组记录子问题A[i]和B[j]的LCS的长度
+        int[][] opt = new int[substringLength1 + 1][substringLength2 + 1];
+
+        // 从后向前，动态规划计算所有子问题。也可从前到后。
+        for (int i = substringLength1 - 1; i >= 0; i--)
+        {
+            for (int j = substringLength2 - 1; j >= 0; j--)
+            {
+                if (str1[i] == str2[j])
+                    opt[i][j] = opt[i + 1][j + 1] + 1;// 状态转移方程
+                else
+                    opt[i][j] = Math.max(opt[i + 1][j], opt[i][j + 1]);// 状态转移方程
+            }
+        }
+        // System.out.println("substring1:" + new String(str1));
+        // System.out.println("substring2:" + new String(str2));
+        //System.out.print("LCS:");
+
+        int i = 0, j = 0;
+        while (i < substringLength1 && j < substringLength2)
+        {
+            if (str1[i] == str2[j])
+            {
+                //System.out.print(str1[i]);
+                i++;
+                j++;
+            }
+            else if (opt[i + 1][j] >= opt[i][j + 1])
+                i++;
+            else
+                j++;
+        }
+        //System.out.println();
+        return opt[0][0];
     }
 
 }
