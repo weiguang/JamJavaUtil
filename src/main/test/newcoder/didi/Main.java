@@ -7,41 +7,50 @@ import java.util.*;
  */
 public class Main {
     static Scanner sn = new Scanner(System.in);
-    static int k = 0;
     public static void main (String[] args) {
-        func2();
+        func1();
     }
 
-    static void func1() {
-        long sum = 0;
-        long max = Integer.MIN_VALUE;
-        int a = 0;
-        while (sn.hasNextInt()) {
-            a = sn.nextInt();
-            if(sum <= 0) {
-                sum = a;
-            }else  sum += a;
-            if(max < sum) max = sum;
+    static void func1(){
+        int n = sn.nextInt();
+        int ans = 0;
+        int[] data = new int[n+1];
+        int[] dp = new int[n+1];
+        for (int i = 1; i <= n; i++) {
+            data[i] = sn.nextInt();
+            dp[i] = dp[i-1];
+            
         }
-        System.out.println(max);
+        System.out.println(ans);
+
     }
 
-    static void func2(){
-        String str = sn.nextLine();
-        String[] strs = str.split("\\s");
-        int k = sn.nextInt();
-        Queue<Integer> integerPriorityQueue = new PriorityQueue<>(k);
-        for (String s : strs) {
-            Integer i = Integer.valueOf(s);
-            if (integerPriorityQueue.size() < k) {
-                integerPriorityQueue.add(i);
-//            } else if (i > integerPriorityQueue.peek()) {
-//                integerPriorityQueue.poll();
-//                integerPriorityQueue.add(i);
-            }
+    static void func2() {
+        int n = sn.nextInt();
+        System.out.println(GetUglyNumber_Solution(n));
+    }
+
+    static public int GetUglyNumber_Solution(int index) {
+        int count = 0;
+        int i;
+        for(i=1;count<index;i++){
+            if(isUgly(i))
+                count++;
         }
-        while(integerPriorityQueue.size() > 0)
-        System.out.println(integerPriorityQueue.poll());
+        return i - 1;
+    }
+
+    static public boolean isUgly(int n){
+        while(n%3==0)
+            n = n/3;
+        while(n%2==0)
+            n = n/2;
+        while(n%5==0)
+            n = n/5;
+        if(n==1)
+            return true;
+        else
+            return false;
     }
 
 
