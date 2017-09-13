@@ -6,10 +6,9 @@ import org.apache.log4j.Logger;
 import com.okayjam.test.*;
 import com.okayjam.util.RegexUtil;
 import com.okayjam.util.FileUtil;
-import org.junit.Test;
 
 import java.io.*;
-
+import java.lang.reflect.Array;
 
 
 /**
@@ -47,7 +46,7 @@ public class BaseTest implements IfTest {
 		//testAssert();
 		//testSerializable();
 		//testTryCatch();
-		//testBase();
+		testBase();
 		//testRegex();
 		//testFileUtil();
 
@@ -57,7 +56,9 @@ public class BaseTest implements IfTest {
 		//LOG.info("hello this is log4j info log");
 		//LOG.error("test log4j, error!!!!!!!!!!!");
 
-		testFunction(1,2,3);
+		//testFunction(1,2,3);
+
+		//testGenericity();
 
 		while(true) {
 			try {
@@ -75,6 +76,34 @@ public class BaseTest implements IfTest {
 	 */
 	synchronized  public static void main(int a){
 		System.out.println(a);
+	}
+
+	/**
+	 * 泛型
+	 */
+	public <T> void  testGenericity() {
+		MyArrayList list = new MyArrayList(Animal.class);
+		list.setValue(0,"cat1");
+
+		list.getValue(0);
+	}
+	class MyArrayList<V extends Animal>  {
+		private V[] backingArray;
+		private Class<V> elementType;
+		public MyArrayList(Class<V> elementType) {
+			this.elementType = elementType;
+			backingArray = (V[]) Array.newInstance(elementType, 10);
+		}
+		public void setValue(int  index, String value){
+			if(backingArray[index] == null){
+				Object o = Array.newInstance(elementType,1);
+				backingArray[index] = (V) o;
+			}
+			backingArray[index].setName(value);
+		}
+		public void getValue(int index) {
+			backingArray[index].printName();
+		}
 	}
 
 	/**
@@ -161,10 +190,22 @@ public class BaseTest implements IfTest {
         int a = 5;
         // output is : "value is  = 9.0" , ps: 10.9d is a double var,so 9i is convert to 9.0d
         System.out.println("value is  = " + ( (a < 5 )? 10.9 : 9 ));
+		byte b1=1,b2=2,b3,b6,b8;
+		final byte b4=4,b5=6,b7;
+		//b3=(b1+b2);  //语句1 error
+		b3 = b4 + b5; // okay
+
+		if(false) b1 =1;
 
         Integer o1 = 1;
         Integer o2 = 1;
 		System.out.println(o1 == o2);
+
+		Integer i = 42;
+		Long l = 42l;
+		Double d = 42.0;
+
+		System.out.println(l.equals(42L));
 
     }
 
