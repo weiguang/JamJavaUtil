@@ -18,9 +18,13 @@ public class Main {
         //seq1();
        // System.out.println(find01String(sn.nextLine()));
         //System.out.println(dependent(sn.nextInt(),sn.nextInt(),sn.nextInt(),sn.nextInt()));
-        String s = sn.next();
-        allPermutation(s.toCharArray(),0,s.length() - 1);
-        System.out.println(sum);
+        //String s = sn.next();
+        //allPermutation(s.toCharArray(),0,s.length() - 1);
+        //System.out.println(sum);
+       // magicCoin();
+//        System.out.println(reverse(sn.nextInt()));
+//        stringFragment(sn.nextLine());
+        permutation();
     }
 
     static int find01String(String src) {
@@ -145,4 +149,61 @@ public class Main {
         data[j] = temp;
     }
 
+    public static void magicCoin() {
+        int n = sn.nextInt();
+         getCoin(n); System.out.println();
+
+
+    }
+
+    public static void getCoin(int n) {
+        if (n <= 0 ) return ;
+        if ((n & 1) == 1) {
+            getCoin((n - 1)/2);
+            System.out.print(1);
+        }else {
+            getCoin((n - 2)/2);
+            System.out.print(2);
+        }
+
+    }
+
+    public static int reverse(int n) {
+        StringBuilder sb = new StringBuilder(n+"");
+        sb = sb.reverse();
+        int t = Integer.valueOf(sb.toString());
+        return n+t;
+    }
+
+    public static void stringFragment(String s) {
+        int count = 1;
+        int sum = 0;
+        char pre = 0;
+        for (char c : s.toCharArray()) {
+                if(c != pre) {count = 0; sum++;}
+                else count++;
+            pre = c;
+        }
+
+        System.out.printf("%.2f\n", (1.0 * s.length() / sum));
+    }
+
+    public static void permutation() {
+        int ex = sn.nextInt();
+        while (ex-- > 0) {
+            int n  = sn.nextInt();
+            int odd = 0;
+            int even = 0;
+            int even4 = 0;
+            int t = 0;
+            for (int i = 0; i < n; i++) {
+                if((t = sn.nextInt()) %4 == 0 ) even4++;
+                else if( (t&1) == 0) even++;
+                else ++odd;
+            }
+            if(even4 < odd - 1) System.out.println("No");
+            else if( even4 == odd - 1 && (even & 1) == 1) System.out.println("No");
+            else System.out.println("Yes");
+        }
+    }
 }
