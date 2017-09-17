@@ -24,8 +24,8 @@ public class Sort{
 
 	/**
 	 *  二分查找
-	 * @param data
-	 * @param key
+	 * @param data 数组需要是递增的
+	 * @param key 要查找的内容
 	 * @return  Found:index; Not Found: -1
 	 */
 	public static int binarySearch(final int[] data, int key) {
@@ -91,7 +91,7 @@ public class Sort{
 	 **/
 	public static void insertionSort1(int[] data) {
 		for (int i = 1; i < data.length; i++) {
-			int temp = data[i], j = 0;
+			int temp = data[i], j;
 			for (j = i; j > 0; j--) {
 				if(data[j - 1] > temp){
 					data[j] = data[j - 1];
