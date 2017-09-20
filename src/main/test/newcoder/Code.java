@@ -4,25 +4,25 @@ import com.okayjam.util.Sort;
 import org.junit.Test;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Scanner;
+import java.util.*;
+import java.util.function.ToIntFunction;
 
 /**
  * Created by Weiguang Chen <chen2621978@gmail.com> on 2017/7/29 9:52.
  */
 public class Code {
+    static Scanner in= new Scanner(System.in);
     public static void main (String[] args) {
-        Scanner in= new Scanner(System.in);
-        int n = in.nextInt();
-        int[][] data = new int[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                data[i][j] = in.nextInt();
-            }
-        }
-        maxSubMatrix(data);
+
+//        int n = in.nextInt();
+//        int[][] data = new int[n][n];
+//        for (int i = 0; i < n; i++) {
+//            for (int j = 0; j < n; j++) {
+//                data[i][j] = in.nextInt();
+//            }
+//        }
+//        maxSubMatrix(data);
+        merageMax();
     }
 
     public void test(){
@@ -57,4 +57,26 @@ public class Code {
         System.out.println(ans);
     }
 
+    public static void merageMax(){
+        List<Integer> list = new ArrayList();
+        int n = in.nextInt();
+        for (int i = 0; i < n; i++) {
+            list.add(in.nextInt());
+        }
+        Collections.sort(list,new SortByNumber());
+        for (int i = 0; i < list.size(); i++) {
+            System.out.print(list.get(i));
+        }
+    }
+
+
+}
+
+
+class SortByNumber implements Comparator<Integer>{
+    @Override
+    public int compare(Integer o1, Integer o2) {
+        return  Integer.valueOf(o2+""+o1) - Integer.valueOf(o1+""+o2) ;
+
+    }
 }
