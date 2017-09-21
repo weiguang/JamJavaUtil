@@ -25,7 +25,7 @@ public class Main {
 //        for(int res_i=0; res_i < res.length; res_i++) {
 //            System.out.println(String.valueOf(res[res_i]));
 //        }
-        func2();
+        func1();
 
     }
 
@@ -47,7 +47,11 @@ public class Main {
         return ans;
     }
 
-    static void func2() {
+    /**
+     * 4和7是两个幸运数字，我们定义，十进制表示中，每一位只有4和7两个数的正整数都是幸运数字。
+     * 求少于 n 的幸运数的个数
+     */
+    static void func1() {
         int n = cin.nextInt();
         String str = n + "";
         int MAX = (int) Math.pow(10, 9) + 7;
@@ -61,20 +65,6 @@ public class Main {
             sum = (sum + (2 << (i - 1))) % MAX;
         System.out.println(sum);
 
-    }
-
-    static public void func1() {
-        int n = cin.nextInt();
-        String str = n + "";
-        int ans = 0;
-        String m = "";
-        int MAX = (int) Math.pow(10, 9) + 7;
-        for (int i = 0; i < str.length() - 1; i++) {
-            ans = (ans + (int) Math.pow(2, 1)) % MAX;
-            m += '0';
-        }
-        ans = (ans + getmn(Integer.valueOf(1 + m), n)) % MAX;
-        System.out.println(ans);
     }
 
     static int getmn(int m, int n) {
