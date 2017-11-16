@@ -1,6 +1,6 @@
 package com.okayjam.algorithm;
 
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by Weiguang Chen <chen2621978@gmail.com> on 2017/8/19 17:10.
@@ -16,7 +16,7 @@ public class MathUtil {
         if(n < 2) return false;
         if(n == 2) return true;
         if(n % 2 == 0) return false;
-        for (int i = 3; i <= java.lang.Math.sqrt(n); i+=2) {
+        for (int i = 3; i <= Math.sqrt(n); i+=2) {
             if(n % i == 0) return false;
         }
         return true;
@@ -103,6 +103,27 @@ public class MathUtil {
      */
     public static int random(int min, int max) {
         return min + (int)(Math.random() * (max - min + 1));
+    }
+
+    /**
+     * 没有加减乘除的加法
+     * @param a
+     * @param b
+     * @return
+     */
+    public static int addWithoutOperator(int a, int b) {
+        int sum,carry;
+        do{
+            sum = a ^ b;
+            carry = (a & b) << 1;
+            a = sum;
+            b = carry;
+        } while (b != 0);
+        return sum;
+    }
+
+    public static void test(){
+        System.out.println(addWithoutOperator(12,5));
     }
 
 }

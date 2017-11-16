@@ -4,7 +4,6 @@ import com.okayjam.algorithm.Algorithm;
 import com.okayjam.algorithm.MathUtil;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -33,7 +32,7 @@ public class AlgorithmTest {
         Algorithm.allPermutation(data,0, data.length);
     }
 
-    @Test
+   // @Test
     public void testString () {
         Algorithm.chkRotation("cdab",4,"abcd",4);
     }
@@ -54,5 +53,10 @@ public class AlgorithmTest {
         long endTime = System.nanoTime();
         long diffTime = endTime - startTime;
         System.out.println("\n Time cost(nano):" + 1.0 * diffTime/1000);
+    }
+
+    @Test
+    public void  testAdd() {
+        MathUtil.test();
     }
 }
