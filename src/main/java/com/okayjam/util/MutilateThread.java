@@ -10,10 +10,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class MutilateThread {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-        //TestFutureTask();
+        TestFutureTask();
         //ThreadTest.test1();
         //ThreadTest.test2();
-        new ThreadTest().test3();
+//        new ThreadTest().test3();
     }
 
     /**
