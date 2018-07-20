@@ -28,6 +28,8 @@ hs_err_pid*
 .idea/inspectionProfiles/
 src/main/test/ceping/qiniu/
 target/generated-test-sources/
+.idea/
 
 #my file
 *.out
+
