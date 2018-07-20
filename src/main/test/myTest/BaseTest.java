@@ -1,13 +1,13 @@
 package myTest;
 
 import com.okayjam.test.Animal;
+import com.okayjam.test.IfTest;
+import com.okayjam.util.FileUtil;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
-import com.okayjam.test.*;
-import com.okayjam.util.RegexUtil;
-import com.okayjam.util.FileUtil;
 
-import java.io.*;
+import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 
 
@@ -43,10 +43,10 @@ public class BaseTest implements IfTest {
 		//testString();
 		//testRegular();
 		//testSwitch();
-		//testAssert();
+		testAssert();
 		//testSerializable();
 		//testTryCatch();
-		testBase();
+		//testBase();
 		//testRegex();
 		//testFileUtil();
 
@@ -175,6 +175,7 @@ public class BaseTest implements IfTest {
 		int a = 1;
 		//when a<1 will throw AssertionError and print "error !!!"
 		assert (a > 0) : "error!!";
+		System.out.println("assert after!");
 	}
 
     /**
