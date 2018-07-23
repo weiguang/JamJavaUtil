@@ -5,13 +5,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.Scanner;
 
 /**
  * Created by Weiguang Chen <chen2621978@gmail.com> on 2018/6/13 21:05.
  */
 public class Client {
     public static void main (String[] args) throws IOException {
-        System.out.println("Hello world!");
+        Scanner scanner = new Scanner(System.in);
         Socket socket = null;
         ObjectOutputStream output = null;
         ObjectInputStream input = null;
@@ -21,12 +22,15 @@ public class Client {
             socket.connect(addr);
 
             output = new ObjectOutputStream(socket.getOutputStream());
-            output.writeUTF("客户端发送第一个数据");
-            output.flush();
             input = new ObjectInputStream(socket.getInputStream());
-            String re = input.readUTF();
-            System.out.println(re);
-
+            while(true) {
+                String msg = scanner.nextLine();
+                output.writeUTF(msg);
+                output.flush();
+                String re = input.readUTF();
+                System.out.println(re);
+                if(msg.equals(Server.ExitMessage));
+            }
         }finally {
             input.close();
             output.close();
