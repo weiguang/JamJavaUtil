@@ -1,7 +1,8 @@
 package net;
 
-import com.sf.net.netty.tcp.Client;
-import com.sf.net.netty.tcp.Server;
+
+import com.okayjam.net.netty.tcp.Client;
+import com.okayjam.net.netty.tcp.Server;
 import org.junit.Before;
 import org.junit.Ignore;
 

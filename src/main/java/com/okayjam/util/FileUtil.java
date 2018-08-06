@@ -1,5 +1,8 @@
 package com.okayjam.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
@@ -7,14 +10,14 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.log4j.Logger;
+
 
 /**
  * Created by Jam on 17-6-1.
  */
 public class FileUtil {
 
-    private static final Logger log = Logger.getLogger(FileUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(FileUtil.class);
 
 
     public void getEncode(String filePath) {
