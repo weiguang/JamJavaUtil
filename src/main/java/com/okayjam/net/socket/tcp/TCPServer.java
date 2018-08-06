@@ -1,4 +1,4 @@
-package com.okayjam.net;
+package com.okayjam.net.socket.tcp;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,12 +11,12 @@ import java.util.Date;
 /**
  * Created by Weiguang Chen <chen2621978@gmail.com> on 2018/6/13 21:10.
  */
-public class Server {
+public class TCPServer {
     private int MaxClient = 3;
     static  String  ExitMessage = "88";
     public static void main(String[] args) throws IOException {
 
-        new Server().StartListen();
+        new TCPServer().StartListen();
 
     }
 
@@ -59,7 +59,7 @@ class ServerTask implements Runnable {
                 System.out.println( task.getRemoteSocketAddress()+" 发来消息(" + date.getTime() + "):" + msg);
                 output.writeUTF("server已经接收到(" + date + "):" + msg);
                 output.flush();
-                if (msg.equals(Server.ExitMessage)) break;
+                if (msg.equals(TCPServer.ExitMessage)) break;
             }
         } catch (IOException e) {
             System.out.println("已经断开连接");

@@ -1,4 +1,4 @@
-package com.okayjam.net;
+package com.okayjam.net.socket.tcp;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -10,7 +10,7 @@ import java.util.Scanner;
 /**
  * Created by Weiguang Chen <chen2621978@gmail.com> on 2018/6/13 21:05.
  */
-public class Client {
+public class TCPClient {
     public static void main (String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
         Socket socket = null;
@@ -29,7 +29,7 @@ public class Client {
                 output.flush();
                 String re = input.readUTF();
                 System.out.println(re);
-                if(msg.equals(Server.ExitMessage));
+                if(msg.equals(TCPServer.ExitMessage));
             }
         }finally {
             input.close();
