@@ -3,8 +3,9 @@ package baseTest;
 import com.okayjam.test.Animal;
 import com.okayjam.test.IfTest;
 import com.okayjam.util.FileUtil;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -23,12 +24,11 @@ import java.lang.reflect.Array;
 //abstract
 public class BaseTest implements IfTest {
 
-	private static final Logger LOG = Logger.getLogger(BaseTest.class);
 
+	private static final Logger LOG = LoggerFactory.getLogger(BaseTest.class);
 	//synchronized Modify   main
  	synchronized public static void main(String[] args) {
 		// must add this code before log
-		BasicConfigurator.configure();
 		new BaseTest().testMain();
 	}
 
