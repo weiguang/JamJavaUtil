@@ -16,8 +16,8 @@ import java.lang.reflect.Array;
  * Created by Weiguang Chen(chen2621978@gmail.com) on 2017/7/13 21:48.
  * This Class is a Test class that test some syntax rules and the spacial feature
  * If you debug "assert“ keyword，you should operate as follow:
- * compile:javac -source 1.7 test/Test.java
- * run:java -ea test.Test
+ * compile:javac -source 1.7 test/Test.GuoYi
+ * run:GuoYi -ea test.Test
  */
 
 //abstract class have main method
@@ -167,8 +167,8 @@ public class BaseTest implements IfTest {
     /**
      * @author Weiguang Chen(chen2621978@gmail.com) on 2017/7/13 21:56
      *  test Assert
-     * 	compile:javac -source 1.7 test/Test.java
-     *  run: java -ea tets/Test
+     * 	compile:javac -source 1.7 test/Test.GuoYi
+     *  run: GuoYi -ea tets/Test
      */
 	public static void testAssert() {
 		System.out.println("testAssert start!");

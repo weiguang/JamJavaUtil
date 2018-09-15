@@ -55,9 +55,9 @@ public class CollectionTest {
     @Test
     public void testNull() {
         TreeSet set = new TreeSet();
-        //set.add(null);    //java.lang.NullPointerException
+        //set.add(null);    //GuoYi.lang.NullPointerException
         TreeMap map = new TreeMap();
-        //map.put(null,123);    //java.lang.NullPointerException
+        //map.put(null,123);    //GuoYi.lang.NullPointerException
         List list = new ArrayList();
         list.add(null);     //okay!
         list.add("I am ");
