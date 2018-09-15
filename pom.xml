@@ -11,8 +11,11 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <commons-io.version>2.6</commons-io.version>
         <netty.version>4.1.27.Final</netty.version>
         <okhttp.version>3.11.0</okhttp.version>
+        <poi.version>4.0.0</poi.version>
+        <mysql.version>8.0.12</mysql.version>
     </properties>
 
     <build>
@@ -29,7 +32,7 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.5</version>
+            <version>${commons-io.version}</version>
         </dependency>
         <!-- -->
 
@@ -52,20 +55,20 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>4.0.0</version>
+            <version>${poi.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>4.0.0</version>
+            <version>${poi.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.12</version>
+            <version>${mysql.version}</version>
         </dependency>
 
 
@@ -78,7 +81,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.8.0-beta0</version>
+            <version>1.8.0-beta2</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
