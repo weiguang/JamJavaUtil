@@ -63,7 +63,7 @@ public final class RegexUtil {
      * @return 验证成功返回true，验证失败返回false 
      */  
     public static boolean checkDigit(String digit) {  
-        String regex = "\\-?[1-9]\\d+";  
+        String regex = "\\-?\\d+";
         return Pattern.matches(regex,digit);  
     }  
       
@@ -73,7 +73,7 @@ public final class RegexUtil {
      * @return 验证成功返回true，验证失败返回false 
      */  
     public static boolean checkDecimals(String decimals) {  
-        String regex = "\\-?[1-9]\\d+(\\.\\d+)?";  
+        String regex = "\\-?\\d+(\\.\\d+)?";
         return Pattern.matches(regex,decimals);  
     }   
       
@@ -149,7 +149,7 @@ public final class RegexUtil {
     }
     
     /** 
-     * 检测密码长度格式 
+     * 检测密码长度格式，32位
      * @param password 验证的密码 
      * @return 验证成功返回true，验证失败返回false 
      */
