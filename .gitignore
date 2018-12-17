@@ -20,9 +20,6 @@ logs/
 *.rar
 
 
-#IDEA
-.idea/
-
 .settings/
 .myeclipse/
 .gradle/

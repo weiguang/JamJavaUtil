@@ -508,8 +508,12 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="add_unversioned_files" value="$PROJECT_DIR$/target/classes/com/okayjam/test/Derived.class&#10;L:/workspaces/IDEA/JamJavaUtil/logs/log.log" />
     <property name="aspect.path.notification.shown" value="true" />
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1545065613151" />
+=======
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1545065695278" />
+>>>>>>> Stashed changes
     <property name="last_opened_file_path" value="K:/Program Files/Git/bin/git.exe" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
