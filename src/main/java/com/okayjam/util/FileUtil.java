@@ -1,5 +1,8 @@
 package com.okayjam.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
@@ -7,19 +10,47 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.log4j.Logger;
 
 /**
  * Created by Jam on 17-6-1.
  */
 public class FileUtil {
 
-    private static final Logger log = Logger.getLogger(FileUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(FileUtil.class);
 
 
     public void getEncode(String filePath) {
         //String fileEncode = org.apache.commons.io.FileUtils.
     }
+
+
+    public static String delFirstLine(String fileDir, String fileName) throws UnsupportedEncodingException {
+        int lineDel = 1;
+        String line = null;
+        String tempFileDir = fileDir + "\\tempFile\\" ;
+        String srcfilePath = fileDir + "\\" + fileName;
+        String tempfilePath = tempFileDir + fileName;
+        mkdirs(tempFileDir);
+        try (RandomAccessFile readFile = new RandomAccessFile(srcfilePath, "r");
+             RandomAccessFile writeFile = new RandomAccessFile(tempfilePath, "rw");
+        ) {
+            line = readFile.readLine();
+            String tempLine;
+            while ((tempLine = readFile.readLine()) != null) {
+                writeFile.writeBytes(tempLine);
+                writeFile.writeBytes("\n");
+            }
+            readFile.close();
+            writeFile.close();
+            delFileOrdelFolder(srcfilePath);
+            moveFile(tempfilePath,fileDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return line==null?null:new String(line.getBytes("ISO-8859-1"), "utf-8");
+    }
+
     /**
      * 新建文件夹
      *
@@ -30,10 +61,10 @@ public class FileUtil {
     public static boolean mkdirs(final String dir) {
         try {
             File dirPath = new File(dir);
+            if(dirPath.exists()) return true;
             return dirPath.mkdirs();
         } catch (Exception e) {
             log.error("创建目录操作出错: " + e.getMessage());
-            e.printStackTrace();
             return false;
         }
     }
@@ -54,7 +85,6 @@ public class FileUtil {
             return filePath;
         } catch (Exception e) {
             log.error("新建文件操作出错: " + e.getMessage());
-            e.printStackTrace();
             return null;
         }
     }
@@ -81,7 +111,6 @@ public class FileUtil {
             fw.close();
         } catch (Exception e) {
             log.error("新建文件时保存内容出错: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -98,7 +127,6 @@ public class FileUtil {
             delFile.delete();
         } catch (Exception e) {
             log.error("删除文件操作出错: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -118,7 +146,6 @@ public class FileUtil {
             myFilePath.delete();
         } catch (Exception e) {
             log.error("删除文件夹操作出错" + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -144,7 +171,6 @@ public class FileUtil {
             delFile.delete();
         } catch (Exception e) {
             log.error("删除文件操作出错: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -208,7 +234,6 @@ public class FileUtil {
             in.close();
         } catch (Exception e) {
             log.error("复制文件操作出错:" + e.getMessage());
-            e.printStackTrace();
         }
         return newFile;
     }
@@ -252,7 +277,6 @@ public class FileUtil {
             }
         } catch (Exception e) {
             log.error("复制文件夹操作出错:" + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -260,12 +284,12 @@ public class FileUtil {
      * 移动文件到指定目录,返回新的文件对象
      *
      * @param oldPath 包含路径的文件名 如：E:/phsftp/src/ljq.txt
-     * @param newPath 目标文件目录 如：E:/phsftp/dest
+     * @param dirDest 目标文件目录 如：E:/phsftp/dest
      * @return 新的文件对象
      * @author Weiguang Chen <chen2621978@gmail.com> on 2017/7/15 21:27
      */
-    public static File moveFile(String oldPath, String newPath) {
-        File newFile = copyFile(oldPath, newPath);
+    public static File moveFile(String oldPath, String dirDest) {
+        File newFile = copyFile(oldPath, dirDest);
         delFile(oldPath);
         return newFile;
     }
@@ -307,7 +331,9 @@ public class FileUtil {
         byte[] buf = new byte[1024 * 2];
         int len;
         //获取要压缩的文件
-        if (srcFile == null) { return; }
+        if (srcFile == null) {
+            return;
+        }
         File file = srcFile;
         if (destDir == null) {
             destDir = file.getPath();
@@ -360,7 +386,7 @@ public class FileUtil {
                     compressedFileZip(file, destDir);
                 }
             }
-        }else { //srcDir is a file
+        } else { //srcDir is a file
             if (destDir == null) {
                 destDir = srcfile.getParent();
             }
@@ -370,22 +396,23 @@ public class FileUtil {
     }
 
     /**
-     *  将源文件/文件夹生成指定格式的压缩文件,格式zip
+     * 将源文件/文件夹生成指定格式的压缩文件,格式zip
+     *
      * @param resourcesPath 源文件/文件夹
-     * @param targetPath  目的压缩文件保存路径
+     * @param targetPath    目的压缩文件保存路径
      * @return void
      * @throws Exception
      */
-    public static void compressedFile(String resourcesPath,String targetPath) throws Exception{
+    public static void compressedFile(String resourcesPath, String targetPath) throws Exception {
         File resourcesFile = new File(resourcesPath);     //源文件
         File targetFile = new File(targetPath);           //目的
         //如果目的路径不存在，则新建
-        if(!targetFile.exists()){
+        if (!targetFile.exists()) {
             targetFile.mkdirs();
         }
 
-        String targetName = resourcesFile.getName()+".zip";   //目的压缩文件名
-        FileOutputStream outputStream = new FileOutputStream(targetPath+"\\"+targetName);
+        String targetName = resourcesFile.getName() + ".zip";   //目的压缩文件名
+        FileOutputStream outputStream = new FileOutputStream(targetPath + "\\" + targetName);
         ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(outputStream));
 
         createCompressedFile(out, resourcesFile, "");
@@ -394,38 +421,38 @@ public class FileUtil {
     }
 
     /**
-     *  生成压缩文件。
-     *  如果是文件夹，则使用递归，进行文件遍历、压缩；如果是文件，直接压缩
+     * 生成压缩文件。
+     * 如果是文件夹，则使用递归，进行文件遍历、压缩；如果是文件，直接压缩
+     *
      * @param out  输出流
-     * @param file  目标文件
+     * @param file 目标文件
      * @return void
      * @throws Exception
      */
-    public static void createCompressedFile(ZipOutputStream out,File file,String dir) throws Exception{
+    public static void createCompressedFile(ZipOutputStream out, File file, String dir) throws Exception {
         //如果当前的是文件夹，则进行进一步处理
-        if(file.isDirectory()){
+        if (file.isDirectory()) {
             //得到文件列表信息
             File[] files = file.listFiles();
             //将文件夹添加到下一级打包目录
-            out.putNextEntry(new ZipEntry(dir+"/"));
+            out.putNextEntry(new ZipEntry(dir + "/"));
 
-            dir = dir.length() == 0 ? "" : dir +"/";
+            dir = dir.length() == 0 ? "" : dir + "/";
 
             //循环将文件夹中的文件打包
-            for(int i = 0 ; i < files.length ; i++){
+            for (int i = 0; i < files.length; i++) {
                 createCompressedFile(out, files[i], dir + files[i].getName());         //递归处理
             }
-        }
-        else{   //当前的是文件，打包处理
+        } else {   //当前的是文件，打包处理
             //文件输入流
             FileInputStream fis = new FileInputStream(file);
             if (dir == null || dir.trim().length() == 0) dir += file.getName();
             out.putNextEntry(new ZipEntry(dir));
             //进行写操作
-            int j =  0;
+            int j = 0;
             byte[] buffer = new byte[1024];
-            while((j = fis.read(buffer)) > 0){
-                out.write(buffer,0,j);
+            while ((j = fis.read(buffer)) > 0) {
+                out.write(buffer, 0, j);
             }
             //关闭输入流
             fis.close();
@@ -434,10 +461,9 @@ public class FileUtil {
 
 
     /**
-     *
      * @param srcZipFile 需解压的文件名
-     * @param destDir 解压目录
-     * @return  如果解压成功返回true
+     * @param destDir    解压目录
+     * @return 如果解压成功返回true
      */
     public static boolean unzip(String srcZipFile, String destDir) {
         boolean isSuccessful = true;
@@ -449,7 +475,7 @@ public class FileUtil {
 
             //byte[] b = new byte[1024];
             ZipEntry entry = null;
-            while ((entry=zis.getNextEntry()) != null) {
+            while ((entry = zis.getNextEntry()) != null) {
                 String entryName = entry.getName();
                 bos = new BufferedOutputStream(new FileOutputStream("d:\\1" + entryName));
                 int b = 0;
@@ -471,27 +497,27 @@ public class FileUtil {
      * 解压文件到指定目录
      * 解压后的文件名，和之前一致
      *
-     * @param zipFile   待解压的zip文件
-     * @param descDir   指定目录
+     * @param zipFile 待解压的zip文件
+     * @param descDir 指定目录
      */
     @SuppressWarnings("rawtypes")
     public static void unZipFiles(File zipFile, String descDir) throws IOException {
 
         //ZipFile zip = new ZipFile(zipFile, Charset.forName("GBK"));//解决中文文件夹乱码
         ZipFile zip = new ZipFile(zipFile);
-        String name = zip.getName().substring(zip.getName().lastIndexOf(File.separatorChar)+1, zip.getName().lastIndexOf('.'));
-        descDir += descDir.endsWith(File.separator) ? "": File.separator;
+        String name = zip.getName().substring(zip.getName().lastIndexOf(File.separatorChar) + 1, zip.getName().lastIndexOf('.'));
+        descDir += descDir.endsWith(File.separator) ? "" : File.separator;
 
-        File pathFile = new File(descDir+name);
+        File pathFile = new File(descDir + name);
         if (!pathFile.exists()) {
             pathFile.mkdirs();
         }
 
-        for (Enumeration<? extends ZipEntry> entries = zip.entries(); entries.hasMoreElements();) {
+        for (Enumeration<? extends ZipEntry> entries = zip.entries(); entries.hasMoreElements(); ) {
             ZipEntry entry = (ZipEntry) entries.nextElement();
             String zipEntryName = entry.getName();
             InputStream in = zip.getInputStream(entry);
-            String outPath = (descDir + name +"/"+ zipEntryName).replaceAll("\\*", "/");
+            String outPath = (descDir + name + "/" + zipEntryName).replaceAll("\\*", "/");
 
             // 判断路径是否存在,不存在则创建文件路径
             File file = new File(outPath.substring(0, outPath.lastIndexOf('/')));

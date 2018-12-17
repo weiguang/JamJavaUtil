@@ -122,7 +122,28 @@ public class MathUtil {
         return sum;
     }
 
-    public static void test(){
+    // 递归法求最大公约数
+    public static int maxCommonDivisor(int m, int n) {
+        if (m < n) {// 保证m>n,若m<n,则进行数据交换
+            int temp = m;
+            m = n;
+            n = temp;
+        }
+        if (m % n == 0) {// 若余数为0,返回最大公约数
+            return n;
+        } else { // 否则,进行递归,把n赋给m,把余数赋给n
+            return maxCommonDivisor(n, m % n);
+        }
+    }
+
+    // 求最小公倍数
+    public static int minCommonMultiple(int m, int n) {
+        return m * n / maxCommonDivisor(m, n);
+    }
+
+
+
+        public static void test(){
         System.out.println(addWithoutOperator(12,5));
     }
 

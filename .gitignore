@@ -3,6 +3,7 @@
 
 # Log file
 *.log
+logs/
 
 # BlueJ files
 *.ctxt
@@ -18,18 +19,30 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
 
 #IDEA
 .idea/
 
-/target/classes/*
-/target/generated-sources/*
-/target/maven-status/*
-.idea/inspectionProfiles/
-src/main/test/ceping/qiniu/
-target/generated-test-sources/
+.settings/
+.myeclipse/
+.gradle/
+target/
+*/.settings
+*/.classpath
+*/.project
+.classpath
+.project
+.idea/
+.svn/
+.externalToolBuilders/
+gradle/
+.recommenders/
+.metadata/
+build/
+*/.DS_Store
+
 
 #my file
 *.out
+
+
