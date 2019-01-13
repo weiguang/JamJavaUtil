@@ -1,5 +1,10 @@
 package com.okayjam.util;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.okayjam.test.User;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,37 +22,31 @@ public class DataBaseUtil {
 
     // JDBC driver name and database URL
     //static final String JDBC_DRIVER = "com.mysql.jdbc.Driver"; //8.0以下版本
-    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver"; //8.0以上版本
+//    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver"; //8.0以上版本
+    static final String JDBC_DRIVER = "org.sqlite.JDBC"; //sqlite3
     static final String DB_URL = ResourceBundle.getBundle("jdbc").getString("jdbcUrl");
 
     //  Database credentials
-    static final String USER = ResourceBundle.getBundle("jdbc").getString("user");
+    static final String USER = ResourceBundle.getBundle("jdbc").getString("user" );
     static final String PASS = ResourceBundle.getBundle("jdbc").getString("password");
 
     public static void main(String[] args) {
-        String database = "ops_database";
-        String table = "rpt_line_abc_estimate_amt_sum";
-
-        String nameComment[][] = getTableFiels(database,table);//获取和打印数据表的字段和注释
-
-        //输出表信息，保存到E盘output 目录 csv格式
-        //请先在E盘创建output 目录
+        String sql = "select * from  user";
+        List<User> list = null;
         try {
-            String[] tables = {"dim_city_county_rel_cfg"};
-            for (String tab : tables) {
-                String content = getTableInfo(database,tab);
-                outputFile("E:\\", tab + ".csv", content);
-            }
-        } catch (Exception e) {
+            list = (List<User>)selectResultToList(sql,User.class);
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+        for (Object o : list) {
+            System.out.println(o);
         }
     }
 
-
     public static Connection getJDBConnect() {
         Connection conn = null;
-        Statement stmt = null;
-
             //STEP 2: Register JDBC driver
         try {
             Class.forName(JDBC_DRIVER);
@@ -63,6 +62,62 @@ public class DataBaseUtil {
         }
         //System.out.println("Connected database successfully...");
         return  conn;
+    }
+
+    /**
+     *  把查询结果封装成JSONObject对象
+     * @param sql 查询sql
+     * @return
+     */
+    public static List<JSONObject> selectResultToList(String sql) {
+        List<JSONObject>  list = new ArrayList<>();
+        try {
+          list =  (List<JSONObject>) selectResultToList(sql, JSONObject.class);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+        return  list;
+    }
+
+    /**
+     *  把查询结果封装成Java对象
+     * @param sql 查询sql
+     * @param clazz 要返回的类型
+     * @return list
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     */
+    public static List<?> selectResultToList(String sql, Class clazz) throws IllegalAccessException, InstantiationException {
+        Connection conn = getJDBConnect();
+        List list = new ArrayList<>();
+        Object ins = clazz.newInstance();
+        try {
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCountcount = rsmd.getColumnCount();
+            while (rs.next()) {
+                JSONObject jo = new JSONObject();
+                for (int i = 0; i < columnCountcount; i++) {
+                    Object o;
+                    if(rsmd.getColumnName(i+1).toUpperCase().equals("DATE") || rsmd.getColumnName(i+1).toUpperCase().equals("DATETIME")) {
+                        jo.put(rsmd.getColumnLabel(i+1),rs.getDate(i+1));
+                    }else {
+                         o  = rs.getObject(i+1);
+                        jo.put(rsmd.getColumnLabel(i+1), o);
+                    }
+                }
+                if(clazz == null || clazz.equals(JSONObject.class)){
+                    list.add(jo);
+                }else {
+                    list.add(jo.toJavaObject(clazz));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
     /**
