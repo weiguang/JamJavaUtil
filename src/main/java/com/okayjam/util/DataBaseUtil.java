@@ -1,7 +1,5 @@
 package com.okayjam.util;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.okayjam.test.User;
 
@@ -9,16 +7,20 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
 
 /**
  * @author: Chen weiguang <chen2621978@163.com.com>
  * @create: 2018/09/06 11:22
  **/
 public class DataBaseUtil {
+
 
     // JDBC driver name and database URL
     //static final String JDBC_DRIVER = "com.mysql.jdbc.Driver"; //8.0以下版本
@@ -31,6 +33,11 @@ public class DataBaseUtil {
     static final String PASS = ResourceBundle.getBundle("jdbc").getString("password");
 
     public static void main(String[] args) {
+        User user = new User();
+        user.setName("李四1");
+        user.setBirthday(new Date());
+        insertEntity(User.class,user,"user");
+
         String sql = "select * from  user";
         List<User> list = null;
         try {
@@ -52,6 +59,7 @@ public class DataBaseUtil {
             Class.forName(JDBC_DRIVER);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+
         }
         //STEP 3: Open a connection
            // System.out.println("Connecting to a selected database...");
@@ -119,6 +127,68 @@ public class DataBaseUtil {
         }
         return list;
     }
+
+
+    public static void insertEntity(Class c, Object obj, String table) {
+        // System.out.println("1");
+        if (obj == null || c.getSimpleName().equals(obj.getClass().getName()))
+            return;
+        Field[] fields = obj.getClass().getDeclaredFields();
+        int fieldSize = fields.length;
+        String tableName = table; // c.getSimpleName().toLowerCase();// person
+        String autoIncKet = "id";
+        StringBuffer cloName = new StringBuffer();
+        cloName.append("(");
+        for (Field field : fields) {
+            if(!field.getName().equals(autoIncKet)){
+                cloName.append(field.getName() + ",");
+            }
+        }
+        cloName.deleteCharAt(cloName.length() - 1 );
+        cloName.append(")");
+        StringBuffer sql = new StringBuffer("insert into " + tableName + cloName.toString()
+                + " values(");
+
+
+        for (int i = 0; i < fieldSize; i++) {
+           if(!fields[i].getName().equals(autoIncKet)){
+               sql.append("?,");
+           }
+        }
+        sql.deleteCharAt(sql.length() - 1);
+        sql.append(")");
+
+        System.out.println(sql);
+        PreparedStatement ps = null;
+        try {
+            Connection conn = getJDBConnect();
+            ps = conn.prepareStatement(sql.toString());
+            int keyFlag = 0;
+            for (int j = 0; j < fieldSize; j++) {
+                if(fields[j].getName().equals(autoIncKet)){
+                    keyFlag++;
+                    continue;
+                }
+                fields[j].setAccessible(true);
+                        if (fields[j].get(obj) != null
+                                && !"".equals(fields[j].get(obj))
+                                && !"null".equals(fields[j].get(obj))) {
+                            System.out.println(fields[j].get(obj) + " ");
+                            ps.setObject(j + 1 - keyFlag, fields[j].get(obj));
+                        } else {
+                            System.out.println(fields[j].get(obj) + " ");
+                            ps.setObject(j + 1 - keyFlag, null);
+                        }
+            }
+            System.out.println(ps.toString());
+            ps.execute();
+           // conn.commit();
+            ps.close();
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+    }
+
 
     /**
      * 返回表名的表相关信息

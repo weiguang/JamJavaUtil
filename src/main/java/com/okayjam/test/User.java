@@ -5,6 +5,9 @@ import com.alibaba.fastjson.annotation.JSONField;
 import java.util.Date;
 
 public class User {
+
+    int id;
+
     //可以指定转换json的字段
     @JSONField(name = "name")
     String name;
@@ -12,6 +15,14 @@ public class User {
     int age;
     Date birthday;
     double weight;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

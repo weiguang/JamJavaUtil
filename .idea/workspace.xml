@@ -2,12 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="37b86aab-96df-4d70-852b-faa1e561a657" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/okayjam/test/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JamJavaUtil.iml" beforeDir="false" afterPath="$PROJECT_DIR$/JamJavaUtil.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/test/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/okayjam/test/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/util/DataBaseUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/okayjam/util/DataBaseUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/jdbc.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/jdbc.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test.sqlite.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/test.sqlite.db" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -64,7 +62,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/resources/jdbc.properties">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="57">
-              <caret line="3" column="10" lean-forward="true" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
+              <caret line="3" column="10" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -73,7 +71,7 @@
         <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/3081f283-0212-4436-a480-da40c4772dd9/console.sql">
           <provider selected="true" editor-type-id="text-editor">
             <state>
-              <caret column="19" lean-forward="true" selection-start-column="19" selection-end-column="19" />
+              <caret column="19" selection-start-column="19" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -87,14 +85,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/util/DataBaseUtil.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="19">
-              <caret line="33" column="30" selection-start-line="33" selection-start-column="30" selection-end-line="33" selection-end-column="30" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="643">
+              <caret line="75" selection-start-line="75" selection-end-line="75" />
             </state>
           </provider>
         </entry>
@@ -102,72 +97,28 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/test/User.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="16" column="20" lean-forward="true" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
+            <state relative-caret-position="285">
+              <caret line="18" column="24" selection-start-line="18" selection-start-column="24" selection-end-line="18" selection-end-column="24" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#252#253#0" expanded="true" />
-                <element signature="e#279#280#0" expanded="true" />
-                <element signature="e#319#320#0" expanded="true" />
-                <element signature="e#351#352#0" expanded="true" />
-                <element signature="e#294#295#0" expanded="true" />
-                <element signature="e#320#321#0" expanded="true" />
-                <element signature="e#355#356#0" expanded="true" />
-                <element signature="e#385#386#0" expanded="true" />
-                <element signature="e#418#419#0" expanded="true" />
-                <element signature="e#449#450#0" expanded="true" />
-                <element signature="e#495#496#0" expanded="true" />
-                <element signature="e#535#536#0" expanded="true" />
-                <element signature="e#568#569#0" expanded="true" />
+                <element signature="e#312#313#0" expanded="true" />
+                <element signature="e#345#346#0" expanded="true" />
+                <element signature="e#373#374#0" expanded="true" />
                 <element signature="e#597#598#0" expanded="true" />
-                <element signature="e#641#642#0" expanded="true" />
-                <element signature="e#677#678#0" expanded="true" />
+                <element signature="e#637#638#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.54/fastjson-1.2.54.jar!/com/alibaba/fastjson/JSON.class">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/util/DataBaseUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="179">
-              <caret line="449" column="68" selection-start-line="449" selection-start-column="53" selection-end-line="449" selection-end-column="68" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/util/TextUtil.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1520">
-              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/util/FileUtil.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2470">
-              <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://K:/Program Files/Java/jdk1.8.0_191/src.zip!/java/sql/Statement.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="61" column="58" selection-start-line="61" selection-start-column="58" selection-end-line="61" selection-end-column="58" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="415">
-              <caret line="75" selection-start-line="75" selection-end-line="75" />
+            <state relative-caret-position="246">
+              <caret line="131" column="69" selection-start-line="131" selection-start-column="69" selection-end-line="131" selection-end-column="69" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -192,8 +143,8 @@
         <option value="$PROJECT_DIR$/src/main/resources/jdbc.properties" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/.datagrid/cell" />
-        <option value="$PROJECT_DIR$/src/main/java/com/okayjam/util/DataBaseUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/okayjam/test/User.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/okayjam/util/DataBaseUtil.java" />
       </list>
     </option>
   </component>
@@ -227,8 +178,8 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="228" />
-    <option name="y" value="17" />
+    <option name="x" value="383" />
+    <option name="y" value="48" />
     <option name="width" value="1634" />
     <option name="height" value="1000" />
   </component>
@@ -237,7 +188,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -290,6 +240,15 @@
               <item name="JamJavaUtil" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="okayjam" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="JamJavaUtil" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JamJavaUtil" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -297,14 +256,16 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="sqlite" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547379369803" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547396035250" />
     <property name="database.console.LAST_STATE" value="false" />
+    <property name="database.data.extractors.current.id" value="SQL Inserts" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -367,37 +328,39 @@
       <option name="presentableId" value="Default" />
       <updated>1547324825784</updated>
       <workItem from="1547324829677" duration="524000" />
-      <workItem from="1547361817300" duration="10734000" />
+      <workItem from="1547361817300" duration="11374000" />
+      <workItem from="1547389499608" duration="5842000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11258000" />
+    <option name="totallyTimeSpent" value="17740000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1581876" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16017488" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
-      <window_info anchor="bottom" id="Database Console" weight="0.30911064" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.329718" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.3362256" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3362256" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" weight="0.3290993" />
+      <window_info anchor="bottom" id="Database Changes" order="9" weight="0.329718" />
+      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.3286334" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="12" weight="0.3290993" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.3286334" />
+      <window_info anchor="bottom" id="Database Console" order="13" weight="0.30911064" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -469,45 +432,52 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://K:/Program Files/Java/jdk1.8.0_191/src.zip!/java/sql/Statement.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.54/fastjson-1.2.54.jar!/com/alibaba/fastjson/serializer/SerializeConfig.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="61" column="58" selection-start-line="61" selection-start-column="58" selection-end-line="61" selection-end-column="58" />
+        <state relative-caret-position="-399">
+          <caret line="65" column="13" selection-start-line="65" selection-start-column="13" selection-end-line="65" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/util/TextUtil.java">
+    <entry file="jar://K:/Program Files/Java/jdk1.8.0_191/src.zip!/java/sql/Statement.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1520">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        <state relative-caret-position="722">
+          <caret line="61" column="58" selection-start-line="61" selection-start-column="58" selection-end-line="61" selection-end-column="58" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/util/FileUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2470">
+        <state relative-caret-position="19">
           <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/util/TextUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="415">
-          <caret line="75" selection-start-line="75" selection-end-line="75" />
+        <state relative-caret-position="19">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.54/fastjson-1.2.54.jar!/com/alibaba/fastjson/JSON.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
+        <state relative-caret-position="122">
           <caret line="449" column="68" selection-start-line="449" selection-start-column="53" selection-end-line="449" selection-end-column="68" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.54/fastjson-1.2.54.jar!/com/alibaba/fastjson/serializer/SerializeConfig.class">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/jdbc.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-399">
-          <caret line="65" column="13" selection-start-line="65" selection-start-column="13" selection-end-line="65" selection-end-column="13" />
+        <state relative-caret-position="57">
+          <caret line="3" column="10" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="643">
+          <caret line="75" selection-start-line="75" selection-end-line="75" />
         </state>
       </provider>
     </entry>
@@ -518,50 +488,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/jdbc.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="3" column="10" lean-forward="true" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/3081f283-0212-4436-a480-da40c4772dd9/console.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret column="19" lean-forward="true" selection-start-column="19" selection-end-column="19" />
+          <caret column="19" selection-start-column="19" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/test/User.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="16" column="20" lean-forward="true" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
+        <state relative-caret-position="285">
+          <caret line="18" column="24" selection-start-line="18" selection-start-column="24" selection-end-line="18" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#252#253#0" expanded="true" />
-            <element signature="e#279#280#0" expanded="true" />
-            <element signature="e#319#320#0" expanded="true" />
-            <element signature="e#351#352#0" expanded="true" />
-            <element signature="e#294#295#0" expanded="true" />
-            <element signature="e#320#321#0" expanded="true" />
-            <element signature="e#355#356#0" expanded="true" />
-            <element signature="e#385#386#0" expanded="true" />
-            <element signature="e#418#419#0" expanded="true" />
-            <element signature="e#449#450#0" expanded="true" />
-            <element signature="e#495#496#0" expanded="true" />
-            <element signature="e#535#536#0" expanded="true" />
-            <element signature="e#568#569#0" expanded="true" />
+            <element signature="e#312#313#0" expanded="true" />
+            <element signature="e#345#346#0" expanded="true" />
+            <element signature="e#373#374#0" expanded="true" />
             <element signature="e#597#598#0" expanded="true" />
-            <element signature="e#641#642#0" expanded="true" />
-            <element signature="e#677#678#0" expanded="true" />
+            <element signature="e#637#638#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/util/DataBaseUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="33" column="30" selection-start-line="33" selection-start-column="30" selection-end-line="33" selection-end-column="30" />
+        <state relative-caret-position="246">
+          <caret line="131" column="69" selection-start-line="131" selection-start-column="69" selection-end-line="131" selection-end-column="69" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
