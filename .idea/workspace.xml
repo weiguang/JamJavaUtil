@@ -2,10 +2,115 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="37b86aab-96df-4d70-852b-faa1e561a657" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/test/TestStatic1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/test/TestStatic2.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/util/DatabaseUtilTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/test/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/okayjam/test/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/util/DataBaseUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/okayjam/util/DataBaseUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JamJavaUtil.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/algorithm/Algorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/algorithm/Algorithm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/algorithm/MathUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/algorithm/MathUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/collection/MyQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/collection/MyQueue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/collection/MyStack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/collection/MyStack.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/net/netty/EchoClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/net/netty/EchoClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/net/netty/EchoClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/net/netty/EchoClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/net/netty/EchoServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/net/netty/EchoServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/net/netty/EchoServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/net/netty/EchoServerHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/net/netty/http/HttpServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/net/netty/http/HttpServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/net/netty/http/HttpServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/net/netty/http/HttpServerHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/net/netty/tcp/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/net/netty/tcp/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/net/netty/tcp/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/net/netty/tcp/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/net/netty/tcp/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/net/netty/tcp/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/net/netty/tcp/ServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/net/netty/tcp/ServerHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/net/okhttp/HttpUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/net/okhttp/HttpUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/net/socket/tcp/TCPClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/net/socket/tcp/TCPClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/net/socket/tcp/TCPServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/net/socket/tcp/TCPServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/net/socket/udp/UDPClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/net/socket/udp/UDPClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/net/socket/udp/UDPServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/net/socket/udp/UDPServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/test/Animal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/test/Animal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/test/Duotai.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/test/Duotai.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/test/IfTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/test/IfTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/test/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/test/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/util/DataBaseUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/util/DatabaseUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/util/EncryptionUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/util/EncryptionUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/util/ExcelUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/util/ExcelUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/util/FileUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/util/FileUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/util/ImagePreProcess2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/util/ImagePreProcess2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/util/MutilateThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/util/MutilateThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/util/RegexUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/util/RegexUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/util/Sort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/util/Sort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/util/TextUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/util/TextUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/okayjam/util/VerifyCodeUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/util/VerifyCodeUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/jdbc.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/jdbc.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/test.sqlite.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/test.sqlite.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/baseTest/AlgorithmTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/baseTest/AlgorithmTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/baseTest/ArrayListRandomAccessTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/baseTest/ArrayListRandomAccessTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/baseTest/BaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/baseTest/BaseTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/baseTest/CollectionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/baseTest/CollectionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/baseTest/DateTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/baseTest/DateTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/baseTest/ExcelTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/baseTest/ExcelTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/baseTest/FileTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/baseTest/FileTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/baseTest/LogTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/baseTest/LogTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/baseTest/Reflection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/baseTest/Reflection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/com/okayjam/util/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/util/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/com/okayjam/util/VerifyCodeUtilTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/util/VerifyCodeUtilTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/acmcoder/ctrip/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/acmcoder/ctrip/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/acmcoder/dji/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/acmcoder/dji/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/acmcoder/meituan/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/acmcoder/meituan/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/acmcoder/sf/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/acmcoder/sf/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/acmcoder/sogou/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/acmcoder/sogou/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/acmcoder/toutiao/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/acmcoder/toutiao/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/acmcoder/webank/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/acmcoder/webank/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/acmcoder/yixin/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/acmcoder/yixin/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/baidu/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/baidu/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/ceping/cmb/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/ceping/cmb/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/ceping/intel/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/ceping/intel/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/ceping/kugou/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/ceping/kugou/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/chinahr/jituan58/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/chinahr/jituan58/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/chinahr/jituan58/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/chinahr/jituan58/Solution.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/chinahr/liebao/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/chinahr/liebao/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/guazi/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/guazi/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/Code.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/Code.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/Main2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/Main2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/Main3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/Main3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/Main4.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/Main4.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/didi/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/didi/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/didi/MainNeitui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/didi/MainNeitui.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/huawei/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/huawei/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/huawei/Main3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/huawei/Main3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/huya/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/huya/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/jd/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/jd/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/meililianhe/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/meililianhe/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/netease/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/netease/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/nvidia/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/nvidia/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/pingan/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/pingan/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/shenxinfu/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/shenxinfu/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/tal/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/tal/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/toutiao/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/toutiao/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/wangyi/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/wangyi/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/wanmeishijie/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/wanmeishijie/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/weicelue/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/weicelue/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/xunlei/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/xunlei/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/youdao/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/youdao/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/newcoder/yy/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/newcoder/yy/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/oracle/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/oracle/Test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/other/alibaba/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/other/alibaba/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/other/baicikan/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/other/baicikan/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/other/baicikan/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/other/baicikan/Test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/other/baofeng/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/other/baofeng/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/other/duoyi/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/other/duoyi/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/other/hypereal/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/other/hypereal/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/other/tencent/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/other/tencent/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/other/tuyayidong/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/other/tuyayidong/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/weicewang/lianjia/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/weicewang/lianjia/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/job/weicewang/mtk/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/job/weicewang/mtk/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/net/NettyTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/net/NettyTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/net/OkhttpTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/net/OkhttpTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/other/GuoYi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/other/GuoYi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/test/other/GuoYi1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/main/com/okayjam/other/GuoYi1.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -39,48 +144,42 @@
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
         <item name="test.sqlite.db" type="feb32156:DbDataSourceImpl" />
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="main: schema" type="981a47c2:SqliteImplModel$Schema" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="test.sqlite.db" type="feb32156:DbDataSourceImpl" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="main: schema" type="981a47c2:SqliteImplModel$Schema" />
-        <item name="user: table" type="3d80ac25:SqliteImplModel$Table" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="test.sqlite.db" type="feb32156:DbDataSourceImpl" />
-        <item name="collations" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="main: schema" type="90513b60:SqliteImplModel$Schema" />
       </path>
     </expand>
     <select />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="1409903317">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.open.time.1" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="Database Element" value="2" />
+          <entry key="JAVA" value="7" />
+          <entry key="Scratch" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="JAVA" value="602" />
+          <entry key="PLAIN_TEXT" value="2" />
+          <entry key="XML" value="15" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/jdbc.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="57">
-              <caret line="3" column="10" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/3081f283-0212-4436-a480-da40c4772dd9/console.sql">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="19" selection-start-column="19" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="das://3081f283-0212-4436-a480-da40c4772dd9/schema/main/table/user">
-          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state>
-              <filtering enabled="true" />
+            <state relative-caret-position="162">
+              <caret line="9" column="5" lean-forward="true" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -88,34 +187,31 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="643">
-              <caret line="75" selection-start-line="75" selection-end-line="75" />
+            <state relative-caret-position="383">
+              <caret line="148" column="43" selection-start-line="148" selection-start-column="43" selection-end-line="148" selection-end-column="43" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/test/User.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/util/DatabaseUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="18" column="24" selection-start-line="18" selection-start-column="24" selection-end-line="18" selection-end-column="24" />
+            <state relative-caret-position="94">
+              <caret line="160" column="47" selection-start-line="160" selection-start-column="36" selection-end-line="160" selection-end-column="47" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#312#313#0" expanded="true" />
-                <element signature="e#345#346#0" expanded="true" />
-                <element signature="e#373#374#0" expanded="true" />
-                <element signature="e#597#598#0" expanded="true" />
-                <element signature="e#637#638#0" expanded="true" />
+                <element signature="method#insertEntity#0;class#DataBaseUtil#0" />
+                <element signature="e#9820#9828#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/util/DataBaseUtil.java">
+        <entry file="file://$PROJECT_DIR$/src/test/main/com/okayjam/util/DatabaseUtilTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="246">
-              <caret line="131" column="69" selection-start-line="131" selection-start-column="69" selection-end-line="131" selection-end-column="69" />
+            <state relative-caret-position="256">
+              <caret line="35" column="8" selection-start-line="35" selection-start-column="8" selection-end-line="35" selection-end-column="8" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -129,6 +225,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Arquillian JUnit Test Class" />
       </list>
     </option>
   </component>
@@ -140,18 +237,33 @@
       <list>
         <option value="$PROJECT_DIR$/.idea/workspace.xml" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/3081f283-0212-4436-a480-da40c4772dd9/console.sql" />
-        <option value="$PROJECT_DIR$/src/main/resources/jdbc.properties" />
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/.datagrid/cell" />
         <option value="$PROJECT_DIR$/src/main/java/com/okayjam/test/User.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/okayjam/util/DataBaseUtil.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/okayjam/util/DataBaseUtilTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/main/util/DataBaseUtil.java" />
+        <option value="$PROJECT_DIR$/src/main/java/main/com/okayjam/util/DataBaseUtil.java" />
+        <option value="$PROJECT_DIR$/src/test/main/com/okayjam/baseTest/AlgorithmTest.java" />
+        <option value="$PROJECT_DIR$/src/test/main/com/okayjam/util/VerifyCodeUtilTest.java" />
+        <option value="$PROJECT_DIR$/src/test/main/com/okayjam/baseTest/CollectionTest.java" />
+        <option value="$PROJECT_DIR$/src/test/main/com/okayjam/util/DataBaseUtilTest.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/util/DatabaseUtil.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/jdbc.properties" />
+        <option value="$PROJECT_DIR$/src/test/main/com/okayjam/util/DatabaseUtilTest.java" />
       </list>
     </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="mavenHome" value="L:/software_tools/maven" />
+        <option name="mavenHome" value="D:/software/apache-maven-3.5.4" />
         <option name="userSettingsFile" value="L:\software_tools\maven\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
@@ -178,16 +290,18 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="383" />
-    <option name="y" value="48" />
-    <option name="width" value="1634" />
+    <option name="x" value="-204" />
+    <option name="y" value="30" />
+    <option name="width" value="1879" />
     <option name="height" value="1000" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -198,11 +312,6 @@
             <path>
               <item name="JamJavaUtil" type="b2602c69:ProjectViewProjectNode" />
               <item name="JamJavaUtil" type="462c0819:PsiDirectoryNode" />
-              <item name=".idea" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JamJavaUtil" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JamJavaUtil" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -224,7 +333,7 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="okayjam" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="JamJavaUtil" type="b2602c69:ProjectViewProjectNode" />
@@ -232,8 +341,8 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="okayjam" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="algorithm" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="JamJavaUtil" type="b2602c69:ProjectViewProjectNode" />
@@ -241,7 +350,7 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="okayjam" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="util" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -251,11 +360,40 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="JamJavaUtil" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JamJavaUtil" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="JamJavaUtil" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JamJavaUtil" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="JamJavaUtil" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JamJavaUtil" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="okayjam" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="JamJavaUtil" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JamJavaUtil" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="okayjam" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -263,13 +401,32 @@
     <property name="DatabaseDriversLRU" value="sqlite" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547396035250" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547646337954" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="Arquillian JUnit4" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.Arquillian JUnit4" value="" />
+    <property name="create.test.in.the.same.root" value="true" />
     <property name="database.console.LAST_STATE" value="false" />
     <property name="database.data.extractors.current.id" value="SQL Inserts" />
-    <property name="project.structure.last.edited" value="SDKs" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15485278" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="MavenSettings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.okayjam.util" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com" />
+      <recent name="main.com.okayjam" />
+      <recent name="main" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\workspace\IdeaProjects\JamJavaUtil\src" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -283,13 +440,13 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.DataBaseUtil">
-    <configuration name="DataBaseUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.okayjam.util.DataBaseUtil" />
+  <component name="RunManager" selected="JUnit.DatabaseUtilTest.insert">
+    <configuration name="DatabaseUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.util.DatabaseUtil" />
       <module name="JamJavaUtil" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.okayjam.util.*" />
+          <option name="PATTERN" value="com.util.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -298,11 +455,11 @@
       </method>
     </configuration>
     <configuration name="Sort" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.okayjam.util.Sort" />
+      <option name="MAIN_CLASS_NAME" value="com.util.Sort" />
       <module name="JamJavaUtil" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.okayjam.util.*" />
+          <option name="PATTERN" value="com.util.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -310,9 +467,31 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="DatabaseUtilTest.insert" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="JamJavaUtil" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.okayjam.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.okayjam.util" />
+      <option name="MAIN_CLASS_NAME" value="com.okayjam.util.DatabaseUtilTest" />
+      <option name="METHOD_NAME" value="insert" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.DatabaseUtil" />
+      <item itemvalue="Application.Sort" />
+      <item itemvalue="JUnit.DatabaseUtilTest.insert" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.DataBaseUtil" />
+        <item itemvalue="JUnit.DatabaseUtilTest.insert" />
+        <item itemvalue="Application.DatabaseUtil" />
         <item itemvalue="Application.Sort" />
       </list>
     </recent_temporary>
@@ -330,42 +509,81 @@
       <workItem from="1547324829677" duration="524000" />
       <workItem from="1547361817300" duration="11374000" />
       <workItem from="1547389499608" duration="5842000" />
+      <workItem from="1547430422566" duration="7548000" />
     </task>
     <servers />
   </component>
+  <component name="TestHistory">
+    <history-entry file="DatabaseUtilTest_insert - 2019.01.16 at 21h 23m 44s.xml">
+      <configuration name="DatabaseUtilTest.insert" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DatabaseUtilTest_insert - 2019.01.16 at 21h 24m 32s.xml">
+      <configuration name="DatabaseUtilTest.insert" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DatabaseUtilTest_insert - 2019.01.16 at 21h 27m 17s.xml">
+      <configuration name="DatabaseUtilTest.insert" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DatabaseUtilTest_insert - 2019.01.16 at 21h 27m 44s.xml">
+      <configuration name="DatabaseUtilTest.insert" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DatabaseUtilTest_insert - 2019.01.16 at 21h 27m 55s.xml">
+      <configuration name="DatabaseUtilTest.insert" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DatabaseUtilTest_insert - 2019.01.16 at 21h 28m 59s.xml">
+      <configuration name="DatabaseUtilTest.insert" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DatabaseUtilTest_insert - 2019.01.16 at 21h 36m 25s.xml">
+      <configuration name="DatabaseUtilTest.insert" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DatabaseUtilTest_insert - 2019.01.16 at 21h 36m 32s.xml">
+      <configuration name="DatabaseUtilTest.insert" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DatabaseUtilTest_insert - 2019.01.16 at 21h 42m 17s.xml">
+      <configuration name="DatabaseUtilTest.insert" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DatabaseUtilTest_insert - 2019.01.16 at 21h 42m 31s.xml">
+      <configuration name="DatabaseUtilTest.insert" configurationId="JUnit" />
+    </history-entry>
+  </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17740000" />
+    <option name="totallyTimeSpent" value="25288000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="2576" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16017488" />
+      <window_info id="JRebel" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16204691" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="FindBugs-IDEA" />
+      <window_info anchor="bottom" id="JRebel Executor" />
+      <window_info anchor="bottom" id="JRebel Console" side_tool="true" />
+      <window_info anchor="bottom" id="SQL Generator" weight="0.32947975" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32899022" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.329718" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3362256" />
+      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.5504886" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="9" weight="0.329718" />
-      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.3286334" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.35028902" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="12" weight="0.3286334" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.3283237" />
       <window_info anchor="bottom" id="Database Console" order="13" weight="0.30911064" />
+      <window_info anchor="right" id="Maven Projects" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Database" order="4" visible="true" weight="0.18004769" />
+      <window_info anchor="right" id="Database" order="4" visible="true" weight="0.17963752" />
       <window_info anchor="right" id="Theme Preview" order="5" />
       <window_info anchor="right" id="Maven" order="6" weight="0.3298887" />
       <window_info anchor="right" id="Capture Analysis" order="7" />
@@ -407,6 +625,9 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
@@ -415,105 +636,138 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://3081f283-0212-4436-a480-da40c4772dd9/schema/main/table/user.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="7" column="18" lean-forward="true" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="das://3081f283-0212-4436-a480-da40c4772dd9/schema/main/table/user.sql" />
     <entry file="file://$PROJECT_DIR$/src/main/resources/log4j.properties">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/util/Sort.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/util/Sort.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="683">
           <caret line="187" column="1" selection-start-line="187" selection-start-column="1" selection-end-line="187" selection-end-column="1" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.54/fastjson-1.2.54.jar!/com/alibaba/fastjson/serializer/SerializeConfig.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-399">
-          <caret line="65" column="13" selection-start-line="65" selection-start-column="13" selection-end-line="65" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://K:/Program Files/Java/jdk1.8.0_191/src.zip!/java/sql/Statement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="722">
-          <caret line="61" column="58" selection-start-line="61" selection-start-column="58" selection-end-line="61" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/util/FileUtil.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.54/fastjson-1.2.54.jar!/com/alibaba/fastjson/serializer/SerializeConfig.class" />
+    <entry file="jar://K:/Program Files/Java/jdk1.8.0_191/src.zip!/java/sql/Statement.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/util/FileUtil.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="19">
           <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/util/TextUtil.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/util/TextUtil.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="19">
           <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.54/fastjson-1.2.54.jar!/com/alibaba/fastjson/JSON.class">
+    <entry file="jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.54/fastjson-1.2.54.jar!/com/alibaba/fastjson/JSON.class" />
+    <entry file="das://3081f283-0212-4436-a480-da40c4772dd9/schema/main/table/user" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/3081f283-0212-4436-a480-da40c4772dd9/console.sql" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/4e2473fa-2025-4360-b7ea-553fee48c195/console.sql">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/util/DataBaseUtilTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="122">
-          <caret line="449" column="68" selection-start-line="449" selection-start-column="53" selection-end-line="449" selection-end-column="68" />
+        <state relative-caret-position="54">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/jdbc.properties">
+    <entry file="file://$PROJECT_DIR$/src/test/main/com/okayjam/baseTest/AlgorithmTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="3" column="10" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
+        <state relative-caret-position="369">
+          <caret line="58" column="4" selection-start-line="58" selection-start-column="4" selection-end-line="58" selection-end-column="4" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="file://$PROJECT_DIR$/src/test/main/com/okayjam/util/VerifyCodeUtilTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="643">
-          <caret line="75" selection-start-line="75" selection-end-line="75" />
+        <state relative-caret-position="252">
+          <caret line="14" column="31" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="das://3081f283-0212-4436-a480-da40c4772dd9/schema/main/table/user">
+    <entry file="file://$PROJECT_DIR$/src/test/main/com/okayjam/baseTest/ExcelTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="10" selection-start-line="10" selection-end-line="10" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://4e2473fa-2025-4360-b7ea-553fee48c195/schema/main/table/user">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/3081f283-0212-4436-a480-da40c4772dd9/console.sql">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/jdbc.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="19" selection-start-column="19" selection-end-column="19" />
+        <state relative-caret-position="162">
+          <caret line="9" column="5" lean-forward="true" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/test/User.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/util/ExcelUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-216">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/main/com/okayjam/baseTest/CollectionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-13">
+          <caret line="61" column="36" lean-forward="true" selection-start-line="61" selection-start-column="36" selection-end-line="61" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/util/DatabaseUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="94">
+          <caret line="160" column="47" selection-start-line="160" selection-start-column="36" selection-end-line="160" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#insertEntity#0;class#DataBaseUtil#0" />
+            <element signature="e#9820#9828#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/test/User.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="18" column="24" selection-start-line="18" selection-start-column="24" selection-end-line="18" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#312#313#0" expanded="true" />
-            <element signature="e#345#346#0" expanded="true" />
-            <element signature="e#373#374#0" expanded="true" />
-            <element signature="e#597#598#0" expanded="true" />
-            <element signature="e#637#638#0" expanded="true" />
+            <element signature="e#304#305#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/okayjam/util/DataBaseUtil.java">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="131" column="69" selection-start-line="131" selection-start-column="69" selection-end-line="131" selection-end-column="69" />
+        <state relative-caret-position="383">
+          <caret line="148" column="43" selection-start-line="148" selection-start-column="43" selection-end-line="148" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/main/com/okayjam/util/DatabaseUtilTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="35" column="8" selection-start-line="35" selection-start-column="8" selection-end-line="35" selection-end-column="8" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -526,10 +780,12 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
+          <last-edited>JamJavaUtil:jar</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
@@ -560,7 +816,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>1.8</last-edited>
+          <last-edited>1.8_191</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
