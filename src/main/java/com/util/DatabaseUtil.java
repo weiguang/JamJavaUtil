@@ -100,7 +100,6 @@ public class DatabaseUtil {
     public static List<?> selectResultToList(String sql, Class clazz) throws IllegalAccessException, InstantiationException {
         Connection conn = getJDBConnect();
         List list = new ArrayList<>();
-        Object ins = clazz.newInstance();
         try {
             ResultSet rs = conn.createStatement().executeQuery(sql);
             ResultSetMetaData rsmd = rs.getMetaData();
@@ -109,7 +108,7 @@ public class DatabaseUtil {
                 JSONObject jo = new JSONObject();
                 for (int i = 0; i < columnCountcount; i++) {
                     Object o;
-                    if(rsmd.getColumnName(i+1).toUpperCase().equals("DATE") || rsmd.getColumnName(i+1).toUpperCase().equals("DATETIME")) {
+                    if(rsmd.getColumnName(i+1).equalsIgnoreCase("DATE") || rsmd.getColumnName(i+1).equalsIgnoreCase("DATETIME")) {
                         jo.put(rsmd.getColumnLabel(i+1),rs.getDate(i+1));
                     }else {
                          o  = rs.getObject(i+1);
@@ -159,10 +158,12 @@ public class DatabaseUtil {
             int insertCount = 0;
             for (JSONObject obj : list) {
                 for (int i = 0; i < tableFields.length; i++) {
-                    if( obj.get(jsonFields[i]).getClass().getSimpleName().equalsIgnoreCase("date")) {
+                    Object fieldObject = obj.get(jsonFields[i]);
+                    if( fieldObject.getClass().getSimpleName().equalsIgnoreCase("date")
+                            || fieldObject.getClass().getSimpleName().equalsIgnoreCase("datetime")) {
                         psql.setObject(i+1, obj.getDate(jsonFields[i]));
                     }else {
-                        psql.setObject(i+1, obj.get(jsonFields[i]));
+                        psql.setObject(i+1, fieldObject);
                     }
                 }
                 psql.addBatch(); // 加入批量更新
