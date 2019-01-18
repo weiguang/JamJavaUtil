@@ -159,12 +159,17 @@ public class DatabaseUtil {
             for (JSONObject obj : list) {
                 for (int i = 0; i < tableFields.length; i++) {
                     Object fieldObject = obj.get(jsonFields[i]);
-                    if( fieldObject.getClass().getSimpleName().equalsIgnoreCase("date")
-                            || fieldObject.getClass().getSimpleName().equalsIgnoreCase("datetime")) {
-                        psql.setObject(i+1, obj.getDate(jsonFields[i]));
+                    if (fieldObject != null) {
+                        if( fieldObject.getClass().getSimpleName().equalsIgnoreCase("date")
+                                || fieldObject.getClass().getSimpleName().equalsIgnoreCase("datetime")) {
+                            psql.setObject(i+1, obj.getDate(jsonFields[i]));
+                        }else {
+                            psql.setObject(i+1, fieldObject);
+                        }
                     }else {
                         psql.setObject(i+1, fieldObject);
                     }
+
                 }
                 psql.addBatch(); // 加入批量更新
                 if(++insertCount >= maxbatchSize) {
