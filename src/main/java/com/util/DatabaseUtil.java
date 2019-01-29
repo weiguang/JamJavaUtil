@@ -1,6 +1,5 @@
 package com.util;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.test.User;
 import org.slf4j.Logger;
@@ -169,7 +168,6 @@ public class DatabaseUtil {
                     }else {
                         psql.setObject(i+1, fieldObject);
                     }
-
                 }
                 psql.addBatch(); // 加入批量更新
                 if(++insertCount >= maxbatchSize) {

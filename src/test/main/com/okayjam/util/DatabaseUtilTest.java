@@ -20,7 +20,7 @@ public class DatabaseUtilTest {
     @Test
     public void insert() {
         User user = new User();
-        user.setName("Jamjj");
+        user.setName(null);
         user.setAge(12);
         user.setBirthday(new Date());
         user.setWeight(65.3);
