@@ -1,6 +1,6 @@
 package main.com.okayjam.baseTest;
 
-import com.util.FileUtil;
+import com.okayjam.util.FileUtil;
 import org.junit.Test;
 
 /**

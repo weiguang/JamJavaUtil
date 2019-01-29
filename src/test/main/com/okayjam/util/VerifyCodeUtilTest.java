@@ -1,7 +1,7 @@
 package com.okayjam.util;
 
 
-import com.util.VerifyCodeUtil;
+import com.okayjam.util.VerifyCodeUtil;
 import org.junit.jupiter.api.Test;
 
 /**

@@ -1,7 +1,7 @@
-package com.net;
+package com.okayjam.net;
 
 
-import com.net.okhttp.HttpUtil;
+import com.okayjam.net.okhttp.HttpUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

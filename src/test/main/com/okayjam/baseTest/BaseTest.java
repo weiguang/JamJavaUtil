@@ -1,8 +1,8 @@
 package main.com.okayjam.baseTest;
 
-import com.test.Animal;
-import com.test.IfTest;
-import com.util.FileUtil;
+import com.okayjam.test.Animal;
+import com.okayjam.test.IfTest;
+import com.okayjam.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

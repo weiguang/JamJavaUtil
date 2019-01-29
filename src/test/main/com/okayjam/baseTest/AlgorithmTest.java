@@ -1,7 +1,7 @@
 package com.okayjam.baseTest;
 
-import com.algorithm.Algorithm;
-import com.algorithm.MathUtil;
+import com.okayjam.algorithm.Algorithm;
+import com.okayjam.algorithm.MathUtil;
 import org.junit.jupiter.api.Test;
 
 

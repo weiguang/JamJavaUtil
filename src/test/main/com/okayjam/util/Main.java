@@ -1,4 +1,4 @@
-package com.util;
+package com.okayjam.util;
 
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;

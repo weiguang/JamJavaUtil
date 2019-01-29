@@ -1,6 +1,6 @@
 package main.com.okayjam.job.newcoder;
 
-import com.util.Sort;
+import com.okayjam.util.Sort;
 
 import java.util.*;
 

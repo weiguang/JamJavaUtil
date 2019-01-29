@@ -1,7 +1,7 @@
 package main.com.okayjam.baseTest;
 
-import com.test.Animal;
-import com.util.ExcelUtil;
+import com.okayjam.test.Animal;
+import com.okayjam.util.ExcelUtil;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;

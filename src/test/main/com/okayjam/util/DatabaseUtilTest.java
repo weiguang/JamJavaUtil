@@ -3,8 +3,8 @@ package com.okayjam.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.test.User;
-import com.util.DatabaseUtil;
+import com.okayjam.test.User;
+import com.okayjam.util.DatabaseUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
