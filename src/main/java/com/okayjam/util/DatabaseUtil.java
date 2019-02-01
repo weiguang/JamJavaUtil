@@ -127,6 +127,69 @@ public class DatabaseUtil {
     }
 
 
+    /**
+     * 数据库更新
+     * @param jsonObject json对象
+     * @param jsonFields json字段
+     * @param table 数据表
+     * @param tableFields 对应的表字段
+     * @param whereSql 更新的条件
+     */
+    public static void update(JSONObject jsonObject, String[] jsonFields, String table, String[] tableFields, String whereSql) {
+        try {
+            Connection con = getJDBConnect();
+            PreparedStatement pstmt ;
+            if (con != null && !con.isClosed()) {
+                System.out.println("Succeeded connecting to the Database!");
+            } else {
+                logger.info("数据库数据失败获取！！");
+                return;
+            }
+            System.out.println("update sql: "+ getUpdateSql(tableFields, table) + "\t where \t"  + whereSql);
+            pstmt = con.prepareStatement(getUpdateSql(tableFields, table) + "\t where \t"  + whereSql);
+
+            for (int i = 0; i < jsonFields.length; i++) {
+                Object fieldObject = jsonObject.get(jsonFields[i]);
+                if (fieldObject != null) {
+                    if( fieldObject.getClass().getSimpleName().equalsIgnoreCase("date")
+                            || fieldObject.getClass().getSimpleName().equalsIgnoreCase("datetime")) {
+                        pstmt.setTimestamp(i+1,  new Timestamp( jsonObject.getDate(jsonFields[i]).getTime() ) );
+//                    } else if( fieldObject.getClass().getSimpleName().equalsIgnoreCase("string")){
+//                        pstmt.setString(i+1, (String)fieldObject);
+                    }else{
+                        pstmt.setObject(i+1, fieldObject);
+                    }
+                }else {
+                    pstmt.setObject(i+1, fieldObject);
+                }
+            }
+            boolean flag = pstmt.execute();
+            System.out.println("update status:" + flag);
+        }catch (SQLException e) {
+            //数据库连接失败异常处理
+            e.printStackTrace();
+            logger.error("insert error!!", e);
+        }
+    }
+
+    /**
+     * 获取更新的语句
+     * @param tableFields
+     * @param table
+     * @return
+     */
+    public static String getUpdateSql(String[] tableFields, String table) {
+        StringBuilder sbField = new StringBuilder();
+        if (tableFields != null && tableFields.length >0) {
+            for (String tableField : tableFields) {
+                if(sbField.length() != 0) {sbField.append(", "); }
+                sbField.append(tableField);
+                sbField.append(" = ? ");
+            }
+        }
+        return " update \t" + table + "\t set \t" + sbField.toString() ;
+    }
+
 
 
     /**
