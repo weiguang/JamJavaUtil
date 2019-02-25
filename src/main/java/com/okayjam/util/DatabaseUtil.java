@@ -67,6 +67,65 @@ public class DatabaseUtil {
         return  conn;
     }
 
+
+    /**
+     * 执行sql语句
+     * @param sql
+     * @return
+     */
+    public static int executeSQL(String sql ) {
+        Connection conn = getJDBConnect();
+        int i = 0;
+        PreparedStatement pstmt;
+        if(conn == null) return i;
+        try {
+            pstmt =  conn.prepareStatement(sql);
+            i = pstmt.executeUpdate();
+            System.out.println("executeSQL resutl: " + i);
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if(conn != null)  conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return i;
+    }
+
+
+    /**
+     * 查找sql返回的数量
+     * @param sql
+     * @return
+     */
+    public static int selectCount(String sql) {
+        int count = -1;
+        Connection conn = getJDBConnect();
+        if(conn == null) return count;
+        try {
+            ResultSet rs = conn.prepareStatement(sql).executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+            //  System.out.println("count:" + count);
+        }catch(SQLException e){
+            e.printStackTrace();
+        } finally {
+            if(conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return count;
+    }
+
+
     /**
      *  把查询结果封装成JSONObject对象
      * @param sql 查询sql
