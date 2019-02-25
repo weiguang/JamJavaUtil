@@ -55,19 +55,15 @@ public class DatabaseUtil {
 
     public static Connection getJDBConnect() {
         Connection conn = null;
-            //STEP 2: Register JDBC driver
         try {
             Class.forName(JDBC_DRIVER);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-
-        }
-        try {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            System.out.println("Connected database successfully...");
+        }catch (ClassNotFoundException e) {
+            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("Connected database successfully...");
         return  conn;
     }
 
@@ -122,6 +118,14 @@ public class DatabaseUtil {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (conn == null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return list;
     }
@@ -132,19 +136,14 @@ public class DatabaseUtil {
      * @param jsonObject json对象
      * @param jsonFields json字段
      * @param table 数据表
-     * @param tableFields 对应的表字段
+     * @param tableFields 对应的表字段（需要与json字段的顺序对应）
      * @param whereSql 更新的条件
      */
     public static void update(JSONObject jsonObject, String[] jsonFields, String table, String[] tableFields, String whereSql) {
+        Connection con = getJDBConnect();
+        if (null == con ) { logger.error("数据库连接失败！！"); return;}
+        PreparedStatement pstmt ;
         try {
-            Connection con = getJDBConnect();
-            PreparedStatement pstmt ;
-            if (con != null && !con.isClosed()) {
-                System.out.println("Succeeded connecting to the Database!");
-            } else {
-                logger.info("数据库数据失败获取！！");
-                return;
-            }
             System.out.println("update sql: "+ getUpdateSql(tableFields, table) + "\t where \t"  + whereSql);
             pstmt = con.prepareStatement(getUpdateSql(tableFields, table) + "\t where \t"  + whereSql);
 
@@ -154,8 +153,6 @@ public class DatabaseUtil {
                     if( fieldObject.getClass().getSimpleName().equalsIgnoreCase("date")
                             || fieldObject.getClass().getSimpleName().equalsIgnoreCase("datetime")) {
                         pstmt.setTimestamp(i+1,  new Timestamp( jsonObject.getDate(jsonFields[i]).getTime() ) );
-//                    } else if( fieldObject.getClass().getSimpleName().equalsIgnoreCase("string")){
-//                        pstmt.setString(i+1, (String)fieldObject);
                     }else{
                         pstmt.setObject(i+1, fieldObject);
                     }
@@ -163,12 +160,20 @@ public class DatabaseUtil {
                     pstmt.setObject(i+1, fieldObject);
                 }
             }
-            boolean flag = pstmt.execute();
-            System.out.println("update status:" + flag);
+            int row = pstmt.executeUpdate();
+            logger.info("update row: " + row);
         }catch (SQLException e) {
             //数据库连接失败异常处理
             e.printStackTrace();
-            logger.error("insert error!!", e);
+            logger.error("update error!!", e);
+        } finally {
+            if(con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -202,8 +207,9 @@ public class DatabaseUtil {
     public static void insert(List<JSONObject> list, String[] jsonFields, String[] tableFields, String table) {
         //最大批量是插入数量
         int maxbatchSize = 1000;
+        Connection con = getJDBConnect();
         try {
-            Connection con = getJDBConnect();
+
             if(con != null && !con.isClosed()) {
                 System.out.println("Succeeded connecting to the Database!");
             }else {
@@ -240,7 +246,7 @@ public class DatabaseUtil {
             }
             psql.executeBatch();
             psql.close();
-            con.close();
+
         }  catch(SQLException e) {
             //数据库连接失败异常处理
             logger.error("insert error!!", e);
@@ -250,6 +256,13 @@ public class DatabaseUtil {
             logger.error("insert error!!", e);
             e.printStackTrace();
         }finally{
+            if (con == null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -304,8 +317,9 @@ public class DatabaseUtil {
 
         System.out.println(sql);
         PreparedStatement ps = null;
+        Connection conn = getJDBConnect();
         try {
-            Connection conn = getJDBConnect();
+
             ps = conn.prepareStatement(sql.toString());
             int keyFlag = 0;
             for (int j = 0; j < fieldSize; j++) {
@@ -330,6 +344,14 @@ public class DatabaseUtil {
             ps.close();
         } catch (Exception e1) {
             e1.printStackTrace();
+        } finally {
+            if (conn == null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -366,6 +388,14 @@ public class DatabaseUtil {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            if (conn == null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         System.out.println(sb.toString());
         return sb.toString();
@@ -425,6 +455,14 @@ public class DatabaseUtil {
             re[1] = listComment.toArray(new String[listComment.size()]);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (conn == null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return re;
     }
