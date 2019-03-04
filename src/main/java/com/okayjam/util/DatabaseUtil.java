@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- * @author: Chen weiguang <chen2621978@163.com.com>
+ * @author: Chen weiguang <chen2621978@gmail.com>
  * @create: 2018/09/06 11:22
  **/
 public class DatabaseUtil {
@@ -34,12 +34,16 @@ public class DatabaseUtil {
     static final String PASS = ResourceBundle.getBundle("jdbc").getString("password");
 
     public static void main(String[] args) {
+        String table = "jam1";
         User user = new User();
         user.setName("李四1");
+        user.setAge(12);
         user.setBirthday(new Date());
-        insertEntity(User.class,user,"user");
+        user.setWeight(65.3);
 
-        String sql = "select * from  user";
+        insertEntity(User.class,user,table);
+
+        String sql = "select * from  " + table ;
         List<User> list = null;
         try {
             list = (List<User>)selectResultToList(sql,User.class);
@@ -58,11 +62,11 @@ public class DatabaseUtil {
         try {
             Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            System.out.println("Connected database successfully...");
+            //logger.info("Connected database successfully...");
         }catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            logger.error("ClassNotFoundException error:", e);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("SQL error:", e);
         }
         return  conn;
     }
@@ -77,19 +81,19 @@ public class DatabaseUtil {
         Connection conn = getJDBConnect();
         int i = 0;
         PreparedStatement pstmt;
-        if(conn == null) return i;
+        if(conn == null) {return i;}
         try {
             pstmt =  conn.prepareStatement(sql);
             i = pstmt.executeUpdate();
-            System.out.println("executeSQL resutl: " + i);
+            logger.info("executeSQL resutl: " + i);
             pstmt.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("SQL error:", e);
         }finally {
             try {
-                if(conn != null)  conn.close();
+                if(conn != null)  {conn.close();}
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("SQL error:", e);
             }
         }
         return i;
@@ -104,13 +108,13 @@ public class DatabaseUtil {
     public static int selectCount(String sql) {
         int count = -1;
         Connection conn = getJDBConnect();
-        if(conn == null) return count;
+        if(conn == null) {return count;}
         try {
             ResultSet rs = conn.prepareStatement(sql).executeQuery();
             if (rs.next()) {
                 count = rs.getInt(1);
             }
-            //  System.out.println("count:" + count);
+            //  logger.info("count:" + count);
         }catch(SQLException e){
             e.printStackTrace();
         } finally {
@@ -118,7 +122,7 @@ public class DatabaseUtil {
                 try {
                     conn.close();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    logger.error("SQL error:", e);
                 }
             }
         }
@@ -136,9 +140,9 @@ public class DatabaseUtil {
         try {
           list =  (List<JSONObject>) selectResultToList(sql, JSONObject.class);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            logger.error("IllegalAccessException error:", e);
         } catch (InstantiationException e) {
-            e.printStackTrace();
+            logger.error("InstantiationException error:", e);
         }
         return  list;
     }
@@ -176,13 +180,13 @@ public class DatabaseUtil {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("SQL error:", e);
         } finally {
             if (conn == null) {
                 try {
                     conn.close();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    logger.error("SQL error:", e);
                 }
             }
         }
@@ -198,12 +202,13 @@ public class DatabaseUtil {
      * @param tableFields 对应的表字段（需要与json字段的顺序对应）
      * @param whereSql 更新的条件
      */
-    public static void update(JSONObject jsonObject, String[] jsonFields, String table, String[] tableFields, String whereSql) {
+    public static int update(JSONObject jsonObject, String[] jsonFields, String table, String[] tableFields, String whereSql) {
+        int row = -1;
         Connection con = getJDBConnect();
-        if (null == con ) { logger.error("数据库连接失败！！"); return;}
+        if (null == con ) { logger.error("数据库连接失败！！"); return row;}
         PreparedStatement pstmt ;
         try {
-            System.out.println("update sql: "+ getUpdateSql(tableFields, table) + "\t where \t"  + whereSql);
+            logger.info("update sql: "+ getUpdateSql(tableFields, table) + "\t where \t"  + whereSql);
             pstmt = con.prepareStatement(getUpdateSql(tableFields, table) + "\t where \t"  + whereSql);
 
             for (int i = 0; i < jsonFields.length; i++) {
@@ -219,21 +224,21 @@ public class DatabaseUtil {
                     pstmt.setObject(i+1, fieldObject);
                 }
             }
-            int row = pstmt.executeUpdate();
+            row = pstmt.executeUpdate();
             logger.info("update row: " + row);
         }catch (SQLException e) {
             //数据库连接失败异常处理
-            e.printStackTrace();
             logger.error("update error!!", e);
         } finally {
             if(con != null) {
                 try {
                     con.close();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    logger.error("SQL error:", e);
                 }
             }
         }
+        return row;
     }
 
     /**
@@ -270,17 +275,17 @@ public class DatabaseUtil {
         try {
 
             if(con != null && !con.isClosed()) {
-                System.out.println("Succeeded connecting to the Database!");
+                //logger.info("Succeeded connecting to the Database!");
             }else {
-                logger.info("数据库数据失败获取！！");
+                logger.error("SQL error: 数据库数据失败获取！！");
                 return ;
             }
-            System.out.println("准备插入：" + list.size());
+            logger.info("准备插入：" + list.size());
             //要执行的SQL语句
             PreparedStatement psql;
             //预处理添加数据，其中有两个参数--“？”
             String sql = getInsertSql(tableFields, table);
-            System.out.println("insert sql:" + sql);
+            logger.info("insert sql:" + sql);
             psql = con.prepareStatement(sql);
             int insertCount = 0;
             for (JSONObject obj : list) {
@@ -305,21 +310,20 @@ public class DatabaseUtil {
             }
             psql.executeBatch();
             psql.close();
-
         }  catch(SQLException e) {
             //数据库连接失败异常处理
             logger.error("insert error!!", e);
-            e.printStackTrace();
+//            e.printStackTrace();
         }catch (Exception e) {
             // TODO: handle exception
             logger.error("insert error!!", e);
-            e.printStackTrace();
+//            e.printStackTrace();
         }finally{
             if (con == null) {
                 try {
                     con.close();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    logger.error("SQL error:", e);
                 }
             }
         }
@@ -374,7 +378,7 @@ public class DatabaseUtil {
         sql.deleteCharAt(sql.length() - 1);
         sql.append(")");
 
-        System.out.println(sql);
+        logger.info(sql.toString());
         PreparedStatement ps = null;
         Connection conn = getJDBConnect();
         try {
@@ -390,25 +394,25 @@ public class DatabaseUtil {
                         if (fields[j].get(obj) != null
                                 && !"".equals(fields[j].get(obj))
                                 && !"null".equals(fields[j].get(obj))) {
-                            System.out.println(fields[j].get(obj) + " ");
+                            logger.info(fields[j].get(obj) + " ");
                             ps.setObject(j + 1 - keyFlag, fields[j].get(obj));
                         } else {
-                            System.out.println(fields[j].get(obj) + " ");
+                            logger.info(fields[j].get(obj) + " ");
                             ps.setObject(j + 1 - keyFlag, null);
                         }
             }
-            System.out.println(ps.toString());
+            logger.info(ps.toString());
             ps.execute();
            // conn.commit();
             ps.close();
         } catch (Exception e1) {
-            e1.printStackTrace();
+            logger.error("SQL error:", e1);
         } finally {
             if (conn == null) {
                 try {
                     conn.close();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    logger.error("SQL error:", e);
                 }
             }
         }
@@ -456,13 +460,13 @@ public class DatabaseUtil {
                 }
             }
         }
-        System.out.println(sb.toString());
+        logger.info(sb.toString());
         return sb.toString();
     }
 
     public static  void outputFile (String path, String fileName, String content) {
         if(!new File(path).exists()) {
-            System.out.println("目录不存在");return;
+            logger.info("目录不存在");return;
         }
         File writeMame = new File(path+ fileName); // 相对路径，如果没有则要建立一个新的output。txt文件
         try {
@@ -472,7 +476,7 @@ public class DatabaseUtil {
             writer.write(content);
             writer.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Exception error:", e);
         }
     }
 
@@ -507,19 +511,19 @@ public class DatabaseUtil {
             }
             sbName.append("}");
             sbComment.append("}");
-            System.out.println(sbName.toString() + "\n");
-            System.out.println(sbComment.toString() + "\n");
+            logger.info(sbName.toString() + "\n");
+            logger.info(sbComment.toString() + "\n");
             rs.close();
             re[0] = listname.toArray(new String[listname.size()]);
             re[1] = listComment.toArray(new String[listComment.size()]);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("SQL error:", e);
         } finally {
             if (conn == null) {
                 try {
                     conn.close();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    logger.error("SQL error:", e);
                 }
             }
         }

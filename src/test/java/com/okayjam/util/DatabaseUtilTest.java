@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @author: Chen weiguang <weiguangchen@sf-express.com>
+ * @author: Chen weiguang <chen2621978@gmail.com>
  * @create: 2019/01/16 20:58
  **/
 
@@ -45,11 +45,9 @@ public class DatabaseUtilTest {
         String tableFields[] = {"name","weight","birthday","age"};
         String whereSql = "\t id = 1 \t" ;
 
-
-
         jsonObject.put("name", "jamjam");
         //时间转字符串分钟
-        jsonObject.put("weight", 66.66);
+        jsonObject.put("weight", 66.777);
         jsonObject.put("birthday", new Date());
         jsonObject.put("age", 99);
 
