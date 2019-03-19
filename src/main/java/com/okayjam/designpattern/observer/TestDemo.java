@@ -6,6 +6,7 @@ package com.okayjam.designpattern.observer;
  **/
 public class TestDemo {
     public static void main(String[] args) {
+//        System.out.println( (double) Math.round(1.256 * 100) / 100);
         // TODO Auto-generated method stub
         ServerManager sm = new ServerManager();
         AObserver a    = new AObserver(sm);
