@@ -14,6 +14,7 @@ public class PythonUtilTest {
 
     @Test
     public void testInvoke() throws IOException {
-        PythonUtil.execPython(pythonFilePath, "test.py");
+        PythonUtil.execute(pythonFilePath, "test.py");
+        PythonUtil.execute(pythonFilePath+"/test.py");
     }
 }

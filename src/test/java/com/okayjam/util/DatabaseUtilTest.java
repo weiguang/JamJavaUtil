@@ -51,6 +51,11 @@ public class DatabaseUtilTest {
         jsonObject.put("birthday", new Date());
         jsonObject.put("age", 99);
 
-        DatabaseUtil.update(jsonObject, jsonFields,table, tableFields, whereSql);
+        long before = System.currentTimeMillis();
+        for (int i = 0; i < 1000; i++) {
+            DatabaseUtil.update(jsonObject, jsonFields,table, tableFields, whereSql);
+        }
+        System.out.println(System.currentTimeMillis() - before);
+
     }
 }

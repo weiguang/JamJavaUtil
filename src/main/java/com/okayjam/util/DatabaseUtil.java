@@ -5,10 +5,7 @@ import com.okayjam.test.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.ArrayList;
@@ -24,19 +21,21 @@ public class DatabaseUtil {
     private static final Logger logger =  LoggerFactory.getLogger(DatabaseUtil.class);
 
     // JDBC driver name and database URL
-    //static final String JDBC_DRIVER = "com.mysql.jdbc.Driver"; //8.0以下版本
+    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver"; //8.0以下版本
 //    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver"; //8.0以上版本
-    static final String JDBC_DRIVER = "org.sqlite.JDBC"; //sqlite3
+//    static final String JDBC_DRIVER = "org.sqlite.JDBC"; //sqlite3
     static final String DB_URL = ResourceBundle.getBundle("jdbc").getString("jdbcUrl");
 
     //  Database credentials
     static final String USER = ResourceBundle.getBundle("jdbc").getString("user" );
     static final String PASS = ResourceBundle.getBundle("jdbc").getString("password");
 
+    static Connection conn = null;
+
     public static void main(String[] args) {
         String table = "jam1";
         User user = new User();
-        user.setName("李四1");
+        user.setName("李四2");
         user.setAge(12);
         user.setBirthday(new Date());
         user.setWeight(65.3);
@@ -57,12 +56,25 @@ public class DatabaseUtil {
         }
     }
 
-    public static Connection getJDBConnect() {
-        Connection conn = null;
+    public static void close(Closeable conn) {
         try {
-            Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            //logger.info("Connected database successfully...");
+            if(conn != null)  {conn.close();}
+        } catch (Exception e) {
+            logger.error("SQL error:", e);
+        }
+    }
+
+    public static Connection getJDBConnect() {
+        try {
+            if(conn == null || conn.isClosed()) {
+                synchronized (DatabaseUtil.class) {
+                    if(conn == null || conn.isClosed()) {
+                        Class.forName(JDBC_DRIVER);
+                        conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                        //logger.info("Connected database successfully...");
+                    }
+                }
+            }
         }catch (ClassNotFoundException e) {
             logger.error("ClassNotFoundException error:", e);
         } catch (SQLException e) {
@@ -90,11 +102,11 @@ public class DatabaseUtil {
         } catch (SQLException e) {
             logger.error("SQL error:", e);
         }finally {
-            try {
-                if(conn != null)  {conn.close();}
-            } catch (SQLException e) {
-                logger.error("SQL error:", e);
-            }
+//            try {
+//                if(conn != null)  {conn.close();}
+//            } catch (SQLException e) {
+//                logger.error("SQL error:", e);
+//            }
         }
         return i;
     }
@@ -118,13 +130,13 @@ public class DatabaseUtil {
         }catch(SQLException e){
             e.printStackTrace();
         } finally {
-            if(conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    logger.error("SQL error:", e);
-                }
-            }
+//            if(conn != null) {
+//                try {
+//                    conn.close();
+//                } catch (SQLException e) {
+//                    logger.error("SQL error:", e);
+//                }
+//            }
         }
         return count;
     }
@@ -182,13 +194,13 @@ public class DatabaseUtil {
         } catch (SQLException e) {
             logger.error("SQL error:", e);
         } finally {
-            if (conn == null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    logger.error("SQL error:", e);
-                }
-            }
+//            if (conn == null) {
+//                try {
+//                    conn.close();
+//                } catch (SQLException e) {
+//                    logger.error("SQL error:", e);
+//                }
+//            }
         }
         return list;
     }
@@ -208,7 +220,7 @@ public class DatabaseUtil {
         if (null == con ) { logger.error("数据库连接失败！！"); return row;}
         PreparedStatement pstmt ;
         try {
-            logger.info("update sql: "+ getUpdateSql(tableFields, table) + "\t where \t"  + whereSql);
+          //  logger.info("update sql: "+ getUpdateSql(tableFields, table) + "\t where \t"  + whereSql);
             pstmt = con.prepareStatement(getUpdateSql(tableFields, table) + "\t where \t"  + whereSql);
 
             for (int i = 0; i < jsonFields.length; i++) {
@@ -225,18 +237,18 @@ public class DatabaseUtil {
                 }
             }
             row = pstmt.executeUpdate();
-            logger.info("update row: " + row);
+            //logger.info("update row: " + row);
         }catch (SQLException e) {
             //数据库连接失败异常处理
             logger.error("update error!!", e);
         } finally {
-            if(con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) {
-                    logger.error("SQL error:", e);
-                }
-            }
+//            if(con != null) {
+//                try {
+//                    con.close();
+//                } catch (SQLException e) {
+//                    logger.error("SQL error:", e);
+//                }
+//            }
         }
         return row;
     }
@@ -319,13 +331,13 @@ public class DatabaseUtil {
             logger.error("insert error!!", e);
 //            e.printStackTrace();
         }finally{
-            if (con == null) {
-                try {
-                    con.close();
-                } catch (SQLException e) {
-                    logger.error("SQL error:", e);
-                }
-            }
+//            if (con == null) {
+//                try {
+//                    con.close();
+//                } catch (SQLException e) {
+//                    logger.error("SQL error:", e);
+//                }
+//            }
         }
     }
 
@@ -408,13 +420,13 @@ public class DatabaseUtil {
         } catch (Exception e1) {
             logger.error("SQL error:", e1);
         } finally {
-            if (conn == null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    logger.error("SQL error:", e);
-                }
-            }
+//            if (conn == null) {
+//                try {
+//                    conn.close();
+//                } catch (SQLException e) {
+//                    logger.error("SQL error:", e);
+//                }
+//            }
         }
     }
 
@@ -452,13 +464,13 @@ public class DatabaseUtil {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            if (conn == null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+//            if (conn == null) {
+//                try {
+//                    conn.close();
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                }
+//            }
         }
         logger.info(sb.toString());
         return sb.toString();
@@ -519,13 +531,13 @@ public class DatabaseUtil {
         } catch (SQLException e) {
             logger.error("SQL error:", e);
         } finally {
-            if (conn == null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    logger.error("SQL error:", e);
-                }
-            }
+//            if (conn == null) {
+//                try {
+//                    conn.close();
+//                } catch (SQLException e) {
+//                    logger.error("SQL error:", e);
+//                }
+//            }
         }
         return re;
     }
