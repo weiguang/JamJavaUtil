@@ -5,5 +5,7 @@ package com.okayjam.t;
  * @create: 2019/04/02 18:01
  **/
 public class TT {
-    
+    public static void main(String[] args) {
+        System.out.println("Default main method!");
+    }
 }
