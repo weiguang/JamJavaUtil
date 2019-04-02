@@ -7,5 +7,6 @@ package com.okayjam.t;
 public class TT {
     public static void main(String[] args) {
         System.out.println("Default main method!");
+        System.out.println("version3");
     }
 }
