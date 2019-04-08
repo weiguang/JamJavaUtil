@@ -7,35 +7,44 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
+import java.util.concurrent.*;
 
 /**
  * Created by Weiguang Chen <chen2621978@gmail.com> on 2018/6/13 21:10.
  */
 public class TCPServer {
-    private int MaxClient = 3;
+    private int MaxClient = 2;
     static  String  ExitMessage = "88";
+    static int PORT  = 10001;
     public static void main(String[] args) throws IOException {
-
         new TCPServer().StartListen();
-
     }
 
-    public int StartListen() throws IOException {
-        Socket task = null;
+    public void StartListen() throws IOException {
 
+        ThreadPoolExecutor pool  =new ThreadPoolExecutor(0, MaxClient,
+                60L, TimeUnit.SECONDS,
+                new SynchronousQueue<Runnable>());
+
+        Socket task = null;
         try (ServerSocket serverSocket = new ServerSocket()) {
-            serverSocket.bind(new InetSocketAddress(10001));
+            serverSocket.bind(new InetSocketAddress(PORT));
             System.out.println("监听开始");
 
             int clientNumber = 0;
-            while (clientNumber < MaxClient) {
+            while (true) {
                 task = serverSocket.accept();
-                new Thread(new ServerTask(task)).start();
-                clientNumber++;
-                System.out.println("Client : " + clientNumber + ", " + task.getRemoteSocketAddress());
-
+                try {
+                    pool.execute(new ServerTask(task));
+                    clientNumber++;
+                    System.out.println("Client : " + clientNumber + ", " + task.getRemoteSocketAddress());
+                }catch (RejectedExecutionException e) {
+                    e.printStackTrace();
+                    if (task != null) {
+                        task.close();
+                    }
+                }
             }
-            return 0;
         }
     }
 }
@@ -59,7 +68,7 @@ class ServerTask implements Runnable {
                 System.out.println( task.getRemoteSocketAddress()+" 发来消息(" + date.getTime() + "):" + msg);
                 output.writeUTF("server已经接收到(" + date + "):" + msg);
                 output.flush();
-                if (msg.equals(TCPServer.ExitMessage)) break;
+                if (msg.equals(TCPServer.ExitMessage)) {break;}
             }
         } catch (IOException e) {
             System.out.println("已经断开连接");
