@@ -27,8 +27,7 @@ public class TCPServer {
                 new SynchronousQueue<Runnable>());
 
         Socket task = null;
-        try (ServerSocket serverSocket = new ServerSocket()) {
-            serverSocket.bind(new InetSocketAddress(PORT));
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("监听开始");
 
             int clientNumber = 0;

@@ -29,7 +29,7 @@ public class TCPClient {
                 output.flush();
                 String re = input.readUTF();
                 System.out.println(re);
-                if(msg.equals(TCPServer.ExitMessage));
+                if(msg.equals(TCPServer.ExitMessage)) {break;}
             }
         }finally {
             input.close();
