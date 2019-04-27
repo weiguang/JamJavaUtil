@@ -2,16 +2,16 @@ package com.okayjam.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.okayjam.test.User;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.sql.DataSource;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
 
 /**
  * @author: Chen weiguang <chen2621978@gmail.com>
@@ -21,16 +21,17 @@ public class DatabaseUtil {
     private static final Logger logger =  LoggerFactory.getLogger(DatabaseUtil.class);
 
     // JDBC driver name and database URL
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver"; //8.0以下版本
-//    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver"; //8.0以上版本
-//    static final String JDBC_DRIVER = "org.sqlite.JDBC"; //sqlite3
-    static final String DB_URL = ResourceBundle.getBundle("jdbc").getString("jdbcUrl");
-
+    static final String JDBC_DRIVER =  ResourceBundle.getBundle("jdbc").getString("driverClassName");
+    static final String DB_URL = ResourceBundle.getBundle("jdbc").getString("url");
     //  Database credentials
     static final String USER = ResourceBundle.getBundle("jdbc").getString("user" );
     static final String PASS = ResourceBundle.getBundle("jdbc").getString("password");
+    static final int MAX_ACTIVE = (int)ResourceBundle.getBundle("jdbc").getObject("maxActive");
+
 
     static Connection conn = null;
+
+    static  DataSource DATASOURCE;
 
     public static void main(String[] args) {
         String table = "jam1";
@@ -64,14 +65,63 @@ public class DatabaseUtil {
         }
     }
 
+    public static void close(AutoCloseable conn) {
+        try {
+            if(conn != null)  {conn.close();}
+        } catch (Exception e) {
+            logger.error("SQL error:", e);
+        }
+    }
+
+
+    /**
+     * 初始化线程池
+     */
+    private static void initPool() {
+        try {
+            BasicDataSource ds = new BasicDataSource();
+            ds.setDriverClassName(JDBC_DRIVER);
+            ds.setUsername(USER);
+            ds.setPassword(PASS);
+            ds.setUrl(DB_URL);
+            // 初始的连接数；
+            ds.setMaxTotal(MAX_ACTIVE);
+            DATASOURCE = ds;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * 从线程池获取连接
+     */
     public static Connection getJDBConnect() {
+        if(DATASOURCE == null) {
+            initPool();
+        }
+        if (DATASOURCE != null) {
+            try {
+                return DATASOURCE.getConnection();
+            } catch (SQLException e) {
+                logger.error("SQL get Connection error:", e);
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * 原始的获取连接的方式
+     * @return
+     */
+    public static Connection getJDBConnectOrigin() {
         try {
             if(conn == null || conn.isClosed()) {
                 synchronized (DatabaseUtil.class) {
                     if(conn == null || conn.isClosed()) {
                         Class.forName(JDBC_DRIVER);
                         conn = DriverManager.getConnection(DB_URL, USER, PASS);
-                        //logger.info("Connected database successfully...");
                     }
                 }
             }
@@ -82,7 +132,6 @@ public class DatabaseUtil {
         }
         return  conn;
     }
-
 
     /**
      * 执行sql语句
@@ -102,11 +151,7 @@ public class DatabaseUtil {
         } catch (SQLException e) {
             logger.error("SQL error:", e);
         }finally {
-//            try {
-//                if(conn != null)  {conn.close();}
-//            } catch (SQLException e) {
-//                logger.error("SQL error:", e);
-//            }
+            close(conn);
         }
         return i;
     }
@@ -126,17 +171,10 @@ public class DatabaseUtil {
             if (rs.next()) {
                 count = rs.getInt(1);
             }
-            //  logger.info("count:" + count);
         }catch(SQLException e){
             e.printStackTrace();
         } finally {
-//            if(conn != null) {
-//                try {
-//                    conn.close();
-//                } catch (SQLException e) {
-//                    logger.error("SQL error:", e);
-//                }
-//            }
+            close(conn);
         }
         return count;
     }
@@ -194,13 +232,7 @@ public class DatabaseUtil {
         } catch (SQLException e) {
             logger.error("SQL error:", e);
         } finally {
-//            if (conn == null) {
-//                try {
-//                    conn.close();
-//                } catch (SQLException e) {
-//                    logger.error("SQL error:", e);
-//                }
-//            }
+            close(conn);
         }
         return list;
     }
@@ -242,13 +274,7 @@ public class DatabaseUtil {
             //数据库连接失败异常处理
             logger.error("update error!!", e);
         } finally {
-//            if(con != null) {
-//                try {
-//                    con.close();
-//                } catch (SQLException e) {
-//                    logger.error("SQL error:", e);
-//                }
-//            }
+            close(conn);
         }
         return row;
     }
@@ -331,13 +357,7 @@ public class DatabaseUtil {
             logger.error("insert error!!", e);
 //            e.printStackTrace();
         }finally{
-//            if (con == null) {
-//                try {
-//                    con.close();
-//                } catch (SQLException e) {
-//                    logger.error("SQL error:", e);
-//                }
-//            }
+            close(conn);
         }
     }
 
@@ -420,13 +440,7 @@ public class DatabaseUtil {
         } catch (Exception e1) {
             logger.error("SQL error:", e1);
         } finally {
-//            if (conn == null) {
-//                try {
-//                    conn.close();
-//                } catch (SQLException e) {
-//                    logger.error("SQL error:", e);
-//                }
-//            }
+            close(conn);
         }
     }
 
@@ -464,13 +478,7 @@ public class DatabaseUtil {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-//            if (conn == null) {
-//                try {
-//                    conn.close();
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//            }
+            close(conn);
         }
         logger.info(sb.toString());
         return sb.toString();
@@ -531,13 +539,7 @@ public class DatabaseUtil {
         } catch (SQLException e) {
             logger.error("SQL error:", e);
         } finally {
-//            if (conn == null) {
-//                try {
-//                    conn.close();
-//                } catch (SQLException e) {
-//                    logger.error("SQL error:", e);
-//                }
-//            }
+            close(conn);
         }
         return re;
     }
