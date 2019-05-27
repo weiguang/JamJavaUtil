@@ -26,7 +26,7 @@ public class DatabaseUtil {
     //  Database credentials
     static final String USER = ResourceBundle.getBundle("jdbc").getString("user" );
     static final String PASS = ResourceBundle.getBundle("jdbc").getString("password");
-    static final int MAX_ACTIVE = (int)ResourceBundle.getBundle("jdbc").getObject("maxActive");
+    static final int MAX_ACTIVE = Integer.valueOf(ResourceBundle.getBundle("jdbc").getString("maxActive"));
 
 
     static Connection conn = null;
