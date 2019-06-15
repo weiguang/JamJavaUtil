@@ -58,4 +58,17 @@ public class DatabaseUtilTest {
         System.out.println(System.currentTimeMillis() - before);
 
     }
+
+    @Test
+    public void getInfo() {
+        String database = "line_optimize";
+        String [] tables  = {"ops_mlo_d_od_info", "ops_mlo_d_cvy_info", "ops_mlo_d_cvy_sub_info", "ops_mlo_d_cvy_trans_info"
+                , "ops_mlo_d_route_config", "ops_mlo_d_route_info", "ops_mlo_b_input_transfer_batch_delivery", "ops_mlo_d_zone_cost" };
+        for (String tab : tables) {
+            String content = DatabaseUtil.getTableInfo(database,tab);
+            DatabaseUtil.outputFile("E:\\output\\", tab + ".csv", content);
+        }
+
+    }
+
 }

@@ -75,7 +75,7 @@ public class DatabaseUtil {
 
 
     /**
-     * 初始化线程池
+     * 初始化数据库连接池
      */
     private static void initPool() {
         try {
@@ -84,8 +84,9 @@ public class DatabaseUtil {
             ds.setUsername(USER);
             ds.setPassword(PASS);
             ds.setUrl(DB_URL);
-            // 初始的连接数；
-            ds.setMaxTotal(MAX_ACTIVE);
+            try {
+                ds.setMaxTotal(Integer.valueOf(MAX_ACTIVE));
+            } catch (Exception e) {logger.error("set database pool maxSize error :", e);}
             DATASOURCE = ds;
         } catch (Exception e) {
             e.printStackTrace();
@@ -466,10 +467,10 @@ public class DatabaseUtil {
             while(rs.next()){
                 //Retrieve by column name
                 String column_name = rs.getString("column_name"); //字段名字
-                String data_type = rs.getString("data_type"); //字段注释
+                String data_type = rs.getString("data_type"); //字段类型
                 String is_nullable = rs.getString("is_nullable"); //字段名字
-                String column_default = rs.getString("column_default"); //字段名字
-                String column_comment = rs.getString("column_comment"); //字段注释
+                String column_default = rs.getString("column_default"); //默认值
+                String column_comment = "\"" + rs.getString("column_comment") +"\""; //字段注释
                 sb.append(column_name+","+data_type + ",");
                 sb.append(is_nullable.equals("NO")?  yes : "");
                 sb.append(","+ ((column_default == null || column_default.equals("null"))? "":column_default)  );
