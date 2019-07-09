@@ -43,3 +43,4 @@ build/
 *.out
 
 
+src/main/java/META-INF/MANIFEST.MF
