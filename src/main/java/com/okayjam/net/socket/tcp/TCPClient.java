@@ -12,14 +12,19 @@ import java.util.Scanner;
  */
 public class TCPClient {
     public static void main (String[] args) throws IOException {
+        int PORT = 10001;
         Scanner scanner = new Scanner(System.in);
         Socket socket = null;
         ObjectOutputStream output = null;
         ObjectInputStream input = null;
-        InetSocketAddress addr = new InetSocketAddress("127.0.0.1",10001);
         try{
+            // 连接方式1
+            socket = new Socket("127.0.0.1",PORT);
+            // 连接方式2
+/*            InetSocketAddress addr = new InetSocketAddress("127.0.0.1",PORT);
             socket = new Socket();
-            socket.connect(addr);
+            socket.connect(addr);*/
+
 
             output = new ObjectOutputStream(socket.getOutputStream());
             input = new ObjectInputStream(socket.getInputStream());
