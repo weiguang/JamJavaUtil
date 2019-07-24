@@ -8,7 +8,7 @@ import java.net.SocketException;
 
 /**
  * @description: UDP接收
- * @author: Chen wei guang <weiguangchen@sf-express.com>
+ * @author: Chen wei guang
  * @create: 2018/08/06 14:54
  **/
 public class UDPServer extends Thread {
@@ -43,18 +43,13 @@ public class UDPServer extends Thread {
                 InetAddress address = packet.getAddress();
                 int port = packet.getPort();
                 String returnMsg = "server received:" + received;
-                packet = new DatagramPacket( returnMsg.getBytes(), returnMsg.getBytes().length, port);
+                packet = new DatagramPacket( returnMsg.getBytes(),  returnMsg.getBytes().length, address, port);
                 socket.send(packet);
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            try {
-                socket.send(packet);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         socket.close();
     }

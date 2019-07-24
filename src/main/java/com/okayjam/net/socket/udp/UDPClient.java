@@ -7,7 +7,7 @@ import java.net.*;
 
 /**
  * @description: ${description}
- * @author: Chen wei guang <weiguangchen@sf-express.com>
+ * @author: Chen wei guang
  * @create: 2018/08/06 14:55
  **/
 public class UDPClient {
