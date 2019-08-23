@@ -18,6 +18,7 @@ import java.util.Date;
  * @create: 2018/09/06 11:22
  **/
 public class DatabaseUtil {
+    public static final String TABLE = "jam1";
     private static final Logger logger =  LoggerFactory.getLogger(DatabaseUtil.class);
 
     // JDBC driver name and database URL
@@ -34,16 +35,16 @@ public class DatabaseUtil {
     static  DataSource DATASOURCE;
 
     public static void main(String[] args) {
-        String table = "jam1";
+        String TABLE = "jam1";
         User user = new User();
         user.setName("李四2");
         user.setAge(12);
         user.setBirthday(new Date());
         user.setWeight(65.3);
 
-        insertEntity(User.class,user,table);
+        insertEntity(User.class,user,TABLE);
 
-        String sql = "select * from  " + table ;
+        String sql = "select * from  " + TABLE ;
         List<User> list = null;
         try {
             list = (List<User>)selectResultToList(sql,User.class);
