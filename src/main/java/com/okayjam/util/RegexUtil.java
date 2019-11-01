@@ -83,7 +83,7 @@ public final class RegexUtil {
      * @return 验证成功返回true，验证失败返回false 
      */  
     public static boolean checkBlankSpace(String blankSpace) {  
-        String regex = "\\s+";  
+        String regex = "<(\\w+)>(.*)</\\1>";
         return Pattern.matches(regex,blankSpace);  
     }  
       

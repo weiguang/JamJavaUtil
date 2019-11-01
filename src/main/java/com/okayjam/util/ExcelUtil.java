@@ -122,7 +122,17 @@ public class ExcelUtil {
                 if (o == null) {
                     cell.setCellValue("");
                 } else {
-                    cell.setCellValue(o.toString());
+                    if (o instanceof Number) {
+                        if (o instanceof Integer || o instanceof Short || o instanceof Long || o instanceof Byte) {
+                            cell.setCellValue(((Number) o).longValue());
+                        } else {
+                            cell.setCellValue(((Number) o).doubleValue());
+                        }
+                    }
+                    else {
+                        cell.setCellValue(o.toString());
+                    }
+
                 }
                 cell.setCellStyle(styleList.get(j));
             }

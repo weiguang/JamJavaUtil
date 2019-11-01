@@ -2,6 +2,7 @@ package com.okayjam.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -22,6 +23,10 @@ public class DateUtil {
     public static final String YMDHMS = "yyyyMMddHHmmss";
     public static final long ONE_DAY_MILLS = 3600000 * 24;
 
+    //使用ThreadLocal代替原来的new SimpleDateFormat
+    private static final ThreadLocal<SimpleDateFormat> sdf = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd"));
+
+
 
     /**
      * 日期转换为制定格式字符串
@@ -31,8 +36,7 @@ public class DateUtil {
      * @return
      */
     public static String formatDate(Date time, String format) {
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
-        return sdf.format(time);
+        return sdf.get().format(time);
     }
 
     /**
@@ -110,6 +114,32 @@ public class DateUtil {
         c.setTime(date);
         c.add(calendarField, amount);
         return c.getTime();
+    }
+
+    /**
+     * 获取相对于这一周的，周几时间
+     * @param DayOfWeek 获取星期几
+     * @param whichWeek 相对于这周的数，例如0标识这周，1表示下周，-1表示上周
+     * @return 返回时间
+     */
+    public static Date getWeekDateFromNow(int DayOfWeek, int whichWeek){
+        return getWeekDate(Calendar.getInstance(), DayOfWeek, whichWeek);
+    }
+    /**
+     * 获取相对于这一周的，周几时间
+     * @param cal 输入日期
+     * @param DayOfWeek 获取星期几
+     * @param whichWeek 相对于这周的数，例如0标识这周，1表示下周，-1表示上周
+     * @return 返回时间
+     */
+    public static Date getWeekDate(Calendar cal, int DayOfWeek, int whichWeek){
+        //判断当前日期是否为周末，因为周末是本周第一天，如果不向后推迟一天的到的将是下周一的零点，而不是本周周一零点
+        if (1 == cal.get(Calendar.DAY_OF_WEEK)){
+            cal.add(Calendar.DATE, -1);
+        }
+        cal.set(Calendar.DAY_OF_WEEK, DayOfWeek);
+        cal.add(Calendar.DATE, 7 * whichWeek);
+        return cal.getTime();
     }
 
 

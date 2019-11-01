@@ -61,12 +61,12 @@ public class DatabaseUtilTest {
 
     @Test
     public void getInfo() {
-        String database = "line_optimize";
-        String [] tables  = {"ops_mlo_d_od_info", "ops_mlo_d_cvy_info", "ops_mlo_d_cvy_sub_info", "ops_mlo_d_cvy_trans_info"
-                , "ops_mlo_d_route_config", "ops_mlo_d_route_info", "ops_mlo_b_input_transfer_batch_delivery", "ops_mlo_d_zone_cost" };
+        String database = "guang";
+        String [] tables  = {"pass_out_flow_info_tmp_output"};
         for (String tab : tables) {
-            String content = DatabaseUtil.getTableInfo(database,tab);
-            DatabaseUtil.outputFile("E:\\output\\", tab + ".csv", content);
+            String[][] content = DatabaseUtil.getTableFiels(database,tab);
+            System.out.println(content[0]);
+           // DatabaseUtil.outputFile("E:\\output\\", tab + ".csv", content);
         }
 
     }

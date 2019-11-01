@@ -1,6 +1,6 @@
 package com.okayjam.test;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.okayjam.annotation.JamAnnotation;
 
 import java.util.Date;
 
@@ -9,7 +9,7 @@ public class User {
     int id;
 
     //可以指定转换json的字段
-    @JSONField(name = "name")
+    @JamAnnotation("BBBBBBB")
     String name;
 
     int age;

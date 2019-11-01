@@ -60,7 +60,7 @@ public class Animal implements Serializable{
 	@Override
 	public String toString(){
 		//return 1;
-		return "toString:name = " + name;
+		return "toString:name = " + name + ",\tborn = "+ born;
 	}
 
 }

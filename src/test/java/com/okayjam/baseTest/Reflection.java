@@ -1,5 +1,6 @@
 package com.okayjam.baseTest;
 
+import com.okayjam.test.Animal;
 import org.junit.Test;
 
 import java.lang.reflect.Constructor;
@@ -64,10 +65,9 @@ public class Reflection {
             System.out.println(method);
         }
 
-
         System.out.println("Field:");
         for (Field field : re.getFields()) {
-            System.out.println(field);
+            System.out.print(field+", ");
         }
 
         //invoke test method
@@ -83,7 +83,17 @@ public class Reflection {
         }
     }
 
-    public void  testMethod(int a) {
-        System.out.println("Test method!");
+    @Test
+    public void  testMethod() throws Exception{
+        Class cls = Class.forName("com.okayjam.test.Animal");
+        Object o = cls.getConstructor(String.class).newInstance("JJJJJJJJJJ");
+        System.out.println(o);
+        Field field = cls.getDeclaredField("name");
+        field.setAccessible(true);
+        field.set(o, "llllllllllll");
+        System.out.println(o);
     }
+
+
+
 }
