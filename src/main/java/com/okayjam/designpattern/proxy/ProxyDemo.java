@@ -1,4 +1,4 @@
-package com.okayjam.proxy;
+package com.okayjam.designpattern.proxy;
 
 import net.sf.cglib.proxy.Enhancer;
 
@@ -13,14 +13,8 @@ import java.util.regex.Pattern;
  * @date 2019/09/06 15:05
  **/
 public class ProxyDemo {
-    public static void main(String[] args) throws Exception{
-        demo();
-        demo2();
-        System.out.println();
-        // CGLIB
-        demo3();
-        String rex = "(?m)abcd";
-        System.out.println(Pattern.matches(rex,"abcd"));
+    public static void main(String[] args)  {
+        jdkProxyDemo();
     }
 
     /**
@@ -35,17 +29,19 @@ public class ProxyDemo {
         return (T) Proxy.newProxyInstance(inf.getClassLoader(), new Class<?>[] {inf}, new InvoHandler(realObj));
     }
 
-    static void demo() {
+    static void jdkProxyDemo() {
         IService proxyService = getProxy(IService.class, new IServiceImpl());
         proxyService.sayHello();
         proxyService.sayHello2();
+        proxyService.toString();
+
 
         IService2 proxyService2 = getProxy(IService2.class, new IService2Impl());
         proxyService2.fly();
 
     }
 
-    static void demo2() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    static void jdkProxyDemo2() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         Class<?> proxyCls = Proxy.getProxyClass(IService.class.getClassLoader(), IService.class);
         Constructor constructor = proxyCls.getConstructor(InvocationHandler.class);
         IService proxyService = (IService) constructor.newInstance(new InvoHandler(new IServiceImpl()));
@@ -53,9 +49,11 @@ public class ProxyDemo {
     }
 
 
-    static void demo3() {
+    static void cglibDemo() {
         IServiceImpl proxyService = getProxy(IServiceImpl.class);
         proxyService.sayHello();
+        System.out.println("是否是代理：" + Proxy.isProxyClass(proxyService.getClass()));
+        System.out.println("是否是代理：" + Proxy.isProxyClass(new IServiceImpl().getClass()));
     }
 
     /**

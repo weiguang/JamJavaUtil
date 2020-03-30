@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.okayjam.test.User;
 import com.okayjam.util.DatabaseUtil;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -61,8 +61,8 @@ public class DatabaseUtilTest {
 
     @Test
     public void getInfo() {
-        String database = "guang";
-        String [] tables  = {"pass_out_flow_info_tmp_output"};
+        String database = "m_vehicleyuce";
+        String [] tables  = {"pass_out_flow_info_tmp_output","pass_out_flow_plan_result","pass_tmp_flow_qty_remain","pass_out_trans_original_info"};
         for (String tab : tables) {
             String[][] content = DatabaseUtil.getTableFiels(database,tab);
             System.out.println(content[0]);

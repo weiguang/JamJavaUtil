@@ -1,7 +1,8 @@
 package com.okayjam.baseTest;
 
 
-import org.junit.jupiter.api.Test;
+
+import org.junit.Test;
 
 import java.util.*;
 import java.util.stream.Collectors;

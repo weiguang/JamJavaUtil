@@ -176,12 +176,11 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.13</version>
             <scope>test</scope>
         </dependency>
 
-<!--
-        &lt;!&ndash; https://mvnrepository.com/artifact/org.junit/junit-bom &ndash;&gt;
+        <!-- https://mvnrepository.com/artifact/org.junit/junit-bom -->
         <dependency>
             <groupId>org.junit</groupId>
             <artifactId>junit-bom</artifactId>
@@ -189,12 +188,12 @@
             <type>pom</type>
             <scope>test</scope>
         </dependency>
--->
 
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>RELEASE</version>
+            <version>5.6.1</version>
             <scope>test</scope>
         </dependency>
 

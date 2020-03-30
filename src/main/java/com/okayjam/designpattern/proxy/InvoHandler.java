@@ -1,4 +1,4 @@
-package com.okayjam.proxy;
+package com.okayjam.designpattern.proxy;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -19,6 +19,7 @@ public class InvoHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         System.out.println("Start invoke");
         Object re = method.invoke(realObject,args);
+        System.out.println(method.getDeclaringClass());
        return re;
     }
 }

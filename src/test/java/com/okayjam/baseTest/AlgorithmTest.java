@@ -2,7 +2,7 @@ package com.okayjam.baseTest;
 
 import com.okayjam.algorithm.Algorithm;
 import com.okayjam.algorithm.MathUtil;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 
 import java.util.Random;

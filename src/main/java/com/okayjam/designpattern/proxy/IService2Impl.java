@@ -1,4 +1,4 @@
-package com.okayjam.proxy;
+package com.okayjam.designpattern.proxy;
 
 /**
  * @author Chen weiguang chen2621978@gmail.com
