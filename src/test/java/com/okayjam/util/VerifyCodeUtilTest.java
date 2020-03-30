@@ -2,7 +2,7 @@ package com.okayjam.util;
 
 
 import com.okayjam.util.VerifyCodeUtil;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 /**
  * @author: Chen weiguang <weiguangchen@sf-express.com>

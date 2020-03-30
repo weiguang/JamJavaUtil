@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 /**
+ * 训练数 https://github.com/tesseract-ocr/langdata
  * @author: Chen weiguang <weiguangchen@sf-express.com>
  * @create: 2018/11/22 16:28
  **/
