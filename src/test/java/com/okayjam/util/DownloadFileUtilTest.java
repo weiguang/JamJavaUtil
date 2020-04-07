@@ -1,6 +1,7 @@
 package com.okayjam.util;
 
 
+import com.okayjam.net.okhttp.OKHttpUtil;
 import org.junit.Test;
 import java.io.IOException;
 
@@ -15,10 +16,11 @@ public class DownloadFileUtilTest {
     public void download() throws IOException {
         String url = "https://www.baidu.com/index.html";
 //        String url = "http://127.0.0.1/index.html";
-        DownloadFileUtil2.download(url, DownloadFileUtil.HTTP_REQUEST_METHOD_GET, null, "d:/1/1");
-        long start = System.currentTimeMillis();
+/*        long start = System.currentTimeMillis();
         DownloadFileUtil2.download(url, DownloadFileUtil.HTTP_REQUEST_METHOD_GET, null, "d:/1");
-        System.out.println( System.currentTimeMillis() - start );
+        System.out.println( System.currentTimeMillis() - start );*/
+
+        OKHttpUtil.requertAsync(url, DownloadFileUtil.HTTP_REQUEST_METHOD_GET, null, null);
     }
 
 

@@ -1,7 +1,8 @@
 package com.okayjam.util;
 
-import com.alibaba.fastjson.JSONObject;
-import okhttp3.*;
+import com.okayjam.net.okhttp.OKHttpUtil;
+import okhttp3.Call;
+import okhttp3.Response;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,9 +13,6 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Chen weiguang chen2621978@gmail.com
@@ -23,20 +21,6 @@ import java.util.concurrent.TimeUnit;
 public class DownloadFileUtil2 {
     private static final Logger LOGGER = LoggerFactory.getLogger(DownloadFileUtil2.class);
 
-    private static final int HTTP_REQUEST_TIMEOUT = 10;
-    public static final String HTTP_REQUEST_METHOD_GET = "GET";
-    public static final String HTTP_REQUEST_METHOD_POST = "POST";
-    final static MediaType JSONType = MediaType.parse("application/json; charset=utf-8");
-
-    static OkHttpClient client;
-
-    static {
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.readTimeout(HTTP_REQUEST_TIMEOUT, TimeUnit.SECONDS);
-        builder.connectTimeout(HTTP_REQUEST_TIMEOUT, TimeUnit.SECONDS);
-        builder.followRedirects(true);
-         client =  builder.build();
-    }
 
     public static String download(String downloadUrl, String requestMethod, String params, String path) throws IOException {
         return download(downloadUrl, requestMethod, params, null, path);
@@ -53,7 +37,7 @@ public class DownloadFileUtil2 {
      * @throws IOException IO异常
      */
     public static String download(String downloadUrl, String requestMethod, String params, String headers, String path) throws IOException {
-        Call conn = getConnection(downloadUrl, requestMethod, params, headers);
+        Call conn = OKHttpUtil.getConnection(downloadUrl, requestMethod, params, headers);
         Response response = conn.execute();
         int responseCode = response.code();
         if(responseCode != HttpURLConnection.HTTP_OK){
@@ -82,37 +66,6 @@ public class DownloadFileUtil2 {
         return fullPath;
     }
 
-    /**
-     * 获取请求
-     * @param url 地址
-     * @param requestMethod 请求方式。 POST 或者 GET
-     * @param params 如果是POST，还有请求参数，json格式
-     * @return 返回 HttpURLConnection
-     * @throws IOException 异常
-     */
-    public static Call getConnection(String url, String requestMethod, String params, String headers) throws IOException {
-        Request.Builder reqBuilder = new Request.Builder().url(url);
-
-        if (headers != null) {
-            JSONObject object = JSONObject.parseObject(headers);
-            object.keySet().forEach(re -> reqBuilder.addHeader(re, object.getString(re)));
-        }
-
-        RequestBody body = null;
-        if (params != null) {
-             body = RequestBody.create(JSONType, params);
-        }
-
-        // set default method
-        if (requestMethod == null) {
-            requestMethod = HTTP_REQUEST_METHOD_GET;
-        }
-        reqBuilder.method(requestMethod, body);
-
-        Call call = client.newCall(reqBuilder.build());
-
-        return call;
-    }
 
     /**
      * 保存文件

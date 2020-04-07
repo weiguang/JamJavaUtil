@@ -13,7 +13,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <commons-io.version>2.6</commons-io.version>
         <netty.version>4.1.27.Final</netty.version>
-        <okhttp.version>3.11.0</okhttp.version>
+        <okhttp.version>>3.14.7</okhttp.version>
         <poi.version>4.1.1</poi.version>
         <mysql.version>8.0.12</mysql.version>
         <tess4j.version>4.4.1</tess4j.version>
@@ -50,7 +50,13 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
-            <version>${okhttp.version}</version>
+            <version>4.4.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okio</groupId>
+            <artifactId>okio</artifactId>
+            <version>2.5.0</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->

@@ -1,7 +1,8 @@
 package com.okayjam.net;
 
 
-import com.okayjam.net.okhttp.HttpUtil;
+import com.okayjam.net.okhttp.OKHttpUtil;
+import com.okayjam.util.DownloadFileUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,37 +15,16 @@ import java.io.IOException;
  * @create: 2018/07/24  15:17
  **/
 public class OkhttpTest {
-    public String host = "";
-
-    @Before
-    public void setUp() {
-//        host = "http://10.118.12.27:8987/";
-        host = "http://127.0.0.1:10001/";
-        System.out.println(this.getClass().getName() + " test start!");
-    }
-
-    @After
-    public void tearDown() {
-        System.out.println("Test end!");
-    }
-
-//    // test method to add two values
-//    @Test
-//    public void testAdd(){
-//        double result= 2 + 3;
-//        Assert.assertTrue(result==5);
-//    }
 
     @Test
-    public void testGet() throws IOException {
-//        HttpUtil.getString(hots + "?jam=yes");
-        HttpUtil.getString(host + "tcp_data");
+    public void testRequest() throws IOException, InterruptedException {
+        String url = "https://www.baidu.com";
+//        String url = "http://127.0.0.1/index.html";
+        OKHttpUtil.requertAsync(url, DownloadFileUtil.HTTP_REQUEST_METHOD_POST, null, null);
+        Thread.sleep(2000);
+        System.out.println(OKHttpUtil.s);
     }
 
-//    @Test
-    public void testPost() throws IOException {
-//       HttpUtil.postJson(host,"JamJam");
-         HttpUtil.postJson(host + "tcp_data","\"username\":\"7845166313\",\"password\":\"123456\"}");
-    }
+
 
 }
