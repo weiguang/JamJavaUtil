@@ -14,6 +14,12 @@ public class DownloadFileUtilTest {
     @Test
     public void download() throws IOException {
         String url = "https://www.baidu.com/index.html";
-        DownloadFileUtil.download(url, DownloadFileUtil.HTTP_REQUEST_METHOD_GET, null, "d:/1");
+//        String url = "http://127.0.0.1/index.html";
+        DownloadFileUtil2.download(url, DownloadFileUtil.HTTP_REQUEST_METHOD_GET, null, "d:/1/1");
+        long start = System.currentTimeMillis();
+        DownloadFileUtil2.download(url, DownloadFileUtil.HTTP_REQUEST_METHOD_GET, null, "d:/1");
+        System.out.println( System.currentTimeMillis() - start );
     }
+
+
 }

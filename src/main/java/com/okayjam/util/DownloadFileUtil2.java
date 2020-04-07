@@ -1,28 +1,42 @@
 package com.okayjam.util;
 
 import com.alibaba.fastjson.JSONObject;
+import okhttp3.*;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Chen weiguang chen2621978@gmail.com
  * @date 2020/03/10 20:18
  **/
-public class DownloadFileUtil {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DownloadFileUtil.class);
+public class DownloadFileUtil2 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DownloadFileUtil2.class);
 
-    private static final int HTTP_REQUEST_TIMEOUT = 20000;
+    private static final int HTTP_REQUEST_TIMEOUT = 10;
     public static final String HTTP_REQUEST_METHOD_GET = "GET";
     public static final String HTTP_REQUEST_METHOD_POST = "POST";
+    final static MediaType JSONType = MediaType.parse("application/json; charset=utf-8");
+
+    static OkHttpClient client;
+
+    static {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.readTimeout(HTTP_REQUEST_TIMEOUT, TimeUnit.SECONDS);
+        builder.connectTimeout(HTTP_REQUEST_TIMEOUT, TimeUnit.SECONDS);
+        builder.followRedirects(true);
+         client =  builder.build();
+    }
 
     public static String download(String downloadUrl, String requestMethod, String params, String path) throws IOException {
         return download(downloadUrl, requestMethod, params, null, path);
@@ -39,30 +53,32 @@ public class DownloadFileUtil {
      * @throws IOException IO异常
      */
     public static String download(String downloadUrl, String requestMethod, String params, String headers, String path) throws IOException {
-        HttpURLConnection conn = getConnection(downloadUrl, requestMethod, params, headers);
-        int responseCode = conn.getResponseCode();
+        Call conn = getConnection(downloadUrl, requestMethod, params, headers);
+        Response response = conn.execute();
+        int responseCode = response.code();
         if(responseCode != HttpURLConnection.HTTP_OK){
-            LOGGER.error("【下载导出文件】请求响应错误！返回状态码：{} ，错误信息：{} ", responseCode, getErrorInfo(conn));
+            LOGGER.error("【下载导出文件】请求响应错误！返回状态码：{} ，错误信息：{}, {} ", responseCode, response.message() ,
+                    response.body() != null ? response.body().string() : null);
             return null;
         }
         // 获取文件名
-        String field = conn.getHeaderField("Content-Disposition");
+        String field = response.header("Content-Disposition");
         String fileName ;
         if (field != null) {
             fileName = URLDecoder.decode(field, String.valueOf(StandardCharsets.UTF_8));
             fileName = fileName.replaceFirst("(?i)^.*filename=\"?([^\"]+)\"?.*$", "$1");
         } else  {
-            fileName = conn.getURL().getHost() + "-" + DateTimeFormatter.ofPattern("yyyyMMddHHmmss").format(LocalDateTime.now());
-            String extension = FilenameUtils.getExtension(conn.getURL().getPath());
+            fileName = conn.request().url().url().getHost() + "-" + DateTimeFormatter.ofPattern("yyyyMMddHHmmss").format(LocalDateTime.now());
+            String extension = FilenameUtils.getExtension(conn.request().url().url().getPath());
             if (extension != null) {
                 fileName += "." + extension;
             }
         }
         // 读取输入流并保存
-        InputStream inStream = new BufferedInputStream(conn.getInputStream());
+        InputStream inStream = new BufferedInputStream(response.body().byteStream());
         String fullPath = path + "/" + fileName;
         saveToFile(inStream, fullPath);
-        conn.getInputStream().close();
+        response.close();
         return fullPath;
     }
 
@@ -74,34 +90,28 @@ public class DownloadFileUtil {
      * @return 返回 HttpURLConnection
      * @throws IOException 异常
      */
-    public static HttpURLConnection getConnection(String url, String requestMethod, String params, String headers) throws IOException {
-        HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
-        conn.setConnectTimeout(HTTP_REQUEST_TIMEOUT);
-        conn.setReadTimeout(HTTP_REQUEST_TIMEOUT);
+    public static Call getConnection(String url, String requestMethod, String params, String headers) throws IOException {
+        Request.Builder reqBuilder = new Request.Builder().url(url);
 
-        // 设置headers
-        if (headers != null  && headers.length() > 0) {
-            JSONObject header = JSONObject.parseObject(headers);
-            for (String key : header.keySet()) {
-                conn.setRequestProperty(key, header.getString(key));
-            }
+        if (headers != null) {
+            JSONObject object = JSONObject.parseObject(headers);
+            object.keySet().forEach(re -> reqBuilder.addHeader(re, object.getString(re)));
         }
 
-        if (HTTP_REQUEST_METHOD_POST.equals(requestMethod)) {
-            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
-            conn.setRequestMethod(HTTP_REQUEST_METHOD_POST);
-            if (params != null) {
-                OutputStream os = conn.getOutputStream();
-                os.write(params.getBytes(StandardCharsets.UTF_8));
-                os.close();
-            }
-        } else {
-            conn.setRequestMethod(HTTP_REQUEST_METHOD_GET);
-            conn.connect();
+        RequestBody body = null;
+        if (params != null) {
+             body = RequestBody.create(JSONType, params);
         }
-        return conn;
+
+        // set default method
+        if (requestMethod == null) {
+            requestMethod = HTTP_REQUEST_METHOD_GET;
+        }
+        reqBuilder.method(requestMethod, body);
+
+        Call call = client.newCall(reqBuilder.build());
+
+        return call;
     }
 
     /**
