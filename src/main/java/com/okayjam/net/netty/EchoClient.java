@@ -27,20 +27,21 @@ public class EchoClient {
     }
 
     public void start() throws Exception {
-        EventLoopGroup nioEventLoopGroup = null;
+        // EventLoopGroup可以理解为是一个线程池，这个线程池用来处理连接、接受数据、发送数据
+        EventLoopGroup nioEventLoopGroup = new NioEventLoopGroup();
         try {
             // 客户端引导类
             Bootstrap bootstrap = new Bootstrap();
-            // EventLoopGroup可以理解为是一个线程池，这个线程池用来处理连接、接受数据、发送数据
-            nioEventLoopGroup = new NioEventLoopGroup();
-            bootstrap.group(nioEventLoopGroup)//多线程处理
-                    .channel(NioSocketChannel.class)//指定通道类型为NioServerSocketChannel，一种异步模式，OIO阻塞模式为OioServerSocketChannel
-                    .remoteAddress(new InetSocketAddress(host, port))//地址
-                    .handler(new ChannelInitializer<SocketChannel>() {//业务处理类
+            bootstrap.group(nioEventLoopGroup)
+                    //指定通道类型为NioServerSocketChannel，一种异步模式，OIO阻塞模式为OioServerSocketChannel
+                    .channel(NioSocketChannel.class)
+                    //地址
+                    .remoteAddress(new InetSocketAddress(host, port))
+                    //业务处理类
+                    .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
-                        protected void initChannel(SocketChannel ch)
-                                throws Exception {
-                            ch.pipeline().addLast(new EchoClientHandler());//注册handler
+                        protected void initChannel(SocketChannel ch) {
+                            ch.pipeline().addLast(new EchoClientHandler());
                         }
                     });
             // 链接服务器

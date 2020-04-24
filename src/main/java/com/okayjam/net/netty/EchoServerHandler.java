@@ -2,11 +2,17 @@ package com.okayjam.net.netty;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.util.CharsetUtil;
 
 import java.util.Date;
 
+/**
+ * @author Jam
+ */
+@ChannelHandler.Sharable
 public class EchoServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
@@ -15,22 +21,16 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
         System.out.println("server 读取数据……");
         //读取数据
         ByteBuf buf = (ByteBuf) msg;
-        byte[] req = new byte[buf.readableBytes()];
-        buf.readBytes(req);
-        String body = new String(req, "UTF-8");
-        System.out.println("接收客户端数据:" + body);
-        //向客户端写数据
-        System.out.println("server向client发送数据");
-        String currentTime = new Date(System.currentTimeMillis()).toString();
-        ByteBuf resp = Unpooled.copiedBuffer(currentTime.getBytes());
-        ctx.write(resp);
-
+        System.out.println("Server received: " + buf.toString(CharsetUtil.UTF_8));
+        System.out.println("server 发送数据数据…… " + buf.toString(CharsetUtil.UTF_8));
+        ctx.write(buf);
     }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         System.out.println("server 读取数据完毕..");
-        ctx.flush();//刷新后才将数据发出到SocketChannel
+        //刷新后才将数据发出到SocketChannel
+        ctx.writeAndFlush(Unpooled.EMPTY_BUFFER);
     }
 
     @Override
