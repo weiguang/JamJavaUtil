@@ -30,5 +30,35 @@ public class DataUtil {
 		int a = SCALA[n];
 		return (double)Math.round(d * a) / a;
 	}
+
+
+	/**
+	 * 小端输出模式(计算机处理常用的方式)
+	 * @param i 需要转换的数字
+	 * @return 字节数组
+	 */
+	public static byte[] int2BytesSmall(int i) {
+		return new byte[] {
+				(byte) (i & 0xFF),
+				(byte) ((i >> 8) & 0xFF),
+				(byte) ((i >> 16) & 0xFF),
+				(byte) ((i >> 24) & 0xFF)
+		};
+	}
+
+	/**
+	 * 大端输出模式(符合人阅读)
+	 * @param i  需要转换的数字
+	 * @return 字节数组
+	 */
+	public static byte[] int2BytesBig(int i) {
+		byte[] bytes = new byte[4];
+		int offset = 0;
+		bytes[offset + 0] = (byte) (i >>> 24);
+		bytes[offset + 1] = (byte) (i >>> 16);
+		bytes[offset + 2] = (byte) (i >>> 8);
+		bytes[offset + 3] = (byte) i;
+		return bytes;
+	}
 	
 }

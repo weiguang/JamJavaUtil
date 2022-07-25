@@ -41,6 +41,7 @@ build/
 
 #my file
 *.out
+*.iml
 
 
 src/main/java/META-INF/MANIFEST.MF

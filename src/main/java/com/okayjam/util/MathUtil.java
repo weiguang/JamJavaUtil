@@ -1,4 +1,4 @@
-package com.okayjam.algorithm;
+package com.okayjam.util;
 
 import java.util.*;
 

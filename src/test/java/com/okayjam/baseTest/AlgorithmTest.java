@@ -1,7 +1,7 @@
 package com.okayjam.baseTest;
 
 import com.okayjam.algorithm.Algorithm;
-import com.okayjam.algorithm.MathUtil;
+import com.okayjam.util.MathUtil;
 import org.junit.Test;
 
 

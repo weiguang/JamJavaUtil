@@ -1,12 +1,15 @@
 package com.okayjam.net.socket.tcp;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+
+import org.msgpack.MessagePack;
+import org.msgpack.template.Templates;
+
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.*;
 
 /**
@@ -15,7 +18,7 @@ import java.util.concurrent.*;
 public class TCPServer {
     private int MaxClient = 2;
     static  String  ExitMessage = "88";
-    static int PORT  = 10001;
+    static int PORT  = 63000;
     public static void main(String[] args) throws IOException {
         new TCPServer().StartListen();
     }
@@ -58,20 +61,30 @@ class ServerTask implements Runnable {
     public void run() {
         //System.out.println("处理开始");
         try (
-                ObjectOutputStream output = new ObjectOutputStream(task.getOutputStream());
-                ObjectInputStream input = new ObjectInputStream(task.getInputStream());
+                //ObjectOutputStream output = new ObjectOutputStream(task.getOutputStream());
+                BufferedInputStream in = new BufferedInputStream(task.getInputStream());
+//                ObjectInputStream input = new ObjectInputStream(task.getInputStream());
         ) {
             while (true) {
-                String msg = input.readUTF();
-                Date date = new Date();
-                System.out.println( task.getRemoteSocketAddress()+" 发来消息(" + date.getTime() + "):" + msg);
-                output.writeUTF("server已经接收到(" + date + "):" + msg);
-                output.flush();
-                if (msg.equals(TCPServer.ExitMessage)) {break;}
+                byte[] a = new byte[1024];
+                in.read(a);
+                MessagePack msgPack = new MessagePack();
+                Map<String, String> read = msgPack.read(a, Templates.tMap(Templates.TString, Templates.TString));
+                System.out.println(new String(a));
+
+                BufferedOutputStream out = new BufferedOutputStream(task.getOutputStream());
+                out.write(a);
+                out.flush();
+//                String msg = input.readUTF();
+//                Date date = new Date();
+//                System.out.println( task.getRemoteSocketAddress()+" 发来消息(" + date.getTime() + "):" + msg);
+//                output.writeUTF("server已经接收到(" + date + "):" + msg);
+//                output.flush();
+//                if (msg.equals(TCPServer.ExitMessage)) {break;}
             }
         } catch (IOException e) {
             System.out.println("已经断开连接");
-           // e.printStackTrace();
+            e.printStackTrace();
         }
     }
 }

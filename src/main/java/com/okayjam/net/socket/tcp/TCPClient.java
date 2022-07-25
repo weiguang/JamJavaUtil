@@ -20,6 +20,8 @@ public class TCPClient {
         try{
             // 连接方式1
             socket = new Socket("127.0.0.1",PORT);
+            socket.setKeepAlive(true);
+            socket.setTcpNoDelay(true);
             // 连接方式2
 /*            InetSocketAddress addr = new InetSocketAddress("127.0.0.1",PORT);
             socket = new Socket();

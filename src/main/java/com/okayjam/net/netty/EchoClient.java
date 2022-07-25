@@ -1,14 +1,20 @@
 package com.okayjam.net.netty;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.util.CharsetUtil;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * • 连接服务器 • 写数据到服务器 • 等待接受服务器返回相同的数据 • 关闭连接
@@ -20,6 +26,9 @@ public class EchoClient {
 
     private final String host;
     private final int port;
+
+
+    SocketChannel channel;
 
     public EchoClient(String host, int port) {
         this.host = host;
@@ -46,13 +55,30 @@ public class EchoClient {
                     });
             // 链接服务器
             ChannelFuture channelFuture = bootstrap.connect().sync();
-            channelFuture.channel().closeFuture().sync();
+            channel = (SocketChannel) channelFuture.channel();
         } finally {
-            nioEventLoopGroup.shutdownGracefully().sync();
+            //nioEventLoopGroup.shutdownGracefully().sync();
         }
     }
 
+    public void sendMeg(String s) throws InterruptedException, ExecutionException, TimeoutException {
+        ChannelFuture channelFuture = channel.writeAndFlush(Unpooled.copiedBuffer(s, CharsetUtil.UTF_8)).sync();
+        channelFuture.addListener(new ChannelFutureListener() {
+            @Override
+            public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                System.out.println(channelFuture.isSuccess());
+                Void unused = channelFuture.get();
+                System.out.println();
+
+            }
+        });
+          Void unused = channelFuture.get(8, TimeUnit.SECONDS);
+        System.out.println();
+    }
+
     public static void main(String[] args) throws Exception {
-        new EchoClient("localhost", 20000).start();
+        EchoClient client = new EchoClient("localhost", 20000);
+        client.start();
+        client.sendMeg("11111111111111");
     }
 }

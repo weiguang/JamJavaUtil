@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -45,15 +46,16 @@ public class OKHttpUtil {
         Request.Builder reqBuilder = new Request.Builder().url(url);
 
         if (headers != null) {
-            JSONObject object = JSONObject.parseObject(headers);
-            object.keySet().forEach(re -> reqBuilder.addHeader(re, object.getString(re)));
+            Map object = JSONObject.parseObject(headers);
+            reqBuilder.headers( Headers.of(object));
+            //object.keySet().forEach(re -> reqBuilder.addHeader(re, object.getString(re)));
         }
 
         RequestBody body = null;
         if (params != null) {
-            body = RequestBody.create( JSON, params);
+            body = RequestBody.create( params, JSON);
         } else {
-            body = RequestBody.create(  null, new byte[0]);
+            body = RequestBody.create(  new byte[0],null);
         }
 
         // set default method

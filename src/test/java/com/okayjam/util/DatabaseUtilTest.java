@@ -61,11 +61,12 @@ public class DatabaseUtilTest {
 
     @Test
     public void getInfo() {
-        String database = "m_vehicleyuce";
-        String [] tables  = {"pass_out_flow_info_tmp_output","pass_out_flow_plan_result","pass_tmp_flow_qty_remain","pass_out_trans_original_info"};
+        String database = "risk_control";
+        String [] tables  = {"risk_reconciliation_task","risk_reconciliation_action","risk_reconciliation_task_run_info"};
         for (String tab : tables) {
-            String[][] content = DatabaseUtil.getTableFiels(database,tab);
-            System.out.println(content[0]);
+            DatabaseUtil.getTableInfo(database,tab);
+//            String[][] content = DatabaseUtil.getTableFiels(database,tab);
+//            System.out.println(content[0]);
            // DatabaseUtil.outputFile("E:\\output\\", tab + ".csv", content);
         }
 
