@@ -8,6 +8,7 @@ package com.okayjam.net.netty.tcp;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -28,6 +29,10 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         ctx.flush();
+        Channel channel = ctx.channel();
+
+        channel.writeAndFlush("123");
+        ctx.writeAndFlush("123");
     }
     /**
      * 异常处理

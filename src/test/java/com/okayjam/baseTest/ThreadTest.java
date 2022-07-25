@@ -2,6 +2,7 @@ package com.okayjam.baseTest;
 
 import org.junit.Test;
 
+import java.time.LocalTime;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -11,6 +12,24 @@ import java.util.concurrent.locks.ReentrantLock;
  **/
 public class ThreadTest {
     public static void main(String[] args) {
+
+    }
+
+    @Test
+    public void testSchedulePool() throws ExecutionException, InterruptedException {
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(2);
+        Runnable run = () -> {
+            try {
+                System.out.println(LocalTime.now());
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        };
+//        ScheduledFuture<?> scheduledFuture = scheduledExecutorService.scheduleAtFixedRate(run, 0, 6, TimeUnit.SECONDS);
+        ScheduledFuture<?> scheduledFuture = scheduledExecutorService.scheduleWithFixedDelay(run, 0, 2, TimeUnit.SECONDS);
+        Object o = scheduledFuture.get();
+        System.out.println(o);
 
     }
 

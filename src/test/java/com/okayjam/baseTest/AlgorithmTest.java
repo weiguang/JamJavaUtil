@@ -5,6 +5,7 @@ import com.okayjam.util.MathUtil;
 import org.junit.Test;
 
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -58,6 +59,8 @@ public class AlgorithmTest {
 
     @Test
     public void  testAdd() {
-        MathUtil.test();
+//        System.out.println(Algorithm.minDistance("intention", "execution"));
+        System.out.println(Algorithm.findKthLargest(new int[]{1,2,3,4,5}, 2));
+//        MathUtil.test();
     }
 }

@@ -56,7 +56,7 @@ public class MathUtil {
      * @param n
      * @return 返回下一个和n具有相同1个数的数
      */
-    public int NextN(int n){
+    public static int nextN(int n){
         int x = n&(-n);
         int t = n + x;
         int ans = t | ((n^t)/x)>>2;
@@ -144,7 +144,7 @@ public class MathUtil {
 
 
         public static void test(){
-        System.out.println(addWithoutOperator(12,5));
+        System.out.println(nextN(1));
     }
 
 }
