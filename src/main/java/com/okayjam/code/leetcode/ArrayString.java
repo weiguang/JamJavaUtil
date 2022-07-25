@@ -18,7 +18,51 @@ public class ArrayString {
 //        int[] nums = new int[]{100,4,200,1,3,2};
 //        System.out.println(new ArrayString().longestConsecutive(nums));
 //        System.out.println(Arrays.toString(new ArrayString().twoSum(new int[]{100, 4, 200, 1, 3, 2}, 9)));
-        System.out.println(Arrays.toString(new ArrayString().plusOne(new int[]{9})));
+//        System.out.println(Arrays.toString(new ArrayString().plusOne(new int[]{9})));
+        System.out.println((new ArrayString().candy(new int[]{1,2,3})));
+    }
+
+    public int candy(int[] ratings) {
+        if (ratings.length < 2) {
+            return ratings.length;
+        }
+        int re = 0, pre = 1;
+        for (int i = 0; i < ratings.length - 1; i++) {
+            if (ratings[i] > ratings[i+1]) {
+                pre++;
+            } else if (pre > 1) {
+                pre = 1;
+            }
+            re+= pre;
+        }
+        if (ratings[ratings.length -1] > ratings[ratings.length -2]) {
+             pre += 1;
+        } else {
+            pre = 1;
+        }
+        re += pre;
+        return re;
+    }
+
+    /**
+     *  加油站
+     * https://leetcode.cn/problems/gas-station/
+     * @param gas  [1,4,1,2,6]
+     * @param cost [1,1,6,4,2]
+     * @return 3
+     */
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int total = 0;
+        int idx = -1;
+        for (int i = 0, sum = 0; i < gas.length; i++) {
+            total += gas[i] - cost[i];
+            sum += gas[i] - cost[i];
+            if (sum < 0) {
+                idx = i;
+                sum = 0;
+            }
+        }
+        return total >=0 ? idx  : -1;
     }
 
     public int[] plusOne(int[] digits) {
