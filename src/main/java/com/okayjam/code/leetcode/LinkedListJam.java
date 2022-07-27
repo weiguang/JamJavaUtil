@@ -1,6 +1,9 @@
 package com.okayjam.code.leetcode;
 
+import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -20,10 +23,220 @@ class ListNode {
 	}
 }
 
+class Node {
+	int val;
+	Node next;
+	Node random;
+
+	public Node(int val) {
+		this.val = val;
+		this.next = null;
+		this.random = null;
+	}
+}
+
+
 /**
  * @author chen2
  */
 public class LinkedListJam {
+
+	/**
+	 * https://leetcode.cn/problems/reorder-list/
+	 *  重排链表
+	 * @param head
+	 */
+	public void reorderList(ListNode head) {
+		if (head == null || head.next == null) {
+			return;
+		}
+		ListNode slow = head, fast = head, pre= null;
+		while (fast != null && fast.next != null) {
+			pre = slow;
+			slow = slow.next;
+			fast = fast.next.next;
+		}
+		pre.next = null;
+		slow = reverseList(slow);
+		ListNode cur = head;
+		while(cur.next != null) {
+			ListNode t = cur.next;
+			cur.next = slow;
+			slow = slow.next;
+			cur.next.next =t;
+			cur = t;
+		}
+		cur.next  = slow;
+	}
+
+	/**
+	 * 环形链表 II
+	 * https://leetcode.cn/problems/linked-list-cycle-ii/
+	 * @param head
+	 * @return
+	 */
+	public ListNode detectCycle(ListNode head) {
+		if (head == null) {
+			return null;
+		}
+		ListNode slow = head, fast = head;
+		while (fast != null) {
+			slow = slow.next;
+			if (fast.next != null) {
+				fast = fast.next.next;
+			} else {
+				return null;
+			}
+			if (fast == slow) {
+				ListNode cur = head;
+				while (cur != slow) {
+					cur = cur.next;
+					slow = slow.next;
+				}
+				return slow;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 环形链表
+	 * https://leetcode.cn/problems/linked-list-cycle/
+	 * @param head
+	 * @return
+	 */
+	public boolean hasCycle(ListNode head) {
+		ListNode slow = head, fast = head.next;
+		while (fast != null && fast.next != null) {
+			slow = slow.next;
+			fast = fast.next.next;
+			if (fast == slow) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+
+	/**
+	 * 复制带随机指针的链表
+	 * https://leetcode.cn/problems/copy-list-with-random-pointer/
+	 * @param head
+	 * @return
+	 */
+	public Node copyRandomList(Node head) {
+		// 合并
+		for (Node cur = head; cur != null ; cur = cur.next.next) {
+			Node node = new Node(cur.val);
+			node.next = cur.next;
+			cur.next = node;
+		}
+
+		for (Node cur = head; cur != null ; cur = cur.next.next) {
+			if (cur.random != null) {
+				cur.next.random = cur.random.next;
+			}
+		}
+		Node newHead = new Node(-1);
+		for (Node cur = head, new_cur = newHead; cur != null;) {
+			new_cur.next = cur.next;
+			new_cur = cur.next;
+			cur.next = cur.next.next;
+			cur = cur.next;
+		}
+		return newHead.next;
+	}
+
+
+	public ListNode reverseKGroup(ListNode head, int k) {
+		int i = 0;
+		ListNode p = head;
+		ListNode prev = new ListNode(-1, head);
+		ListNode f = prev;
+		while( p != null) {
+			if (++i == k) {
+				ListNode begin = f.next ,end = p;
+				p = p.next;
+				ListNode reverse = reverse(f, begin, end);
+				f = begin;
+				i=0;
+			} else {
+				p = p.next;
+			}
+		}
+		return prev.next;
+	}
+
+	public ListNode reverse(ListNode pre, ListNode head, ListNode end) {
+		ListNode endNext = end == null? null: end.next;
+		if (pre == null) {
+			pre = new ListNode(-1, head);
+		}
+		ListNode p = head, cur = p.next, next ;
+		while (cur != endNext) {
+			pre.next = cur;
+			next = cur.next;
+			cur.next = p;
+			p=cur;
+			cur = next;
+		}
+		head.next = endNext;
+		return pre.next;
+	}
+
+
+	/**
+	 * 反转链表
+	 * https://leetcode.cn/problems/reverse-linked-list/
+	 * @param head
+	 * @return
+	 */
+	public ListNode reverseList(ListNode head) {
+		if (head == null || head.next == null) {
+			return head;
+		}
+		ListNode newHead = reverseList(head.next);
+		head.next.next = head;
+		head.next = null;
+		return newHead;
+	}
+	public ListNode reverseList2(ListNode head) {
+		ListNode p = head, pre = null;
+		while(p != null) {
+			ListNode next = p.next;
+			p.next = pre;
+			pre = p;
+			p = next;
+		}
+		return pre;
+	}
+
+
+
+	/**
+	 * 两两交换链表中的节点
+	 * https://leetcode.cn/problems/swap-nodes-in-pairs/
+	 * @param head
+	 * @return
+	 */
+	public ListNode swapPairs(ListNode head) {
+		if (head == null || head.next == null ) {
+			return head;
+		}
+		ListNode first = new ListNode(-1);
+		ListNode pre = first, cur = head, next = head.next;
+		while(next != null) {
+			pre.next = next;
+			cur.next = next.next;
+			next.next=cur;
+
+			pre = cur;
+			cur = pre.next;
+			next = cur == null? null: cur.next;
+		}
+		return  first.next;
+	}
 
 	/**
 	 * 删除排序链表中的重复元素 II
@@ -116,32 +329,6 @@ public class LinkedListJam {
 			return big;
 		}
 		return less;
-	}
-
-	/**
-	 * 反转链表
-	 * https://leetcode.cn/problems/reverse-linked-list/
-	 * @param head
-	 * @return
-	 */
-	public ListNode reverseList(ListNode head) {
-		if (head == null || head.next == null) {
-			return head;
-		}
-		ListNode newHead = reverseList(head.next);
-		head.next.next = head;
-		head.next = null;
-		return newHead;
-	}
-	public ListNode reverseList2(ListNode head) {
-		ListNode p = head, pre = null;
-		while(p != null) {
-			ListNode next = p.next;
-			p.next = pre;
-			pre = p;
-			p = next;
-		}
-		return pre;
 	}
 
 
