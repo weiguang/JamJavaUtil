@@ -246,16 +246,16 @@ public class Algorithm {
      * @return 对应的数
      */
     public static Integer findKthLargest(int[] nums, int k) {
-        PriorityQueue<Integer> q = new PriorityQueue<>(k);
+        PriorityQueue<Integer> q = new PriorityQueue<>(k + 2);
         // 前k小的数
-//        PriorityQueue<Integer> q = new PriorityQueue<Integer>(k, Comparator.comparing(Integer::intValue).reversed());
+//        PriorityQueue<Integer> q = new PriorityQueue<>(k + 2, Comparator.comparing(Integer::intValue).reversed());
+//        PriorityQueue<Integer> q = new PriorityQueue<>(k + 2, Collections.reverseOrder());
         for (int i : nums) {
             q.offer(i);
             if (q.size() > k) {
                 q.poll();
             }
         }
-
         return q.peek();
     }
 

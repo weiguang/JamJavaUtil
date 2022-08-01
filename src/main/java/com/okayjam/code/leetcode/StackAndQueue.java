@@ -12,6 +12,38 @@ public class StackAndQueue {
 		System.out.println(largestRectangleArea(new int[]{2,1,5,6,2,3}));
 	}
 
+
+	/**
+	 * 239. 滑动窗口最大值
+	 * https://leetcode.cn/problems/sliding-window-maximum/
+	 * @param nums
+	 * @param k
+	 * @return
+	 */
+	public int[] maxSlidingWindow(int[] nums, int k) {
+		int n = nums.length;
+		int [] re = new int[n-k+1];
+		Deque<Integer> queue = new LinkedList<>();
+		for (int i = 0; i < k; i++) {
+			while (!queue.isEmpty() && nums[i]> queue.peekLast()) {
+				queue.removeLast();
+			}
+			queue.addLast(nums[i]);
+		}
+		re[0] = queue.peekFirst();
+		for (int i = k,j = 1; i < n; i++) {
+			if (nums[i-k] == queue.peekFirst()) {
+				queue.removeFirst();
+			}
+			while (!queue.isEmpty() && nums[i]> queue.peekLast()) {
+				queue.removeLast();
+			}
+			queue.addLast(nums[i]);
+			re[j++] = queue.peekFirst();
+		}
+		return re;
+	}
+
 	/**
 	 *  柱状图中最大的矩形
 	 * https://leetcode.cn/problems/largest-rectangle-in-histogram/
