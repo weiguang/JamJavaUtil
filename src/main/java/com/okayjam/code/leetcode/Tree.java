@@ -25,6 +25,40 @@ public class Tree {
 	}
 
 	/**
+	 * 二叉树的层序遍历
+	 * https://leetcode.cn/problems/binary-tree-level-order-traversal/
+	 * @param root
+	 * @return
+	 */
+	public List<List<Integer>> levelOrder(TreeNode root) {
+		if (root == null) {
+			return Collections.emptyList();
+		}
+		List<List<Integer>> list = new ArrayList<>();
+		LinkedList<TreeNode> queue = new LinkedList<>();
+		queue.addLast(root);
+		while (!queue.isEmpty()) {
+			// 当前队列里面的数据就是目前这一层的节点
+			int curSize = queue.size();
+			List<Integer> level = new ArrayList<>(queue.size() + 1);
+			list.add(level);
+			for (int i = 0; i < curSize; i++) {
+				TreeNode pop = queue.pop();
+				level.add(pop.val);
+				if (pop.left != null) {
+					queue.addLast(pop.left);
+				}
+				if (pop.right != null) {
+					queue.addLast(pop.right);
+				}
+			}
+		}
+		// 如果需要翻转
+//		Collections.reverse(list);
+		return list;
+	}
+
+	/**
 	 * 二叉树的后序遍历
 	 * @param root
 	 * @return
