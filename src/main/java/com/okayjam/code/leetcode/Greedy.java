@@ -5,6 +5,24 @@ package com.okayjam.code.leetcode;
  * @date 2022/09/19 19:05
  **/
 public class Greedy {
+
+	/**
+	 * 121. 买卖股票的最佳时机
+	 * https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/
+	 * @param prices
+	 * @return
+	 */
+	public int maxProfit(int[] prices) {
+		if(prices.length <2) {return 0;}
+		int curMin = prices[0];
+		int profit = 0;
+		for (int i = 1; i < prices.length; i++) {
+			profit = Math.max(profit, prices[i] - curMin);
+			curMin = Math.min(prices[i], curMin);
+		}
+		return profit;
+	}
+
 	/**
 	 * 55. 跳跃游戏
 	 * https://leetcode.cn/problems/jump-game/
