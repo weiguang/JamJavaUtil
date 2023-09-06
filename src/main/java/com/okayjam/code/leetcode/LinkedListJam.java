@@ -339,31 +339,27 @@ public class LinkedListJam {
 	 */
 	public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 		ListNode newList = new ListNode(0);
-		ListNode h = newList;
+		ListNode p = newList;
+		int cur = 0;
 		while (l1 != null || l2 != null) {
-			if (h.next != null) {
-				h = h.next;
+			if (l1 != null) {
+				cur += l1.val;
+				l1 = l1.next;
 			}
-			int cur = 0;
-			if (l1 == null) {
-				cur = l2.val + h.val;
-				l2 = l2.next;
-			} else if (l2 == null) {
-				cur = l1.val + h.val;
-				l1 = l1.next;
-			} else {
-				cur = l1.val + l2.val + h.val;
-				l1 = l1.next;
+			if (l2 != null) {
+				cur += l2.val;
 				l2 = l2.next;
 			}
-			h.val = cur % 10;
-			h.next = new ListNode(cur / 10);
-
+			p.next = new ListNode(cur % 10);
+			p = p.next;
+			cur = cur / 10;
 		}
-		if (h.next.val == 0) {
-			h.next = null;
+		if (cur != 0) {
+			p.next = new ListNode(cur);
 		}
-		return newList;
+		return newList.next;
 	}
+
+
 
 }
