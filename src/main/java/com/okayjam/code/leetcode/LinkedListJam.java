@@ -1,20 +1,22 @@
 package com.okayjam.code.leetcode;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 /**
  * @author chen2
  */
 
-/**
- * @author chen2
- */
 public class LinkedListJam {
-	class ListNode {
+	static class ListNode {
 		int val;
 		ListNode next;
 		ListNode() {}
@@ -27,7 +29,7 @@ public class LinkedListJam {
 		}
 	}
 
-	class Node {
+	static class Node {
 		int val;
 		Node next;
 		Node random;
@@ -38,6 +40,244 @@ public class LinkedListJam {
 			this.random = null;
 		}
 	}
+	public static void main(String[] args) {
+		ListNode head = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
+		new LinkedListJam().reverseBetween(head, 2,4);
+	}
+
+
+
+	public ListNode reverseBetween(ListNode head, int left, int right) {
+		if (left == right) {
+			return head;
+		}
+		int i = 1;
+		ListNode l1;
+		ListNode p = new ListNode(0, head);
+		while (i < left ) {
+			p = p.next;
+			i++;
+		}
+		l1 = p;
+		p = p.next;
+	    ListNode pre = null, lNode = p;
+		// 翻转
+		while(p != null && i <= right) {
+			ListNode next = p.next;
+			p.next = pre;
+			pre = p;
+			p = next;
+			i++;
+		}
+		// 前面连接
+		if (left !=1) {
+			l1.next = pre;
+		} else {
+			head = pre;
+		}
+		// 后面连接
+		if (lNode != null) {
+			lNode.next = p;
+		}
+		return head;
+	}
+
+
+	public List<Integer> grayCode(int n) {
+		List<Integer> ans = new ArrayList<>();
+		for (int i = 0; i < 1<<n; i++) {
+			ans.add((i >>1) ^ i);
+		}
+		return ans;
+	}
+
+
+	public void merge(int[] nums1, int m, int[] nums2, int n) {
+		int i = m+n-1;
+		m--;n--;
+		while (m >= 0 || n >= 0) {
+			if (m >= 0 && n >= 0) {
+				if (nums1[m] > nums2[n]) {
+					nums1[i] = nums1[m--];
+				} else {
+					nums1[i] = nums2[n--];
+				}
+			} else if (m < 0 ) {
+				nums1[i] = nums2[n--];
+			} else {
+				nums1[i] = nums1[m--];
+			}
+			i--;
+		}
+	}
+
+	public ListNode partition(ListNode head, int x) {
+		if (head == null || head.next == null) {
+			return head;
+		}
+		ListNode head1 = new ListNode(0);
+		ListNode head2 = new ListNode(0);
+		ListNode p = head, p1 = head1, p2 = head2;
+		while (p != null) {
+			if (p.val < x) {
+				p1.next = p;
+				p1 = p1.next;
+			} else {
+				p2.next = p;
+				p2 = p2.next;
+			}
+			p = p.next;
+		}
+		p2.next = null;
+		p1.next = head2.next;
+		return head1.next;
+	}
+
+	public ListNode rotateRight(ListNode head, int k) {
+		if (head == null || head.next == null) {
+			return head;
+		}
+		int size = 1;
+		ListNode p = head;
+		while (p.next != null) {
+			size++;
+			p = p.next;
+		}
+		int add = size - k % size;
+		if (add == size) {
+			return head;
+		}
+		p.next = head;
+		while (add-- > 0 ) {
+			p = p.next;
+		}
+		head = p.next;
+		p.next = null;
+		return  head;
+	}
+
+	public ListNode swapPairs2(ListNode head) {
+		if  (head == null || head.next == null) {
+			return head;
+		}
+		ListNode dummy = new ListNode(0, head.next);
+		ListNode pre = dummy;
+		while (head != null && head.next != null) {
+			ListNode next = head.next;
+			head.next = next.next;
+			next.next = head;
+			pre.next = next;
+			pre = head;
+			head = head.next;
+		}
+		return dummy.next;
+	}
+
+	public ListNode mergeKLists2(ListNode[] lists) {
+		ListNode dummy = new ListNode(0) ;
+		ListNode cur = dummy ;
+		List<ListNode> list = Arrays.stream(lists).collect(Collectors.toList());
+		while (!list.isEmpty() && list.size() > 1) {
+			Iterator<ListNode> iterator = list.iterator();
+			Integer min = null ;
+			int i = 0 ;
+			while (iterator.hasNext()) {
+				ListNode node = iterator.next();
+				if (node == null) {
+					iterator.remove();
+					i--;
+				} else if (min == null || node.val < list.get(min).val ) {
+					min = i;
+				}
+				i++;
+			}
+			if (min != null) {
+				ListNode t = list.get(min);
+				cur.next = t ;
+				list.set(min, t.next);
+				cur = t;
+			}
+		}
+		cur.next = list.size() == 1 ? list.get(0) : null;
+		return dummy.next;
+	}
+
+	public ListNode mergeKLists(ListNode[] lists) {
+		ListNode ans = null;
+		for (ListNode list : lists) {
+			ans = mergeTwoLists(ans, list);
+		}
+		return ans;
+	}
+
+	public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+		if  (list1 == null) {
+			return list2;
+		} else if (list2 == null) {
+			return list1;
+		}
+		ListNode dummy = new ListNode(0) ;
+		ListNode cur = dummy ;
+		while (list1 != null && list2 != null) {
+			if (list1.val < list2.val) {
+				cur.next = list1;
+				list1 = list1.next;
+			} else  {
+				cur.next = list2;
+				list2 = list2.next;
+			}
+			cur = cur.next;
+		}
+		if (list1 != null) {
+			cur.next = list1;
+		}
+		if (list2 != null) {
+			cur.next = list2;
+		}
+		return dummy.next;
+	}
+
+
+	public ListNode removeNthFromEnd(ListNode head, int n) {
+		if (head == null) {
+			return null;
+		}
+		ListNode dummy = new ListNode(0, head);
+		ListNode f = head, r = dummy;
+		while (n-- > 0) {
+			if (f.next == null) {
+				return head;
+			}
+			f = f.next;
+		}
+		while (f != null) {
+			f = f.next;
+			r = r.next;
+		}
+		r.next = r.next.next;
+		return dummy.next;
+	}
+
+	public ListNode removeNthFromEnd2(ListNode head, int n) {
+		ListNode cur = head;
+		int length = 0;
+		while (cur != null) {
+			cur = cur.next;
+			length++;
+		}
+		if (length < n) {
+			return head;
+		}
+		ListNode dummy = new ListNode(0, head);
+		cur = dummy;
+		for (int i = 0; i < length - n; i++) {
+			cur = cur.next;
+		}
+		cur.next = cur.next.next;
+		return dummy.next;
+	}
+
+
 
 	/**
 	 * https://leetcode.cn/problems/reorder-list/
@@ -297,7 +537,7 @@ public class LinkedListJam {
 	 * @param x
 	 * @return
 	 */
-	public ListNode partition(ListNode head, int x) {
+	public ListNode partition1(ListNode head, int x) {
 		ListNode less = null, big = null;
 		ListNode l = null, b = null;
 		while (head != null) {
