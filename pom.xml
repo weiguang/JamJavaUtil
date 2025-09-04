@@ -15,7 +15,7 @@
         <netty.version>4.2.4.Final</netty.version>
         <okhttp.version>>3.14.7</okhttp.version>
         <poi.version>5.4.0</poi.version>
-        <mysql.version>8.0.33</mysql.version>
+        <mysql.version>8.2.0</mysql.version>
         <tess4j.version>4.4.1</tess4j.version>
         <selenium.version>3.141.59</selenium.version>
     </properties>
