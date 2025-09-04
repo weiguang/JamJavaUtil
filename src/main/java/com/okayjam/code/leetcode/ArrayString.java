@@ -44,6 +44,56 @@ public class ArrayString {
     }
 
     /**
+     * 137. 只出现一次的数字 II
+     * https://leetcode.cn/problems/single-number-ii/
+     * @param nums
+     * @return
+     */
+    public int singleNumber2(int[] nums) {
+        int ans = 0;
+        for (int i = 0; i < 32; i++) {
+            // 统计对应位数为1的数量
+            int total = 0;
+            for (int num : nums) {
+                total += (num >> i) &1;
+            }
+            // 如果不是不是3的倍数，说明有额外的一个数这位是1
+            if (total % 3 != 0) {
+                // 当前位设置为1
+                ans |= (1 << i);
+            }
+        }
+        return ans;
+    }
+    public int singleNumber21(int[] nums) {
+        Map<Integer, Integer> freq = new HashMap<Integer, Integer>();
+        for (int num : nums) {
+            freq.compute(num, (k, v) -> v == null ? 1 : v + 1);
+        }
+        for (Map.Entry<Integer, Integer> entry : freq.entrySet()) {
+            if (entry.getValue() == 1) {
+                return entry.getKey();
+            }
+        }
+        return 0;
+    }
+
+
+    /**
+     * 136. 只出现一次的数字
+     * https://leetcode.cn/problems/single-number/solutions/242211/zhi-chu-xian-yi-ci-de-shu-zi-by-leetcode-solution/
+     * @param nums
+     * @return
+     */
+    public int singleNumber(int[] nums) {
+        int ans = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            ans ^= nums[i];
+        }
+        return ans;
+    }
+
+    /**
      * 45. 跳跃游戏 II
      * https://leetcode.cn/problems/jump-game-ii/
      * @param nums
@@ -987,8 +1037,27 @@ public class ArrayString {
                 sum = 0;
             }
         }
-        return total >= 0 ? idx : -1;
+        return total >= 0 ? idx +1 : -1;
     }
+
+    public int canCompleteCircuit1(int[] gas, int[] cost) {
+        int n = gas.length;
+        for (int i = 0; i < n; i++) {
+            if (gas[i] < cost[i] || gas[i] == 0) { continue; }
+            int remaining = gas[i] - cost[i];
+            int j = i;
+            for ( j = i +1; j < i + n  ; j++) {
+                remaining = remaining + gas[j % n] - cost[j % n];
+                if (remaining < 0) {  break;}
+            }
+            if (j == i + n ) {
+                return i;
+            }
+            i = j;
+        }
+        return -1;
+    }
+
 
     public int[] plusOne(int[] digits) {
         int flag = 1;
