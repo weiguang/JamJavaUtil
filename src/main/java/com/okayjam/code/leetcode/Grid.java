@@ -6,6 +6,46 @@ package com.okayjam.code.leetcode;
  **/
 public class Grid {
 
+
+	/**
+	 * 130. 被围绕的区域
+	 * https://leetcode.cn/problems/surrounded-regions/
+	 * @param board
+	 */
+	public void solve(char[][] board) {
+		int m = board.length;
+		if (m == 0) return;
+		int n = board[0].length;
+		for (int i = 0; i < m; i++) {
+			solveDfs(board, i , 0);
+			solveDfs(board, i , n-1);
+		}
+		for (int i = 1; i < n-1; i++) {
+			solveDfs(board, 0, i);
+			solveDfs(board, m -1, i);
+		}
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				if (board[i][j] == 'A') {
+					board[i][j] = 'O';
+				} else if (board[i][j] == 'O') {
+					board[i][j] = 'X';
+				}
+			}
+		}
+	}
+	public void solveDfs(char[][] board, int i, int j) {
+		if (i<0 || i>= board.length || j<0 || j >= board[0].length || board[i][j] != 'O') {
+			return;
+		}
+		board[i][j] = 'A';
+		solveDfs(board, i , j + 1);
+		solveDfs(board, i , j - 1);
+		solveDfs(board, i - 1 , j);
+		solveDfs(board, i + 1 , j);
+	}
+
+
 	/**
 	 * 695. 岛屿的最大面积
 	 * https://leetcode.cn/problems/max-area-of-island/
