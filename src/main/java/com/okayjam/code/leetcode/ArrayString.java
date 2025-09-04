@@ -33,7 +33,8 @@ public class ArrayString {
 //        System.out.println(new ArrayString().myPow(2.0000, -2147483648));
 //        System.out.println(new ArrayString().uniquePaths(3, 7));
 //        new ArrayString().sortColors(new int[] {2,0,2,1,1,0});
-        System.out.println(new ArrayString().combine(4, 2));
+//        System.out.println(new ArrayString().combine(4, 2));
+        System.out.println(new ArrayString().canCompleteCircuit1(new int[] {5,1,2,3,4}, new int[]{4,4,1,5,1}));
     }
 
     public void swap(int[] nums, int i, int j) {
@@ -41,7 +42,6 @@ public class ArrayString {
         nums[i] = nums[j];
         nums[j] = temp;
     }
-
 
     /**
      * 45. 跳跃游戏 II

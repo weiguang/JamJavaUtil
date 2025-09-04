@@ -1,6 +1,9 @@
 package com.okayjam.code.leetcode;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Chen weiguang chen2621978@gmail.com
@@ -8,6 +11,27 @@ import java.util.List;
  **/
 public class Grid {
 
+
+
+
+
+	/**
+	 * 133. 克隆图
+	 * https://leetcode.cn/problems/clone-graph/
+	 * @param node
+	 * @return
+	 */
+	private Map<Node, Node> visited = new HashMap<>();
+	public Node cloneGraph(Node node) {
+		if(node == null) return null;
+		if(visited.containsKey(node)) return visited.get(node);
+		Node cloneNode = new Node(node.val, new ArrayList<>());
+		visited.put(node, cloneNode);
+		for(Node neighbor : node.neighbors) {
+			cloneNode.neighbors.add(cloneGraph(neighbor));
+		}
+		return cloneNode;
+	}
 
 	/**
 	 * https://leetcode.cn/problems/valid-sudoku/
@@ -265,4 +289,23 @@ public class Grid {
 		dfs(grid, r, c-1);
 		dfs(grid, r, c+1);
 	}
+
+
+	public static class Node {
+		public int val;
+		public List<Node> neighbors;
+		public Node() {
+			val = 0;
+			neighbors = new ArrayList<Node>();
+		}
+		public Node(int _val) {
+			val = _val;
+			neighbors = new ArrayList<Node>();
+		}
+		public Node(int _val, ArrayList<Node> _neighbors) {
+			val = _val;
+			neighbors = _neighbors;
+		}
+	}
+
 }

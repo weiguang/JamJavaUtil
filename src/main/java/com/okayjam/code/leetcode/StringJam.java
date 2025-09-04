@@ -35,7 +35,34 @@ public class StringJam {
 //        System.out.println(new StringJam().numDecodings("12"));
 //        System.out.println(new StringJam().restoreIpAddresses("101023"));
 //        System.out.println(new StringJam().isInterleave("aabcc", "dbbca", "aadbbbaccc"));
-        System.out.println(new StringJam().isPalindrome1("A man, a plan, a canal: Panama"));
+//        System.out.println(new StringJam().isPalindrome1("A man, a plan, a canal: Panama"));
+        System.out.println(new StringJam().partition("bb"));
+    }
+
+    /**
+     * 131. 分割回文串(时间较长)
+     * https://leetcode.cn/problems/palindrome-partitioning/
+     * @param s
+     * @return
+     */
+    public List<List<String>> partition(String s) {
+        if (s == null || s.isEmpty()) return new ArrayList<>();
+        List<List<String>> ans = new ArrayList<>();
+        if (s.length() == 1) { List<String> t =  new ArrayList<>(); t.add(s); ans.add(t);  return ans;}
+        for (int i = 0; i < s.length() ; i++) {
+            String leftStr = s.substring(0, i +1);
+            if (s.charAt(0) != s.charAt(i) ||  !new StringBuilder(leftStr).reverse().toString().equals(leftStr)) {
+                continue;
+            }
+            if (i == s.length() - 1) {  List<String> left = new ArrayList<>(); left.add(leftStr);ans.add(left); break;}
+            String rightStr = s.substring( i +1);
+            List<List<String>> right = partition(rightStr);
+                for (List<String> strings2 : right) {
+                    strings2.add(0, leftStr);
+                    ans.add(strings2);
+                }
+        }
+        return ans;
     }
 
     public String multiply(String num1, String num2) {
