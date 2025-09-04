@@ -38,27 +38,23 @@ public class StringJam {
         System.out.println(new StringJam().isPalindrome1("A man, a plan, a canal: Panama"));
     }
 
-    public int longestConsecutive(int[] nums) {
-        if  (nums == null || nums.length == 0) {return 0;}
-        HashSet<Integer> set = new HashSet<>();
-        for (Integer i : nums) {
-            set.add(i);
+    public String multiply(String num1, String num2) {
+        if ("0".equals(num1) || "0".equals(num2)) {
+            return "0";
         }
-        int ans = 0;
-        for (int num : nums) {
-            if (set.contains(num - 1)) {
-                continue;
+        long sum = 0;
+        for (int i = num1.length() - 1; i >= 0; i--) {
+            int n1 = num1.charAt(i) - '0';
+            int nn1 = num1.length() - 1 - i;
+            for (int j = num2.length() - 1; j >= 0; j--) {
+                int n2 = num2.charAt(j) - '0';
+                int nn2 = num2.length() - 1 - j;
+                sum += (long) ((long) n1 * n2 * Math.pow(10, nn1) * Math.pow(10, nn2));
             }
-            int cur = num;
-            int t = 1;
-            while (set.contains(cur + 1)) {
-                t++;
-                cur++;
-            }
-            ans = Math.max(ans, t);
         }
-        return ans;
+        return String.valueOf(sum);
     }
+
 
     public boolean isPalindrome1(String s) {
         if (s.length() <= 1) { return true;}

@@ -1,11 +1,125 @@
 package com.okayjam.code.leetcode;
 
+import java.util.List;
+
 /**
  * @author Chen weiguang chen2621978@gmail.com
  * @date 2022/08/02 20:05
  **/
 public class Grid {
 
+
+	/**
+	 * https://leetcode.cn/problems/valid-sudoku/
+	 * 36. 有效的数独
+	 * @param board
+	 * @return
+	 */
+	public boolean isValidSudoku(char[][] board) {
+		int m = board.length;
+		int n = board[0].length;
+		for (int i = 0; i < m; i++) {
+			int[] temp = new int[9];
+			for (int j = 0; j < n; j++) {
+				if (board[i][j] == '.') {
+					continue;
+				}
+				if (temp[board[i][j] - '1'] != 0) {
+					return false;
+				}
+				temp[board[i][j] - '1']++;
+			}
+		}
+		for (int i = 0; i < n; i++) {
+			int[] temp = new int[9];
+			for (int j = 0; j < m; j++) {
+				if (board[j][i] == '.') {
+					continue;
+				}
+				if (temp[board[j][i] - '1'] != 0) {
+					return false;
+				}
+				temp[board[j][i] - '1']++;
+			}
+		}
+		for (int i = 0; i < m; i = i + 3) {
+			for (int j = 0; j < n; j = j + 3) {
+				int[] temp = new int[10];
+				for (int k = i; k < i + 3; k++) {
+					for (int l = j; l < j + 3; l++) {
+						if (board[k][l] == '.') {
+							continue;
+						}
+						if (temp[board[k][l] - '1'] != 0) {
+							return false;
+						}
+						temp[board[k][l] - '1']++;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 79. 单词搜索
+	 * https://leetcode.cn/problems/word-search/
+	 * @param board
+	 * @param word
+	 * @return
+	 */
+	public boolean exist(char[][] board, String word) {
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[0].length; j++) {
+				if (board[i][j] == word.charAt(0)) {
+					boolean f = exist(board, word, i, j, 0);
+					if (f) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean exist(char[][] board, String word, int row, int col, int idex) {
+		if (row < 0 || row > board.length - 1 || col < 0 || col > board[0].length - 1 || board[row][col] != word.charAt(idex)) {
+			return false;
+		}
+		if (idex == word.length() - 1) {
+			return true;
+		}
+		idex++;
+		return exist(board, word, row - 1, col, idex) || exist(board, word, row + 1, col, idex)
+				|| exist(board, word, row, col - 1, idex) || exist(board, word, row, col + 1, idex);
+	}
+
+
+	public int minimumTotal(List<List<Integer>> triangle) {
+		int m = triangle.size();
+		int[] prev = new int[m];
+		int[] curv = new int[m];
+		prev[0] = curv[0] = triangle.get(0).get(0);
+		int min = curv[0];
+		for (int i = 1; i < m; i++) {
+			List<Integer> row = triangle.get(i);
+			for (int j = 0; j < row.size(); j++) {
+				if (j == 0) {
+					curv[j] = prev[j] + row.get(j);
+					min = curv[j];
+				} else if (j == row.size() - 1) {
+					curv[j] = prev[j - 1] + row.get(j);
+				} else {
+					curv[j] = Math.min(prev[j - 1], prev[j]) + row.get(j);
+				}
+				min = Math.min(min, curv[j]);
+			}
+			int[] temp = prev;
+			prev = curv;
+			curv = temp;
+		}
+		return min;
+	}
 
 	/**
 	 * 130. 被围绕的区域

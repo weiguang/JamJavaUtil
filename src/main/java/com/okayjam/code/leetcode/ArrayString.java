@@ -1,7 +1,6 @@
 package com.okayjam.code.leetcode;
 
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -44,6 +43,156 @@ public class ArrayString {
     }
 
 
+    /**
+     * 45. 跳跃游戏 II
+     * https://leetcode.cn/problems/jump-game-ii/
+     * @param nums
+     * @return
+     */
+    public int jump(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        dp[0] = 0;
+        for (int i = 0; i < n; i++) {
+            if (nums[i] == 0) {
+                continue;
+            }
+            for (int j = i + 1; j <= i + nums[i] && j < n; j++) {
+                dp[j] = dp[j] == 0 ? dp[i] + 1 : Math.min(dp[j], dp[i] + 1);
+                if (j == n - 1) {
+                    return dp[j];
+                }
+            }
+        }
+        return dp[n - 1];
+    }
+
+
+    /**
+     * 78. 子集 (第三个解法，递归)
+     * https://leetcode.cn/problems/subsets/
+     * @param nums
+     * @return
+     */
+    List<List<Integer>> ans = new ArrayList<>();
+    List<Integer> t = new ArrayList<>();
+    public List<List<Integer>> subsets(int[] nums) {
+        subsets(nums, 0);
+        return ans;
+    }
+    public void subsets(int[] nums, int start) {
+        ans.add(new ArrayList<>(t));
+        for (int i = start; i < nums.length; i++) {
+            t.add(nums[i]);
+            subsets(nums, i + 1);
+            t.remove(t.size() - 1);
+        }
+    }
+
+
+    /**
+     * 78. 子集 (第一个解法，模拟二进制)
+     * https://leetcode.cn/problems/subsets/
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> subsets2(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        for (int i = 0; i < 1 << nums.length; i++) {
+            ArrayList<Integer> t = new ArrayList<>();
+            for (int j = 0; j < nums.length; j++) {
+                if ((1 << j & i) != 0) {
+                    t.add(nums[j]);
+                }
+            }
+            ans.add(t);
+        }
+        return ans;
+    }
+
+
+    /**
+     * 78. 子集 (第二个解法)
+     * https://leetcode.cn/problems/subsets/
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> subsets1(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        ans.add(new ArrayList<>());
+        for (int num : nums) {
+            int len = ans.size();
+            for (int i = 0; i < len; i++) {
+                ArrayList<Integer> t = new ArrayList<>(ans.get(i));
+                t.add(num);
+                ans.add(t);
+            }
+        }
+        return ans;
+    }
+
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
+        subsetsWithDup(nums, 0);
+        return ans;
+    }
+
+    /**
+     * 90. 子集 II （带重复元素的子集，78题不带重复元素）
+     * https://leetcode.cn/problems/subsets-ii/
+     * @param nums
+     * @param start
+     */
+    public void subsetsWithDup(int[] nums, int start) {
+        ans.add(new ArrayList<>(t));
+        for (int i = start; i < nums.length; i++) {
+            if (i > start && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            t.add(nums[i]);
+            subsetsWithDup(nums, i + 1);
+            t.remove(t.size() - 1);
+        }
+    }
+
+
+    /**
+     * 81. 搜索旋转排序数组 II
+     * https://leetcode.cn/problems/search-in-rotated-sorted-array-ii/
+     * @param nums
+     * @param target
+     * @return
+     */
+    public boolean search2(int[] nums, int target) {
+        return search(nums, target, 0, nums.length - 1);
+    }
+
+    public boolean search(int[] nums, int target, int start, int end) {
+        if (start > end) {
+            return false;
+        }
+        int mid = start + (end - start) / 2;
+        if (nums[mid] == target || nums[start] == target || nums[end] == target) {
+            return true;
+        }
+        if (nums[start] < nums[mid]) {
+            if (nums[mid] >= target && nums[start] <= target) {
+                return search(nums, target, start, mid - 1);
+            } else {
+                return search(nums, target, mid + 1, end);
+            }
+        } else if (nums[end] > nums[mid]) {
+            if (nums[mid] <= target && nums[end] >= target) {
+                return search(nums, target, mid + 1, end);
+            } else {
+                return search(nums, target, start, mid - 1);
+            }
+        } else {
+            return search(nums, target, ++start, --end);
+        }
+    }
+
+
 
     public int maxProfit22(int[] prices) {
         int ans = 0;
@@ -79,27 +228,6 @@ public class ArrayString {
             }
         }
         return ans;
-    }
-
-    List<List<Integer>> ans = new ArrayList<>();
-    List<Integer> t = new ArrayList<>();
-
-    public List<List<Integer>> subsetsWithDup(int[] nums) {
-        Arrays.sort(nums);
-        subsetsWithDup(nums, 0);
-        return ans;
-    }
-
-    public void subsetsWithDup(int[] nums, int start) {
-        ans.add(new ArrayList<>(t));
-        for (int i = start; i < nums.length; i++) {
-            if (i > start && nums[i] == nums[i - 1]) {
-                continue;
-            }
-            t.add(nums[i]);
-            subsetsWithDup(nums, i + 1);
-            t.remove(t.size() - 1);
-        }
     }
 
 
