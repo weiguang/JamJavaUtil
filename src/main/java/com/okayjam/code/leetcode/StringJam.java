@@ -39,6 +39,24 @@ public class StringJam {
         System.out.println(new StringJam().partition("bb"));
     }
 
+    public boolean wordBreak(String s, List<String> wordDict) {
+        if (wordDict == null || wordDict.isEmpty()) {return false;}
+        HashSet<String> set = new HashSet<>(wordDict);
+        int len = s.length();
+        boolean[] dp = new boolean[len + 1];
+        dp[0] = true;
+        for (int i = 1; i <= len; i++) {
+            for (int j = 0; j < i; j++) {
+                if (dp[j] && set.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[len];
+    }
+
+
     /**
      * 131. 分割回文串(时间较长)
      * https://leetcode.cn/problems/palindrome-partitioning/

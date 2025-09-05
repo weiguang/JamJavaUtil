@@ -33,12 +33,10 @@ public class LinkedListJam {
 		}
 	}
 
-
 	public static void main(String[] args) {
 		ListNode head = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
 		new LinkedListJam().reverseBetween(head, 2,4);
 	}
-
 
 
 
@@ -334,7 +332,7 @@ public class LinkedListJam {
 	}
 
 	/**
-	 * 环形链表
+	 * 141.环形链表
 	 * https://leetcode.cn/problems/linked-list-cycle/
 	 * @param head
 	 * @return
