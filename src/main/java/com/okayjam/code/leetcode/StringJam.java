@@ -36,7 +36,16 @@ public class StringJam {
 //        System.out.println(new StringJam().restoreIpAddresses("101023"));
 //        System.out.println(new StringJam().isInterleave("aabcc", "dbbca", "aadbbbaccc"));
 //        System.out.println(new StringJam().isPalindrome1("A man, a plan, a canal: Panama"));
-        System.out.println(new StringJam().partition("bb"));
+//        System.out.println(new StringJam().partition("bb"));
+        System.out.println(new StringJam().reverseWords("   a good   example  "));
+    }
+
+    public String reverseWords(String s) {
+        if (s == null || s.isEmpty()) {return "";}
+        List<String> list = Arrays.asList(s.trim().split("\\s+"));
+        Collections.reverse(list);
+        StringBuilder sb = new StringBuilder();
+        return String.join(" ", list);
     }
 
     public boolean wordBreak(String s, List<String> wordDict) {

@@ -44,6 +44,39 @@ public class ArrayString {
     }
 
     /**
+     * 150. 逆波兰表达式求值
+     * https://leetcode.cn/problems/evaluate-reverse-polish-notation/description/
+     * @param tokens
+     * @return
+     */
+    public int evalRPN(String[] tokens) {
+        if  (tokens == null || tokens.length == 0) {return 0;}
+        LinkedList<Integer> stack = new LinkedList<>();
+        for (String token : tokens) {
+            switch (token) {
+                case "+":
+                    stack.push(stack.pop() + stack.pop());
+                    break;
+                case "-":
+                    Integer b = stack.pop();
+                    stack.push( stack.pop() - b);
+                    break;
+                case "*":
+                    stack.push(stack.pop() * stack.pop());
+                    break;
+                case "/":
+                     b = stack.pop();
+                    stack.push( stack.pop() / b);
+                    break;
+                default:
+                    stack.push(Integer.parseInt(token));
+            }
+        }
+        return stack.pop();
+    }
+
+
+    /**
      * 137. 只出现一次的数字 II
      * https://leetcode.cn/problems/single-number-ii/
      * @param nums

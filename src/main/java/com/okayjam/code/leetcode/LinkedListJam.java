@@ -35,10 +35,101 @@ public class LinkedListJam {
 
 	public static void main(String[] args) {
 		ListNode head = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
-		new LinkedListJam().reverseBetween(head, 2,4);
+//		new LinkedListJam().reverseBetween(head, 2,4);
+//		new LinkedListJam().reorderList(head);
+		ListNode head1 = new ListNode(4, new ListNode(2, new ListNode(1, new ListNode(3, null))));
+		new LinkedListJam().insertionSortList(head1);
 	}
 
 
+	public ListNode sortList(ListNode head) {
+		if (head == null || head.next == null) {return head;}
+		return sortList(head, null);
+	}
+
+	public ListNode sortList(ListNode head, ListNode tail) {
+		if (head == null ) {return head;}
+		if (head.next == tail) {
+			head.next = null;
+			return head;
+		}
+		ListNode slow = head, fast = head;
+		while( fast != tail) {
+			slow = slow.next;
+			fast = fast.next;
+			if (fast != tail) {
+				fast = fast.next;
+			}
+		}
+		ListNode mid = slow;
+		ListNode list1 = sortList(head, mid);
+		ListNode list2 = sortList(mid, tail);
+		return merge(list1, list2);
+	}
+
+	public ListNode merge(ListNode head1, ListNode head2) {
+		ListNode dummy = new ListNode(0);
+		ListNode cur = dummy, p1 = head1, p2 = head2;
+		while (p1 != null &&  p2 != null) {
+			if (p1.val < p2.val) {
+				cur.next = p1;
+				p1 = p1.next;
+			}  else {
+				cur.next = p2;
+				p2 = p2.next;
+			}
+			cur = cur.next;
+		}
+		if (p1 != null) {
+			cur.next = p1;
+		} else  {
+			cur.next = p2;
+		}
+		return dummy.next;
+	}
+
+
+	public ListNode sortList2(ListNode head) {
+		if (head == null || head.next == null) {return head;}
+		ArrayList<ListNode> list = new ArrayList<>();
+		ListNode cur = head;
+		while (cur != null) {
+			list.add(cur);
+			cur = cur.next;
+		}
+		list.sort(Comparator.comparing(node -> node.val));
+		for (int i = 1; i < list.size(); i++) {
+			list.get(i-1).next = list.get(i);
+		}
+		list.get(list.size()-1).next = null;
+		return list.get(0);
+	}
+
+
+
+	public ListNode insertionSortList(ListNode head) {
+		if (head == null || head.next == null) return head;
+		ListNode dummy = new ListNode(0,head);
+		ListNode cur = head;
+		while (cur.next!= null) {
+			ListNode p = dummy;
+			while (p.next != cur.next) {
+				if (p.next == null || (p.next.val > cur.next.val) ) {
+					break;
+				}
+				p = p.next;
+			}
+			if (p != cur) { // 不是原来的位置
+				ListNode t = cur.next;
+				cur.next = t.next;
+				t.next = p.next;
+				p.next = t;
+			} else {
+				cur = cur.next;
+			}
+		}
+		return dummy.next;
+	}
 
 
 	public ListNode reverseBetween(ListNode head, int left, int right) {
