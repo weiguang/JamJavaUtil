@@ -43,6 +43,22 @@ public class ArrayString {
         nums[j] = temp;
     }
 
+    public int maxProduct(int[] nums) {
+        if(nums.length == 0) return 0;
+        long ans = nums[0];
+        long max = nums[0], min = nums[0];
+        for(int i = 1; i < nums.length; i++) {
+            long mx = max, mn = min;
+            max = Math.max(mx * nums[i], Math.max(nums[i], mn * nums[i]));
+            min = Math.min(mn * nums[i], Math.min(nums[i], mx * nums[i]));
+            ans = Math.max(ans, max);
+        }
+
+        return (int)ans;
+    }
+
+
+
     /**
      * 150. 逆波兰表达式求值
      * https://leetcode.cn/problems/evaluate-reverse-polish-notation/description/
