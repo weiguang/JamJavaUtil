@@ -35,7 +35,37 @@ public class StringJam {
 //        System.out.println(new StringJam().isInterleave("aabcc", "dbbca", "aadbbbaccc"));
 //        System.out.println(new StringJam().isPalindrome1("A man, a plan, a canal: Panama"));
 //        System.out.println(new StringJam().partition("bb"));
-        System.out.println(new StringJam().reverseWords("   a good   example  "));
+//        System.out.println(new StringJam().reverseWords("   a good   example  "));
+        System.out.println(new StringJam().lengthOfLongestSubstringTwoDistinct("ccaabbb"));
+    }
+
+    /**
+     * 159. 至多包含两个不同字符的最长子串
+     * https://leetcode.cn/problems/longest-substring-with-at-most-two-distinct-characters/
+     * @param s
+     * @return
+     */
+    public int lengthOfLongestSubstringTwoDistinct(String s) {
+        if (s == null || s.isEmpty()) { return 0; }
+        int ans = 0;
+        int idx = 0;
+        Map<Character, Integer> map = new HashMap<>();
+        LinkedList<Character> list = new LinkedList<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (list.size() < 2 || list.contains(c)) {
+                ans = Math.max(ans, i - idx + 1);
+            } else {
+                idx = map.get(list.removeFirst()) + 1;
+                map.remove(c);
+            }
+            map.put(c, i);
+            if (list.contains(c)) {
+                list.removeFirstOccurrence(c);
+            }
+            list.add(c);
+        }
+        return ans;
     }
 
 
