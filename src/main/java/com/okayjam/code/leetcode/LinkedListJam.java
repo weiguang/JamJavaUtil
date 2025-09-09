@@ -132,6 +132,8 @@ public class LinkedListJam {
 	}
 
 
+
+
 	public ListNode reverseBetween(ListNode head, int left, int right) {
 		if (left == right) {
 			return head;
@@ -444,6 +446,7 @@ public class LinkedListJam {
 
 	/**
 	 * 复制带随机指针的链表
+	 *  旧1-新1-旧2-新2 交错的方式，可以避免使用hashmap记录，因为得到旧i，就能得到新i，这样方便查询到random节点
 	 * https://leetcode.cn/problems/copy-list-with-random-pointer/
 	 * @param head
 	 * @return
@@ -469,6 +472,33 @@ public class LinkedListJam {
 			cur = cur.next;
 		}
 		return newHead.next;
+	}
+
+	public Node copyRandomList2(Node head) {
+		if (head == null) return null;
+		Node dummy = new Node(head.val);
+		// 记录已经出现的节点
+		HashMap<Node, Node> map = new HashMap<>();
+		Node current = dummy;
+		while (head != null) {
+			Node node = map.get(head);
+			if (node == null) {
+				node = new Node(head.val);
+				map.put(head, node);
+			}
+			current.next = node;
+			current = node;
+			if (head.random != null) {
+				Node random = map.get(head.random);
+				if (random == null) {
+					random = new Node(head.random.val);
+					map.put(head.random, random);
+				}
+				current.random = random;
+			}
+			head = head.next;
+		}
+		return dummy.next;
 	}
 
 

@@ -1,7 +1,5 @@
 package com.okayjam.code.leetcode;
 
-import com.google.common.collect.Lists;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
