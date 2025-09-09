@@ -34,7 +34,8 @@ public class ArrayString {
 //        System.out.println(new ArrayString().uniquePaths(3, 7));
 //        new ArrayString().sortColors(new int[] {2,0,2,1,1,0});
 //        System.out.println(new ArrayString().combine(4, 2));
-        System.out.println(new ArrayString().canCompleteCircuit1(new int[] {5,1,2,3,4}, new int[]{4,4,1,5,1}));
+//        System.out.println(new ArrayString().canCompleteCircuit1(new int[] {5,1,2,3,4}, new int[]{4,4,1,5,1}));
+        System.out.println(new ArrayString().findMin(new int[] {2,2,1,1,2}));
     }
 
     public void swap(int[] nums, int i, int j) {
@@ -42,6 +43,22 @@ public class ArrayString {
         nums[i] = nums[j];
         nums[j] = temp;
     }
+
+    public int findMin(int[] nums) {
+        int l = 0, r = nums.length - 1;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (nums[mid] > nums[r]) {
+                l = mid + 1;
+            } else if (nums[mid] < nums[r]) {
+                r = mid;
+            } else {
+                r =  r -1;
+            }
+        }
+        return nums[l];
+    }
+
 
     public int maxProduct(int[] nums) {
         if(nums.length == 0) return 0;

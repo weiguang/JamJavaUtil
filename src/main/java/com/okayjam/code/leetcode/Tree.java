@@ -9,6 +9,20 @@ import com.okayjam.code.leetcode.LinkedListJam.ListNode;
  **/
 public class Tree {
 
+	public TreeNode upsideDownBinaryTree(TreeNode root) {
+		if (root == null) return null;
+		if (root.left == null && root.right == null) return root;
+		TreeNode left = root.left;
+		TreeNode right = root.right;
+		TreeNode l = upsideDownBinaryTree(root.left);
+		upsideDownBinaryTree(root.right);
+		left.left = right;
+		left.right = root;
+		root.left = null;
+		root.right = null;
+		return l;
+	}
+
 
 	/**
 	 * 99. 恢复二叉搜索树

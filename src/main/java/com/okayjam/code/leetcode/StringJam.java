@@ -38,6 +38,7 @@ public class StringJam {
         System.out.println(new StringJam().reverseWords("   a good   example  "));
     }
 
+
     public String reverseWords(String s) {
         if (s == null || s.isEmpty()) {return "";}
         List<String> list = Arrays.asList(s.trim().split("\\s+"));
