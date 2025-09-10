@@ -60,6 +60,28 @@ public class ArrayString {
     }
 
 
+    /**
+     * https://leetcode.cn/problems/find-peak-element/submissions/661522727/
+     * @param nums
+     * @return
+     */
+    public int findPeakElement(int[] nums) {
+        int left = 0, right = nums.length - 1;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] < nums[mid +1]) {
+            //说明此时mid为上坡路，既然是上坡，那么mid肯定不是山峰，所以left=mid+1（题目要求nums[i]!=nums[i+1]，所以不可能存在“平峰”的情况）
+                left = mid + 1;
+            } else  {
+                //说明此时mid为下坡路，那么有可能自己本身就是山峰，或者在下山的过程中，所以right=mid而不能等于mid-1
+                right = mid;
+            }
+        }
+        return left;
+    }
+
+
+
     public int maxProduct(int[] nums) {
         if(nums.length == 0) return 0;
         long ans = nums[0];
