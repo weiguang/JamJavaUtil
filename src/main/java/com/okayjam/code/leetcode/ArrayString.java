@@ -1,14 +1,7 @@
 package com.okayjam.code.leetcode;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -43,6 +36,39 @@ public class ArrayString {
         nums[i] = nums[j];
         nums[j] = temp;
     }
+
+
+    /**
+     * 163. 缺失的区间
+     * https://leetcode.cn/problems/missing-ranges/
+     * @param nums
+     * @param lower
+     * @param upper
+     * @return
+     */
+    public List<List<Integer>> findMissingRanges(int[] nums, int lower, int upper) {
+        List<List<Integer>> ans = new ArrayList<>();
+        if (nums == null || nums.length == 0) {
+            ans.add(Arrays.asList(lower, upper));
+            return ans;
+        }
+//        Arrays.sort(nums);
+        if (lower < nums[0]) {
+            ans.add(Arrays.asList(lower, nums[0]-1));
+        }
+        for (int i = 0; i < nums.length-1; i++) {
+            if (nums[i] + 1 == nums[i+1]) {
+                continue;
+            }
+            ans.add(Arrays.asList(nums[i]+1, nums[i+1]-1));
+        }
+        if (upper > nums[nums.length-1]) {
+            ans.add(Arrays.asList(nums[nums.length-1] +1, upper));
+        }
+        return ans;
+    }
+
+
 
     public int findMin(int[] nums) {
         int l = 0, r = nums.length - 1;

@@ -41,6 +41,61 @@ public class LinkedListJam {
 		new LinkedListJam().insertionSortList(head1);
 	}
 
+	/**
+	 * 160. 相交链表
+	 * 第一种方法： 双指针，大家都走一遍 不相交部份+相交部份，同要距离会在交点汇合
+	 * 第二种直观，先计算长度，让长的先走多出来的部份，然后开始一起同时走，就知道交点位置，如果没有交点就到null
+	 * https://leetcode.cn/problems/intersection-of-two-linked-lists/
+	 * @param headA
+	 * @param headB
+	 * @return
+	 */
+
+	public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+		if (headA == null || headB == null) return null;
+		if (headA == headB) return headA;
+		ListNode p1 = headA, p2 = headB;
+		while (p1 != p2) {
+			p1 = p1==null? headB: p1.next;
+			p2 = p2==null? headA: p2.next;
+		}
+		return p1;
+	}
+
+	public ListNode getIntersectionNode2(ListNode headA, ListNode headB) {
+		if (headA == null || headB == null) return null;
+		if (headA == headB) return headA;
+		ListNode p1 = headA, p2 = headB;
+		int lenA = 0, lenB = 0;
+		while(p1 != null) {
+			p1 = p1.next;
+			lenA++;
+		}
+		while(p2 != null) {
+			p2 = p2.next;
+			lenB++;
+		}
+		int diff;
+		p1 = headA; p2 = headB;
+		if (lenA > lenB) {
+			diff = lenA - lenB;
+			while (diff-- > 0) {
+				p1 = p1.next;
+			}
+		}else if (lenB > lenA) {
+			diff = lenB - lenA;
+			while (diff-- > 0) {
+				p2 = p2.next;
+			}
+		}
+		while (p1 != null && p2 != null) {
+			if (p1 == p2) return p1;
+			p1 = p1.next;
+			p2 = p2.next;
+		}
+		return null;
+	}
+
 
 	public ListNode sortList(ListNode head) {
 		if (head == null || head.next == null) {return head;}
