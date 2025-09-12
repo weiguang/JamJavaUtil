@@ -36,7 +36,34 @@ public class StringJam {
 //        System.out.println(new StringJam().isPalindrome1("A man, a plan, a canal: Panama"));
 //        System.out.println(new StringJam().partition("bb"));
 //        System.out.println(new StringJam().reverseWords("   a good   example  "));
-        System.out.println(new StringJam().lengthOfLongestSubstringTwoDistinct("ccaabbb"));
+//        System.out.println(new StringJam().lengthOfLongestSubstringTwoDistinct("ccaabbb"));
+//        System.out.println(new StringJam().compareVersion("1.2", "1.10"));
+        System.out.println(new StringJam().compareVersion("1", "1.1"));
+    }
+
+    /**
+     * 165. 比较版本号
+     * https://leetcode.cn/problems/compare-version-numbers/submissions/661950566/
+     * @param version1
+     * @param version2
+     * @return
+     */
+    public int compareVersion(String version1, String version2) {
+        String[] split = version1.split("\\.");
+        String[] split2 = version2.split("\\.");
+        for (int i = 0; i < split.length || i < split2.length;  i++) {
+            int x = 0 , y = 0 ;
+            if (i < split.length ) {
+                x = Integer.parseInt(split[i]);
+            }
+            if (i < split2.length ) {
+                y = Integer.parseInt(split2[i]);
+            }
+            if (x != y) {
+                return x - y > 0 ? 1 : -1;
+            }
+        }
+        return 0;
     }
 
 
