@@ -28,7 +28,8 @@ public class ArrayString {
 //        new ArrayString().sortColors(new int[] {2,0,2,1,1,0});
 //        System.out.println(new ArrayString().combine(4, 2));
 //        System.out.println(new ArrayString().canCompleteCircuit1(new int[] {5,1,2,3,4}, new int[]{4,4,1,5,1}));
-        System.out.println(new ArrayString().findMin(new int[] {2,2,1,1,2}));
+//        System.out.println(new ArrayString().findMin(new int[] {2,2,1,1,2}));
+        System.out.println(new ArrayString().largestNumber(new int[] {3,30,34,5,9}));
     }
 
     public void swap(int[] nums, int i, int j) {
@@ -36,6 +37,66 @@ public class ArrayString {
         nums[i] = nums[j];
         nums[j] = temp;
     }
+
+    /**
+     * 179. 最大数
+     * https://leetcode.cn/problems/largest-number/
+     * @param nums
+     * @return
+     */
+    public String largestNumber(int[] nums) {
+        String s = Arrays.stream(nums).mapToObj(String::valueOf).sorted((v1, v2) ->  (v2+v1).compareTo(v1+v2)).collect(Collectors.joining());
+        return s.charAt(0) == '0' ? "0" : s;
+    }
+
+
+    /**
+     * 172. 阶乘后的零
+     * 方法一：优化后5的质因数
+     * 方法二：正常数学的求5的质因数方法
+     * https://leetcode.cn/problems/factorial-trailing-zeroes/submissions/662331594/
+     * @param n
+     * @return
+     */
+    public int trailingZeroes(int n) {
+        int ans = 0;
+        while (n != 0 ) {
+            ans += n / 5;
+            n = n / 5;
+        }
+        return ans;
+    }
+
+    public int trailingZeroes2(int n) {
+        int ans = 0;
+        for (int i = 5; i < n; i++) {
+            for (int j = i; j  % 5 == 0 ; j /= 5) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+
+
+
+    public int majorityElement(int[] nums) {
+        int cur = nums[0], count = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (cur == nums[i]) {
+                count++;
+            } else {
+                count--;
+                if (count == 0) {
+                    cur = nums[i];
+                    count = 1;
+                }
+            }
+        }
+        return cur;
+    }
+
+
+
 
 
     /**

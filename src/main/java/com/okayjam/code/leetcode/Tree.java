@@ -9,6 +9,45 @@ import com.okayjam.code.leetcode.LinkedListJam.ListNode;
  **/
 public class Tree {
 
+	public static void main(String[] args) {
+		TreeNode left =  new TreeNode(3, null, null);
+		TreeNode right =  new TreeNode(15, null, null);
+		TreeNode root = new TreeNode(7, left, right);
+		BSTIterator iterator = new BSTIterator(root);
+		while (iterator.hasNext()) {
+			System.out.println(iterator.next());
+		}
+	}
+
+	static class BSTIterator {
+		Deque<TreeNode> queue;
+
+		public BSTIterator(TreeNode root) {
+			queue = new LinkedList<TreeNode>();
+			TreeNode node = root;
+			while (node != null) {
+				queue.push(node);
+				node = node.left;
+			}
+		}
+
+		public int next() {
+			TreeNode poll = queue.pop();
+			if (poll == null) return -1;
+			TreeNode node = poll.right;
+			while (node != null) {
+				queue.push(node);
+				node = node.left;
+			}
+			return poll.val;
+		}
+
+		public boolean hasNext() {
+			return !queue.isEmpty();
+		}
+	}
+
+
 	public TreeNode upsideDownBinaryTree(TreeNode root) {
 		if (root == null) return null;
 		if (root.left == null && root.right == null) return root;
@@ -22,7 +61,6 @@ public class Tree {
 		root.right = null;
 		return l;
 	}
-
 
 	/**
 	 * 99. 恢复二叉搜索树
@@ -630,7 +668,7 @@ public class Tree {
 	}
 
 
-	public class TreeNode {
+	public static class TreeNode {
 		int val;
 		TreeNode left;
 		TreeNode right;

@@ -38,7 +38,69 @@ public class StringJam {
 //        System.out.println(new StringJam().reverseWords("   a good   example  "));
 //        System.out.println(new StringJam().lengthOfLongestSubstringTwoDistinct("ccaabbb"));
 //        System.out.println(new StringJam().compareVersion("1.2", "1.10"));
-        System.out.println(new StringJam().compareVersion("1", "1.1"));
+        System.out.println(new StringJam().fractionToDecimal(-1, -2147483648
+
+        ));
+    }
+
+
+
+    /**
+     * 171. Excel 表列序号
+     * https://leetcode.cn/problems/excel-sheet-column-number/submissions/662326362/
+     * @param columnTitle
+     * @return
+     */
+    public int titleToNumber(String columnTitle) {
+        if (columnTitle == null || columnTitle.isEmpty()) { return 0; }
+        int ans = 0;
+        long pow = 1;
+        for (int i = columnTitle.length() -1; i >= 0; i--) {
+            char c = columnTitle.charAt(i);
+            int num = (int) ((c - 'A' + 1) * pow);
+            ans  += num;
+            pow *= 26;
+        }
+        return ans;
+    }
+
+
+    public String convertToTitle(int columnNumber) {
+        StringBuilder ans = new StringBuilder();
+        while (columnNumber > 0) {
+            int a = (columnNumber -1) % 26;
+            ans.append((char)(a + 'A'));
+            columnNumber = (columnNumber - a -1) / 26;
+        }
+        return ans.reverse().toString();
+    }
+
+    public String fractionToDecimal(int numerator, int denominator) {
+        boolean f = numerator < 0 ^ denominator < 0;
+        long numeratorLong =  Math.abs((long)numerator);
+        long denominatorLong =  Math.abs((long)denominator);
+        if (numeratorLong % denominatorLong == 0 ) {
+            return String.valueOf((long)numerator/ (long)denominator);
+        }
+
+        long a = numeratorLong / denominatorLong;
+        long mod = numeratorLong % denominatorLong;
+        HashMap<Long, Integer> modList = new HashMap<>();
+        StringBuilder r = new StringBuilder();
+        int i = 0;
+        while (mod != 0  ) {
+            modList.put(mod, i++);
+            mod *= 10;
+            r.append(mod / denominatorLong);
+            mod %=  denominatorLong;
+            if (modList.containsKey(mod)) {
+                int ii = modList.get(mod);
+                r.insert(ii, "(");
+                r.append(")");
+                break;
+            }
+        }
+        return ((f) ? "-": "") + a+ "." + r;
     }
 
     /**
