@@ -38,27 +38,104 @@ public class StringJam {
 //        System.out.println(new StringJam().reverseWords("   a good   example  "));
 //        System.out.println(new StringJam().lengthOfLongestSubstringTwoDistinct("ccaabbb"));
 //        System.out.println(new StringJam().compareVersion("1.2", "1.10"));
-        System.out.println(new StringJam().fractionToDecimal(-1, -2147483648
-
-        ));
+//        System.out.println(new StringJam().fractionToDecimal(-1, -2147483648
+        System.out.println(new StringJam().findRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"));
     }
 
+    Map<Character, Integer> bin = new HashMap<Character, Integer>() {{
+        put('A', 0);
+        put('C', 1);
+        put('G', 2);
+        put('T', 3);
+    }};
+
+    public List<String> findRepeatedDnaSequences(String s) {
+        int L = 10;
+        Map<Integer, Integer> map = new HashMap<>();
+        if (s.length() < L) {
+            return Collections.emptyList();
+        }
+        List<String> res = new ArrayList<>();
+        int n = s.length();
+        int x = 0;
+        for (int i = 0; i < L - 1; ++i) {
+            x = (x << 2) | bin.get(s.charAt(i));
+        }
+        for (int i = 0; i <= n-L; i++) {
+            x = ((x<<2) | bin.get(s.charAt(i+L-1)));
+            x &= ((1<< (L * 2)) - 1);
+            int v = map.getOrDefault(x, 0) + 1;
+            if (v == 2) {
+                res.add(s.substring(i,  i +L));
+            }
+            map.put(x, v);
+        }
+        return res;
+    }
+
+    public List<String> findRepeatedDnaSequences2(String s) {
+        Map<String, Integer> map = new HashMap<>();
+        if (s.length() < 10) {
+            return Collections.emptyList();
+        }
+        List<String> res = new ArrayList<>();
+        int n = s.length();
+        for (int i = 10; i <= n; i++) {
+            String s1 = s.substring(i-10,  i);
+//            map.compute(s1, (k, v) -> v == null ? 1 : v + 1);
+            int v = map.getOrDefault(s1, 1)  +1;
+            if (v == 2) {
+                res.add(s1);
+            }
+            map.put(s1, v);
+        }
+//        return map.entrySet().stream().filter(v -> v.getValue() > 1).map(Map.Entry::getKey).collect(Collectors.toList());
+        return res;
+    }
+
+
+    public void reverseWords(char[] s) {
+        reverseCharArr(s, 0, s.length - 1);
+        int cur = 0;
+        for (int i = 1; i < s.length; ++i) {
+            if (s[i] == ' ') {
+                reverseCharArr(s, cur, i - 1);
+                cur = i + 1;
+            }
+        }
+        if (cur < s.length - 1) {
+            reverseCharArr(s, cur, s.length - 1);
+        }
+    }
+
+    public void reverseCharArr(char[] s, int start, int end) {
+        while (start < end) {
+            char temp = s[start];
+            s[start] = s[end];
+            s[end] = temp;
+            start++;
+            end--;
+        }
+    }
 
 
     /**
      * 171. Excel 表列序号
      * https://leetcode.cn/problems/excel-sheet-column-number/submissions/662326362/
+     *
      * @param columnTitle
      * @return
      */
     public int titleToNumber(String columnTitle) {
-        if (columnTitle == null || columnTitle.isEmpty()) { return 0; }
+        if (columnTitle == null || columnTitle.isEmpty()) {
+            return 0;
+        }
         int ans = 0;
         long pow = 1;
-        for (int i = columnTitle.length() -1; i >= 0; i--) {
+        for (int i = columnTitle.length() - 1; i >= 0; i--) {
             char c = columnTitle.charAt(i);
             int num = (int) ((c - 'A' + 1) * pow);
-            ans  += num;
+            ans += num;
             pow *= 26;
         }
         return ans;
@@ -68,19 +145,19 @@ public class StringJam {
     public String convertToTitle(int columnNumber) {
         StringBuilder ans = new StringBuilder();
         while (columnNumber > 0) {
-            int a = (columnNumber -1) % 26;
-            ans.append((char)(a + 'A'));
-            columnNumber = (columnNumber - a -1) / 26;
+            int a = (columnNumber - 1) % 26;
+            ans.append((char) (a + 'A'));
+            columnNumber = (columnNumber - a - 1) / 26;
         }
         return ans.reverse().toString();
     }
 
     public String fractionToDecimal(int numerator, int denominator) {
         boolean f = numerator < 0 ^ denominator < 0;
-        long numeratorLong =  Math.abs((long)numerator);
-        long denominatorLong =  Math.abs((long)denominator);
-        if (numeratorLong % denominatorLong == 0 ) {
-            return String.valueOf((long)numerator/ (long)denominator);
+        long numeratorLong = Math.abs((long) numerator);
+        long denominatorLong = Math.abs((long) denominator);
+        if (numeratorLong % denominatorLong == 0) {
+            return String.valueOf((long) numerator / (long) denominator);
         }
 
         long a = numeratorLong / denominatorLong;
@@ -88,11 +165,11 @@ public class StringJam {
         HashMap<Long, Integer> modList = new HashMap<>();
         StringBuilder r = new StringBuilder();
         int i = 0;
-        while (mod != 0  ) {
+        while (mod != 0) {
             modList.put(mod, i++);
             mod *= 10;
             r.append(mod / denominatorLong);
-            mod %=  denominatorLong;
+            mod %= denominatorLong;
             if (modList.containsKey(mod)) {
                 int ii = modList.get(mod);
                 r.insert(ii, "(");
@@ -100,12 +177,13 @@ public class StringJam {
                 break;
             }
         }
-        return ((f) ? "-": "") + a+ "." + r;
+        return ((f) ? "-" : "") + a + "." + r;
     }
 
     /**
      * 165. 比较版本号
      * https://leetcode.cn/problems/compare-version-numbers/submissions/661950566/
+     *
      * @param version1
      * @param version2
      * @return
@@ -113,12 +191,12 @@ public class StringJam {
     public int compareVersion(String version1, String version2) {
         String[] split = version1.split("\\.");
         String[] split2 = version2.split("\\.");
-        for (int i = 0; i < split.length || i < split2.length;  i++) {
-            int x = 0 , y = 0 ;
-            if (i < split.length ) {
+        for (int i = 0; i < split.length || i < split2.length; i++) {
+            int x = 0, y = 0;
+            if (i < split.length) {
                 x = Integer.parseInt(split[i]);
             }
-            if (i < split2.length ) {
+            if (i < split2.length) {
                 y = Integer.parseInt(split2[i]);
             }
             if (x != y) {
@@ -132,6 +210,7 @@ public class StringJam {
     /**
      * 161. 相隔为 1 的编辑距离
      * https://leetcode.cn/problems/one-edit-distance/submissions/661515165/
+     *
      * @param s
      * @param t
      * @return
@@ -142,29 +221,32 @@ public class StringJam {
         if (ns > nt) {
             return isOneEditDistance(t, s);
         }
-        if (nt -ns > 1) {
+        if (nt - ns > 1) {
             return false;
         }
         for (int i = 0; i < ns; i++) {
-            if  (s.charAt(i) != t.charAt(i)) {
+            if (s.charAt(i) != t.charAt(i)) {
                 if (ns == nt) {
                     return s.substring(i + 1).equals(t.substring(i + 1));
                 } else {
-                    return  s.substring(i).equals(t.substring(i + 1));
+                    return s.substring(i).equals(t.substring(i + 1));
                 }
             }
         }
-        return  ns +1 == nt;
+        return ns + 1 == nt;
     }
 
     /**
      * 159. 至多包含两个不同字符的最长子串
      * https://leetcode.cn/problems/longest-substring-with-at-most-two-distinct-characters/
+     *
      * @param s
      * @return
      */
     public int lengthOfLongestSubstringTwoDistinct(String s) {
-        if (s == null || s.isEmpty()) { return 0; }
+        if (s == null || s.isEmpty()) {
+            return 0;
+        }
         int ans = 0;
         int idx = 0;
         Map<Character, Integer> map = new HashMap<>();
@@ -188,7 +270,9 @@ public class StringJam {
 
 
     public String reverseWords(String s) {
-        if (s == null || s.isEmpty()) {return "";}
+        if (s == null || s.isEmpty()) {
+            return "";
+        }
         List<String> list = Arrays.asList(s.trim().split("\\s+"));
         Collections.reverse(list);
         StringBuilder sb = new StringBuilder();
@@ -196,7 +280,9 @@ public class StringJam {
     }
 
     public boolean wordBreak(String s, List<String> wordDict) {
-        if (wordDict == null || wordDict.isEmpty()) {return false;}
+        if (wordDict == null || wordDict.isEmpty()) {
+            return false;
+        }
         HashSet<String> set = new HashSet<>(wordDict);
         int len = s.length();
         boolean[] dp = new boolean[len + 1];
@@ -216,25 +302,36 @@ public class StringJam {
     /**
      * 131. 分割回文串(时间较长)
      * https://leetcode.cn/problems/palindrome-partitioning/
+     *
      * @param s
      * @return
      */
     public List<List<String>> partition(String s) {
         if (s == null || s.isEmpty()) return new ArrayList<>();
         List<List<String>> ans = new ArrayList<>();
-        if (s.length() == 1) { List<String> t =  new ArrayList<>(); t.add(s); ans.add(t);  return ans;}
-        for (int i = 0; i < s.length() ; i++) {
-            String leftStr = s.substring(0, i +1);
-            if (s.charAt(0) != s.charAt(i) ||  !new StringBuilder(leftStr).reverse().toString().equals(leftStr)) {
+        if (s.length() == 1) {
+            List<String> t = new ArrayList<>();
+            t.add(s);
+            ans.add(t);
+            return ans;
+        }
+        for (int i = 0; i < s.length(); i++) {
+            String leftStr = s.substring(0, i + 1);
+            if (s.charAt(0) != s.charAt(i) || !new StringBuilder(leftStr).reverse().toString().equals(leftStr)) {
                 continue;
             }
-            if (i == s.length() - 1) {  List<String> left = new ArrayList<>(); left.add(leftStr);ans.add(left); break;}
-            String rightStr = s.substring( i +1);
+            if (i == s.length() - 1) {
+                List<String> left = new ArrayList<>();
+                left.add(leftStr);
+                ans.add(left);
+                break;
+            }
+            String rightStr = s.substring(i + 1);
             List<List<String>> right = partition(rightStr);
-                for (List<String> strings2 : right) {
-                    strings2.add(0, leftStr);
-                    ans.add(strings2);
-                }
+            for (List<String> strings2 : right) {
+                strings2.add(0, leftStr);
+                ans.add(strings2);
+            }
         }
         return ans;
     }
@@ -258,14 +355,22 @@ public class StringJam {
 
 
     public boolean isPalindrome1(String s) {
-        if (s.length() <= 1) { return true;}
+        if (s.length() <= 1) {
+            return true;
+        }
         int start = 0;
         int end = s.length() - 1;
         while (start < end) {
             char c1 = s.charAt(start);
-            if (!Character.isLetterOrDigit(c1) ) {  start++; continue; }
+            if (!Character.isLetterOrDigit(c1)) {
+                start++;
+                continue;
+            }
             char c2 = s.charAt(end);
-            if (!Character.isLetterOrDigit(c2) ) { end--; continue; }
+            if (!Character.isLetterOrDigit(c2)) {
+                end--;
+                continue;
+            }
             if (Character.toLowerCase(c1) != Character.toLowerCase(c2)) {
                 return false;
             }

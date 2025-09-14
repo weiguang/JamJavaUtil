@@ -39,6 +39,29 @@ public class ArrayString {
     }
 
     /**
+     * 189. 轮转数组
+     * https://leetcode.cn/problems/rotate-array/description/
+     * @param nums
+     * @param k
+     */
+    public void rotate(int[] nums, int k) {
+        k %= nums.length;
+        if (k == 0) {
+            return;
+        }
+        reverse(nums, 0, nums.length - 1);
+        reverse(nums, 0, k - 1);
+        reverse(nums, k, nums.length - 1);
+    }
+    public void reverse(int[] nums, int s, int e) {
+        while (s < e) {
+            swap(nums, s, e);
+            s++;e--;
+        }
+    }
+
+
+    /**
      * 179. 最大数
      * https://leetcode.cn/problems/largest-number/
      * @param nums
