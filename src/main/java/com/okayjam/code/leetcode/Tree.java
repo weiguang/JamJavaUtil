@@ -19,6 +19,36 @@ public class Tree {
 		}
 	}
 
+
+	/**
+	 * 199. 二叉树的右视图
+	 * https://leetcode.cn/problems/binary-tree-right-side-view/submissions/663336595/
+	 * @param root
+	 * @return
+	 */
+	public List<Integer> rightSideView(TreeNode root) {
+		if(root == null) return Collections.emptyList();
+		List<Integer> ans = new ArrayList<>();
+		Queue<TreeNode> queue = new LinkedList<>();
+		queue.add(root);
+		while(!queue.isEmpty()) {
+			int size = queue.size();
+			for(int i = 0; i < size; i++) {
+				TreeNode poll = queue.poll();
+				if (poll.left != null) {
+					queue.add(poll.left);
+				}
+				if (poll.right!= null) {
+					queue.add(poll.right);
+				}
+				if (i == size - 1) {
+					ans.add(poll.val);
+				}
+			}
+		}
+		return ans;
+	}
+
 	static class BSTIterator {
 		Deque<TreeNode> queue;
 

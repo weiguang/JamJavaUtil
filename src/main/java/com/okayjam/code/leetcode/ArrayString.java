@@ -29,7 +29,8 @@ public class ArrayString {
 //        System.out.println(new ArrayString().combine(4, 2));
 //        System.out.println(new ArrayString().canCompleteCircuit1(new int[] {5,1,2,3,4}, new int[]{4,4,1,5,1}));
 //        System.out.println(new ArrayString().findMin(new int[] {2,2,1,1,2}));
-        System.out.println(new ArrayString().largestNumber(new int[] {3,30,34,5,9}));
+//        System.out.println(new ArrayString().largestNumber(new int[] {3,30,34,5,9}));
+        System.out.println(new ArrayString().rob(new int[] {2,7,9,3,1}));
     }
 
     public void swap(int[] nums, int i, int j) {
@@ -37,6 +38,26 @@ public class ArrayString {
         nums[i] = nums[j];
         nums[j] = temp;
     }
+
+
+    /**
+     * 198. 打家劫舍
+     * https://leetcode.cn/problems/house-robber/
+     * @param nums
+     * @return
+     */
+    public int rob(int[] nums) {
+        int rob = nums[0];
+        int noRob = 0;
+        for (int i = 1; i < nums.length; i++) {
+            System.out.printf("%d :%d, %d\n", i, noRob, rob);
+            int tempNoRob  = Math.max(rob, noRob);
+            rob = noRob + nums[i];
+            noRob = tempNoRob;
+        }
+        return Math.max(rob, noRob);
+    }
+
 
     /**
      * 189. 轮转数组
