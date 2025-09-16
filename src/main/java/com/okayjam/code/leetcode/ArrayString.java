@@ -59,6 +59,34 @@ public class ArrayString {
     }
 
 
+
+    /**
+     * 191. 位1的个数
+     * https://leetcode.cn/problems/number-of-1-bits/description/
+     * 第一种方法，每次 n & n-1 把最低位变为0
+     * 第二种方法，直观的每次判断最后一位是否为1，然后右移继续判断最后一位
+     * @param n
+     * @return
+     */
+    public int hammingWeight(int n) {
+        int ans = 0;
+        while (n != 0) {
+            n &= n - 1;
+            ++ans;
+        }
+        return ans;
+    }
+
+    public int hammingWeight2(int n) {
+        int ans = 0;
+        while (n != 0) {
+            ans += n & 1;
+            n = n >>>1;
+        }
+        return ans;
+    }
+
+
     /**
      * 189. 轮转数组
      * https://leetcode.cn/problems/rotate-array/description/
@@ -138,10 +166,6 @@ public class ArrayString {
         }
         return cur;
     }
-
-
-
-
 
     /**
      * 163. 缺失的区间

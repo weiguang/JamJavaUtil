@@ -10,7 +10,9 @@ import java.util.Map;
  * @date 2022/08/02 20:05
  **/
 public class Grid {
-
+	public static void main(String[] args) {
+		System.out.println("Default main method!");
+	}
 
 
 

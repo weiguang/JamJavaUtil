@@ -40,9 +40,81 @@ public class StringJam {
 //        System.out.println(new StringJam().compareVersion("1.2", "1.10"));
 //        System.out.println(new StringJam().fractionToDecimal(-1, -2147483648
 //        System.out.println(new StringJam().findRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"));
-        System.out.println(new StringJam().reverseBits(43261596));
+//        System.out.println(new StringJam().reverseBits(43261596));
+        System.out.println(new StringJam().isHappy(19));
     }
 
+
+    /**
+     * 202. 快乐数
+     * https://leetcode.cn/problems/happy-number/solutions/224894/kuai-le-shu-by-leetcode-solution/
+     * 快慢指针
+     * @param n
+     * @return
+     */
+    public boolean isHappy(int n) {
+        int slowRunner = n;
+        int fastRunner = getNext(n);
+        while (fastRunner != 1 && slowRunner != fastRunner) {
+            slowRunner = getNext(slowRunner);
+            fastRunner = getNext(getNext(fastRunner));
+        }
+        return fastRunner == 1;
+    }
+
+    public int getNext(int n) {
+        int totalSum = 0;
+        while (n > 0) {
+            int d = n % 10;
+            n = n / 10;
+            totalSum += d * d;
+        }
+        return totalSum;
+    }
+
+
+    public boolean isHappy2(int n) {
+        int re = n;
+        HashSet<Integer> set = new HashSet<>();
+        while (re != 1) {
+            int a =  re;
+            re =0;
+            while (a != 0) {
+                re += (a % 10) * (a % 10) ;
+                a /= 10;
+            }
+//            System.out.printf("re: %d\n", re);
+            if (set.contains(re)) return false;
+            set.add(re);
+        }
+        return true;
+    }
+
+
+    /**
+     * 201. 数字范围按位与
+     * https://leetcode.cn/problems/bitwise-and-of-numbers-range/
+     * @param m
+     * @param n
+     * @return
+     */
+    public int rangeBitwiseAnd(int m, int n) {
+        int shift = 0;
+        // 找到公共前缀
+        while (m < n) {
+            m >>= 1;
+            n >>= 1;
+            ++shift;
+        }
+        return m << shift;
+    }
+    public int rangeBitwiseAnd2(int m, int n) {
+        while (m < n) {
+            // 抹去最右边的 1
+            n = n & (n - 1);
+        }
+        return n;
+    }
 
     private static final int M1 = 0x55555555; // 01010101010101010101010101010101
     private static final int M2 = 0x33333333; // 00110011001100110011001100110011

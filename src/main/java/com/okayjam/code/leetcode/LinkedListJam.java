@@ -42,6 +42,36 @@ public class LinkedListJam {
 	}
 
 	/**
+	 * 203. 移除链表元素
+	 * https://leetcode.cn/problems/remove-linked-list-elements/description/
+	 * @param head
+	 * @param val
+	 * @return
+	 */
+	public ListNode removeElements(ListNode head, int val) {
+		if (head == null) {return null;}
+		ListNode dummy = new ListNode(0, head);
+		ListNode p = dummy;
+		while (p.next != null) {
+			if (p.next.val == val) {
+				p.next = p.next.next;
+			}  else {
+				p = p.next;
+			}
+		}
+		return dummy.next;
+	}
+
+	public ListNode removeElements2(ListNode head, int val) {
+		if (head == null) {
+			return head;
+		}
+		head.next = removeElements(head.next, val);
+		return head.val == val ? head.next : head;
+	}
+
+
+	/**
 	 * 160. 相交链表
 	 * 第一种方法： 双指针，大家都走一遍 不相交部份+相交部份，同要距离会在交点汇合
 	 * 第二种直观，先计算长度，让长的先走多出来的部份，然后开始一起同时走，就知道交点位置，如果没有交点就到null
