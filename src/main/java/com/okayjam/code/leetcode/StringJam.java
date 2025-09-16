@@ -39,8 +39,40 @@ public class StringJam {
 //        System.out.println(new StringJam().lengthOfLongestSubstringTwoDistinct("ccaabbb"));
 //        System.out.println(new StringJam().compareVersion("1.2", "1.10"));
 //        System.out.println(new StringJam().fractionToDecimal(-1, -2147483648
-        System.out.println(new StringJam().findRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"));
+//        System.out.println(new StringJam().findRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"));
+        System.out.println(new StringJam().reverseBits(43261596));
     }
+
+
+    private static final int M1 = 0x55555555; // 01010101010101010101010101010101
+    private static final int M2 = 0x33333333; // 00110011001100110011001100110011
+    private static final int M4 = 0x0f0f0f0f; // 00001111000011110000111100001111
+    private static final int M8 = 0x00ff00ff; // 00000000111111110000000011111111
+
+    /**
+     * 190. 颠倒二进制位
+     * https://leetcode.cn/problems/reverse-bits/solutions/685436/dian-dao-er-jin-zhi-wei-by-leetcode-solu-yhxz/
+     * @param n
+     * @return
+     */
+    public int reverseBits(int n) {
+        n = n >>> 1 & M1 | (n & M1) << 1;
+        n = n >>> 2 & M2 | (n & M2) << 2;
+        n = n >>> 4 & M4 | (n & M4) << 4;
+        n = n >>> 8 & M8 | (n & M8) << 8;
+        return n >>> 16 | n << 16;
+    }
+
+    public int reverseBits2(int n) {
+         int res = 0;
+        for (int i = 1; i <= 32; i++) {
+            res |= (n & 1) <<(32-i);
+            n = n >>> 1;
+//            System.out.println(Integer.toBinaryString(res));
+        }
+        return res;
+    }
+
 
     Map<Character, Integer> bin = new HashMap<Character, Integer>() {{
         put('A', 0);
