@@ -44,6 +44,31 @@ public class StringJam {
 //        System.out.println(new StringJam().isHappy(19));
     }
 
+    /**
+     * 205. 同构字符串
+     * https://leetcode.cn/problems/isomorphic-strings/description/
+     * @param s
+     * @param t
+     * @return
+     */
+    public boolean isIsomorphic(String s, String t) {
+        HashMap<Character, Character> map1 = new HashMap<>();
+        HashMap<Character, Character> map2 = new HashMap<>();
+        if (s.length() != t.length()) return false;
+        for (int i = 0; i < s.length(); i++) {
+            char c1 = s.charAt(i);
+            char c2 = t.charAt(i);
+            if (map1.getOrDefault(c1, c2) != c2) {
+                return false;
+            }
+            if (map2.getOrDefault(c2, c1) != c1) {
+                return false;
+            }
+            map1.put(c1, c2);
+            map2.put(c2, c1);
+        }
+        return true;
+    }
 
     /**
      * 202. 快乐数
