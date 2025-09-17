@@ -40,6 +40,41 @@ public class ArrayString {
     }
 
 
+    public int countPrimes(int n) {
+        int ans = 0;
+        int[] notPrimes = new int[n + 1];
+        for (int i = 2; i < n; i++) {
+            if (notPrimes[i] == 0) {
+                ans++;
+                if (((long) i * i) >= n) { continue;}
+                for (int j = i * i; j < n; j += i) {
+                    notPrimes[j] = 1;
+                }
+            }
+        }
+        return ans;
+    }
+
+    /*
+        会超时
+     */
+    public int countPrime2s(int n) {
+        int ans = 0;
+        for (int i = 2; i < n; i++) {
+            if (isPrimes(i)) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+    public boolean isPrimes(int n) {
+        for (int i = 2; i *i <= n; i++) {
+            if (n % i == 0) {return false;}
+        }
+        return true;
+    }
+
+
     /**
      * 198. 打家劫舍
      * https://leetcode.cn/problems/house-robber/

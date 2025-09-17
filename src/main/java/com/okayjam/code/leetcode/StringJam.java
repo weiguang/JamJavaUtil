@@ -41,7 +41,7 @@ public class StringJam {
 //        System.out.println(new StringJam().fractionToDecimal(-1, -2147483648
 //        System.out.println(new StringJam().findRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"));
 //        System.out.println(new StringJam().reverseBits(43261596));
-        System.out.println(new StringJam().isHappy(19));
+//        System.out.println(new StringJam().isHappy(19));
     }
 
 

@@ -29,10 +29,11 @@ public class Tree {
 	public List<Integer> rightSideView(TreeNode root) {
 		if(root == null) return Collections.emptyList();
 		List<Integer> ans = new ArrayList<>();
-		Queue<TreeNode> queue = new LinkedList<>();
+		Deque<TreeNode> queue = new LinkedList<>();
 		queue.add(root);
 		while(!queue.isEmpty()) {
 			int size = queue.size();
+			ans.add(queue.peekLast().val);
 			for(int i = 0; i < size; i++) {
 				TreeNode poll = queue.poll();
 				if (poll.left != null) {
@@ -40,9 +41,6 @@ public class Tree {
 				}
 				if (poll.right!= null) {
 					queue.add(poll.right);
-				}
-				if (i == size - 1) {
-					ans.add(poll.val);
 				}
 			}
 		}
