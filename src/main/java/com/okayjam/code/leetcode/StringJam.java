@@ -44,9 +44,13 @@ public class StringJam {
 //        System.out.println(new StringJam().isHappy(19));
     }
 
+
+
+
     /**
      * 205. 同构字符串
      * https://leetcode.cn/problems/isomorphic-strings/description/
+     *
      * @param s
      * @param t
      * @return
@@ -74,6 +78,7 @@ public class StringJam {
      * 202. 快乐数
      * https://leetcode.cn/problems/happy-number/solutions/224894/kuai-le-shu-by-leetcode-solution/
      * 快慢指针
+     *
      * @param n
      * @return
      */
@@ -102,10 +107,10 @@ public class StringJam {
         int re = n;
         HashSet<Integer> set = new HashSet<>();
         while (re != 1) {
-            int a =  re;
-            re =0;
+            int a = re;
+            re = 0;
             while (a != 0) {
-                re += (a % 10) * (a % 10) ;
+                re += (a % 10) * (a % 10);
                 a /= 10;
             }
 //            System.out.printf("re: %d\n", re);
@@ -119,6 +124,7 @@ public class StringJam {
     /**
      * 201. 数字范围按位与
      * https://leetcode.cn/problems/bitwise-and-of-numbers-range/
+     *
      * @param m
      * @param n
      * @return
@@ -133,6 +139,7 @@ public class StringJam {
         }
         return m << shift;
     }
+
     public int rangeBitwiseAnd2(int m, int n) {
         while (m < n) {
             // 抹去最右边的 1
@@ -149,6 +156,7 @@ public class StringJam {
     /**
      * 190. 颠倒二进制位
      * https://leetcode.cn/problems/reverse-bits/solutions/685436/dian-dao-er-jin-zhi-wei-by-leetcode-solu-yhxz/
+     *
      * @param n
      * @return
      */
@@ -161,9 +169,9 @@ public class StringJam {
     }
 
     public int reverseBits2(int n) {
-         int res = 0;
+        int res = 0;
         for (int i = 1; i <= 32; i++) {
-            res |= (n & 1) <<(32-i);
+            res |= (n & 1) << (32 - i);
             n = n >>> 1;
 //            System.out.println(Integer.toBinaryString(res));
         }
@@ -190,12 +198,12 @@ public class StringJam {
         for (int i = 0; i < L - 1; ++i) {
             x = (x << 2) | bin.get(s.charAt(i));
         }
-        for (int i = 0; i <= n-L; i++) {
-            x = ((x<<2) | bin.get(s.charAt(i+L-1)));
-            x &= ((1<< (L * 2)) - 1);
+        for (int i = 0; i <= n - L; i++) {
+            x = ((x << 2) | bin.get(s.charAt(i + L - 1)));
+            x &= ((1 << (L * 2)) - 1);
             int v = map.getOrDefault(x, 0) + 1;
             if (v == 2) {
-                res.add(s.substring(i,  i +L));
+                res.add(s.substring(i, i + L));
             }
             map.put(x, v);
         }
@@ -210,9 +218,9 @@ public class StringJam {
         List<String> res = new ArrayList<>();
         int n = s.length();
         for (int i = 10; i <= n; i++) {
-            String s1 = s.substring(i-10,  i);
+            String s1 = s.substring(i - 10, i);
 //            map.compute(s1, (k, v) -> v == null ? 1 : v + 1);
-            int v = map.getOrDefault(s1, 1)  +1;
+            int v = map.getOrDefault(s1, 1) + 1;
             if (v == 2) {
                 res.add(s1);
             }

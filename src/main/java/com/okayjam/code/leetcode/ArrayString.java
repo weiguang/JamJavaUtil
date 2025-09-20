@@ -30,7 +30,11 @@ public class ArrayString {
 //        System.out.println(new ArrayString().canCompleteCircuit1(new int[] {5,1,2,3,4}, new int[]{4,4,1,5,1}));
 //        System.out.println(new ArrayString().findMin(new int[] {2,2,1,1,2}));
 //        System.out.println(new ArrayString().largestNumber(new int[] {3,30,34,5,9}));
-        System.out.println(new ArrayString().rob(new int[] {2,7,9,3,1}));
+//        System.out.println(new ArrayString().rob(new int[] {2,7,9,3,1}));
+//        System.out.println(new ArrayString().findKthLargest(new int[] {3,2,1,5,6,4}, 2));
+//        System.out.println(new ArrayString().combinationSum3(3,9));
+//        System.out.println(new ArrayString().containsNearbyAlmostDuplicate(new int[] {1,5,9,1,5,9}, 2, 3));
+        System.out.println(new ArrayString().containsNearbyAlmostDuplicate(new int[] {8,7,15,1,6,1,9,15}, 1, 3));
     }
 
     public void swap(int[] nums, int i, int j) {
@@ -38,6 +42,143 @@ public class ArrayString {
         nums[i] = nums[j];
         nums[j] = temp;
     }
+
+    /**
+     * 220. 存在重复元素 III
+     * https://leetcode.cn/problems/contains-duplicate-iii
+     * @param nums
+     * @param indexDiff
+     * @param valueDiff
+     * @return
+     */
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff) {
+        int left = 0;
+        TreeSet<Integer> set = new TreeSet<>();
+        set.add(nums[0]);
+        for (int right = 1; right < nums.length; right++) {
+            if (right - left > indexDiff) {
+                set.remove(nums[left]);
+                left++;
+            }
+            if (set.contains(nums[right])) {
+                return true;
+            }
+            Integer ceiling = set.ceiling( nums[right] - valueDiff);
+            if (ceiling != null && Math.abs(ceiling - nums[right]) <= valueDiff) {
+                return true;
+            }
+            set.add(nums[right]);
+        }
+        return false;
+    }
+
+
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            Integer idx = map.get(nums[i]);
+            if (idx != null && Math.abs(idx - i) <= k ) {
+                return true;
+            }
+            map.put(nums[i], i);
+        }
+        return false;
+    }
+
+
+    /**
+     * 217. 存在重复元素
+     * https://leetcode.cn/problems/contains-duplicate/description/
+     * @param nums
+     * @return
+     */
+    public boolean containsDuplicate(int[] nums) {
+        Arrays.sort(nums);
+        for (int i = 1; i < nums.length  -1; i++) {
+            if (nums[i] == nums[i - 1]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * 216. 组合总和 III
+     * https://leetcode.cn/problems/combination-sum-iii/
+     * @param k
+     * @param n
+     * @return
+     */
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        int sum = 0;
+        if (n < k) {
+            return Collections.emptyList();
+        }
+        List<List<Integer>> ans =new ArrayList<>();
+        List<Integer> t = new ArrayList<>();
+        combinationSum3(n,k, ans , t, 0, 1);
+        return ans;
+    }
+
+    public void combinationSum3(int n, int k , List<List<Integer>> ans, List<Integer> cur,  int curSum, int index) {
+        if (curSum > n || cur.size() > k) {
+            return;
+        }
+        if (cur.size() == k && curSum == n) {
+            ans.add(new ArrayList<>(cur));
+            return;
+        }
+        for (int i = index; i <= 9; i++) {
+            if (curSum + i > n ) {return;}
+            cur.add(i);
+            curSum += i;
+            combinationSum3(n, k , ans, cur, curSum, i +1);
+            cur.remove(cur.size() -1);
+            curSum -= i;
+        }
+    }
+
+
+    public int findKthLargest(int[] nums, int k) {
+        if (nums.length == 0 ) {
+            return 0;
+        }
+        PriorityQueue<Integer> queue = new PriorityQueue<>();
+        for (int i = 0; i <nums.length; i++) {
+            if (i < k) {
+                queue.add(nums[i]);
+            } else if (queue.peek() < nums[i]) {
+                queue.poll();
+                queue.add(nums[i]);
+            }
+        }
+        return queue.peek();
+    }
+
+
+    public int rob2(int[] nums) {
+        int length = nums.length;
+        if (length == 1) {
+            return nums[0];
+        } else if (length == 2) {
+            return Math.max(nums[0], nums[1]);
+        }
+        return Math.max(robRange(nums, 0, nums.length -2), robRange(nums, 1, length -1));
+    }
+
+    public int robRange(int[] nums, int start, int end) {
+        int rob = nums[start];
+        int noRob = 0;
+        for (int i = start + 1; i <= end; i++) {
+            System.out.printf("%d :%d, %d\n", i, noRob, rob);
+            int tempNoRob  = Math.max(rob, noRob);
+            rob = noRob + nums[i];
+            noRob = tempNoRob;
+        }
+        return Math.max(rob, noRob);
+    }
+
 
     public int minSubArrayLen(int target, int[] nums) {
         int ans = Integer.MAX_VALUE;

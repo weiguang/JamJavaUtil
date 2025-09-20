@@ -1,6 +1,10 @@
 package com.okayjam.code.leetcode;
 
+import org.bouncycastle.util.Arrays;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +18,46 @@ public class Grid {
 		System.out.println("Default main method!");
 	}
 
+
+	List<Integer> findOrderAns = new ArrayList<>();
+	public int[] findOrder(int numCourses, int[][] prerequisites) {
+		visited2 = new int[numCourses];
+		for (int i = 0; i < numCourses; i++) {
+			edges.add(new ArrayList<>());
+		}
+		for (int[] prerequisite : prerequisites) {
+			edges.get(prerequisite[1]).add(prerequisite[0]);
+		}
+		for (int i = 0; i < numCourses && valid; i++) {
+			if (visited2[i] == 0) {
+				findOrderDfs(i);
+			}
+		}
+		Collections.reverse(findOrderAns);
+		return !valid? new int[0]:  findOrderAns.stream().mapToInt(v->v).toArray();
+	}
+
+	public void findOrderDfs(int u) {
+		visited2[u] = 1;
+		for (int v : edges.get(u)) {
+			if (visited2[v] == 0) {
+				findOrderDfs(v);
+				if (!valid) {
+					return;
+				}
+			} else if (visited2[v] == 1) {
+				valid = false;
+				return;
+			}
+		}
+		findOrderAns.add(u);
+		visited2[u] = 2;
+	}
+
+
 	int[] visited2;
 	List<List<Integer>> edges  = new ArrayList<>();
 	boolean valid = true;
-
 	/**
 	 * 207. 课程表
 	 * https://leetcode.cn/problems/course-schedule/description/
