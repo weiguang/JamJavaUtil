@@ -19,6 +19,34 @@ public class Tree {
 		}
 	}
 
+	/**
+	 * 222. 完全二叉树的节点个数
+	 * https://leetcode.cn/problems/count-complete-tree-nodes/description/
+	 * @param root
+	 * @return
+	 */
+	public int countNodes(TreeNode root) {
+		if (root == null) return 0;
+		int lh = 0, rh = 0;
+		TreeNode t = root;
+		while (t != null) {
+			lh++;
+			t = t.left;
+		}
+		 t = root;
+		while (t != null) {
+			rh++;
+			t = t.right;
+		}
+		// 完全二叉树
+		if (lh == rh) {
+			return (int)Math.pow(2,lh) -1;
+		}
+		// 非完全二叉树
+		return 1 + countNodes(root.left) + countNodes(root.right);
+	}
+
+
 
 	/**
 	 * 199. 二叉树的右视图
