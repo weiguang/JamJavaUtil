@@ -20,6 +20,23 @@ public class Tree {
 	}
 
 	/**
+	 * 226. 翻转二叉树
+	 * https://leetcode.cn/problems/invert-binary-tree/description/
+	 * @param root
+	 * @return
+	 */
+	public TreeNode invertTree(TreeNode root) {
+		if (root == null) return root;
+		invertTree(root.left);
+		invertTree(root.right);
+		TreeNode t = root.left;
+		root.left = root.right;
+		root.right = t;
+		return root;
+	}
+
+
+	/**
 	 * 222. 完全二叉树的节点个数
 	 * https://leetcode.cn/problems/count-complete-tree-nodes/description/
 	 * @param root

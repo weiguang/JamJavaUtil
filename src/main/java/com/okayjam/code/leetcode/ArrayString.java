@@ -34,7 +34,8 @@ public class ArrayString {
 //        System.out.println(new ArrayString().findKthLargest(new int[] {3,2,1,5,6,4}, 2));
 //        System.out.println(new ArrayString().combinationSum3(3,9));
 //        System.out.println(new ArrayString().containsNearbyAlmostDuplicate(new int[] {1,5,9,1,5,9}, 2, 3));
-        System.out.println(new ArrayString().containsNearbyAlmostDuplicate(new int[] {8,7,15,1,6,1,9,15}, 1, 3));
+//        System.out.println(new ArrayString().containsNearbyAlmostDuplicate(new int[] {8,7,15,1,6,1,9,15}, 1, 3));
+        System.out.println(new ArrayString().computeArea(-3,0,3,4, 0, -1, 9, 2));
     }
 
     public void swap(int[] nums, int i, int j) {
@@ -42,6 +43,48 @@ public class ArrayString {
         nums[i] = nums[j];
         nums[j] = temp;
     }
+
+    /**
+     * 223. 矩形面积
+     * https://leetcode.cn/problems/rectangle-area
+     * @return int
+     */
+    public int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2) {
+        int x = calJiaoDistance(ax1,ax2, bx1, bx2);
+        int y = calJiaoDistance(ay1,ay2, by1, by2);
+        int a1= (ax2 - ax1) * (ay2-ay1);
+        int a2 = (bx2 - bx1) * (by2-by1);
+        return   a1 +  a2 -  x*y;
+    }
+
+    public int  calJiaoDistance(int ax1,int ax2 ,int bx1,int bx2) {
+        return  Math.max(Math.min(ax2, bx2) - Math.max(ax1, bx1), 0);
+    }
+
+    public int  calJiaoDistance2(int ax1,int ax2 ,int bx1,int bx2) {
+        int[][] points = new int[2][2];
+        if (ax1 <= bx1) {
+            points[0][0] = ax1;
+            points[0][1] = ax2;
+            points[1][0] = bx1;
+            points[1][1] = bx2;
+        } else {
+            points[0][0] = bx1;
+            points[0][1] = bx2;
+            points[1][0] = ax1;
+            points[1][1] = ax2;
+        }
+        // 无相交
+        if (points[1][0]  >= points[0][1] ) {
+            return 0 ;
+        }
+        // 包含关系
+        if (points[1][1]  <= points[0][1] ) {
+            return points[1][1]  - points[1][0] ;
+        }
+        return points[0][1]  - points[1][0] ;
+    }
+
 
     /**
      * 220. 存在重复元素 III
