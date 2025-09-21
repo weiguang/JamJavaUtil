@@ -42,9 +42,44 @@ public class StringJam {
 //        System.out.println(new StringJam().findRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"));
 //        System.out.println(new StringJam().reverseBits(43261596));
 //        System.out.println(new StringJam().isHappy(19));
+        System.out.println(new StringJam().calculate(" 3+5 / 2 "));
     }
 
 
+    /**
+     * 227. 基本计算器 II
+     * <a href="https://leetcode.cn/problems/basic-calculator-ii/description/">leetcode地址</a>
+     * @param s 表达式
+     * @return 结果
+     */
+    public int calculate(String s) {
+        int ans = 0;
+        Deque<Integer> stackNums = new LinkedList<>();
+        int num = 0;
+        // 提前把数字push到stack，遇到下一个运算符，就开始算上一次，因为这样保证了前一个操作数在stack
+        char preSign = '+';
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (Character.isDigit(c)) {
+                num = num * 10 + c - '0';
+            }
+            // 如果计算到最好一位，无论是什么数字还是空格都要做最后一次运算
+            if ((Character.isDigit(c) ||  c == ' ') &&i != s.length()-1 ) continue;
+            switch (preSign) {
+                case '+': stackNums.push(num); break;
+                case '-': stackNums.push(-num);;break;
+                case '*': stackNums.push(stackNums.pop() * num); break;
+                case '/': stackNums.push(stackNums.pop() / num); break;
+                default: break;
+            }
+            preSign = c;
+            num = 0;
+        }
+        while (!stackNums.isEmpty()) {
+            ans += stackNums.pop();
+        }
+        return ans;
+    }
 
 
     /**
