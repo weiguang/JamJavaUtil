@@ -43,7 +43,25 @@ public class StringJam {
 //        System.out.println(new StringJam().isHappy(19));
 //        System.out.println(new StringJam().calculate(" 3+5 / 2 "));
 //        System.out.println(new StringJam().diffWaysToCompute("10+5"));
-        System.out.println(new StringJam().isAnagram("anagram", "nagaram"));
+//        System.out.println(new StringJam().isAnagram("anagram", "nagaram"));
+        System.out.println(new StringJam().isStrobogrammatic("2"));
+    }
+
+    /**
+     * 246. 中心对称数
+     * <a href="https://leetcode.cn/problems/strobogrammatic-number">246. 中心对称数</a>
+     */
+    public boolean isStrobogrammatic(String num) {
+        for (int i = 0 ; i  <= num.length() / 2; i++) {
+            char c1 = num.charAt(i);
+            char c2 = num.charAt( num.length() - i -1);
+            if ((c1 == '0' || c1 == '1' || c1 == '8') && c1 == c2) {
+            } else if ( c1 == '6' && c2 == '9' || c1 == '9' && c2 == '6') {
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
 
