@@ -41,6 +41,12 @@ public class LinkedListJam {
 		new LinkedListJam().insertionSortList(head1);
 	}
 
+	public void deleteNode(ListNode node) {
+		node.val = node.next.val;
+		node.next = node.next.next;
+	}
+
+
 	/**
 	 * 234. 回文链表
 	 * https://leetcode.cn/problems/palindrome-linked-list/description/

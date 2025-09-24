@@ -35,7 +35,8 @@ public class ArrayString {
 //        System.out.println(new ArrayString().combinationSum3(3,9));
 //        System.out.println(new ArrayString().containsNearbyAlmostDuplicate(new int[] {1,5,9,1,5,9}, 2, 3));
 //        System.out.println(new ArrayString().containsNearbyAlmostDuplicate(new int[] {8,7,15,1,6,1,9,15}, 1, 3));
-        System.out.println(new ArrayString().computeArea(-3, 0, 3, 4, 0, -1, 9, 2));
+//        System.out.println(new ArrayString().computeArea(-3, 0, 3, 4, 0, -1, 9, 2));
+        System.out.println(new ArrayString().maxSlidingWindow(new int[] {1,3,1,2,0,5}, 3));
     }
 
     public void swap(int[] nums, int i, int j) {
@@ -43,6 +44,64 @@ public class ArrayString {
         nums[i] = nums[j];
         nums[j] = temp;
     }
+
+
+    /**
+     * 239. 滑动窗口最大值
+     * https://leetcode.cn/problems/sliding-window-maximum/description/
+     * @param nums 数组
+     * @param k 窗口大小
+     * @return ans
+     */
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int[] ans = new int[nums.length - k + 1];
+        Deque<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (i > k -1   && queue.peekFirst() < i-k+1) {
+                queue.pollFirst();
+            }
+            while (!queue.isEmpty() && nums[queue.peekLast()] < nums[i]) {
+                queue.pollLast();
+            }
+            queue.offer(i);
+            if (i >= k -1) {
+                ans[i-k+1] = nums[queue.peek()];
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 238. 除自身以外数组的乘积
+     * https://leetcode.cn/problems/product-of-array-except-self/description/
+     * @param nums
+     * @return
+     */
+    public int[] productExceptSelf(int[] nums) {
+        long sum = 1;
+        int zero = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 0 ) {
+                if (zero == 0) sum *= nums[i] == 0 ? 1 : nums[i];
+                else {sum = 0; break;}
+                zero++;
+            } else {sum *= nums[i];}
+        }
+        int[] ans = new int[nums.length];
+        // 两个0以上
+        if (zero > 1) return ans;
+        for (int i = 0; i < nums.length; i++) {
+            // 没有0
+          if (zero == 0) {
+              ans[i] = (int)(sum / nums[i]);
+              // 1个0
+          } else if ( nums[i] == 0) {
+              ans[i] = (int)sum;
+          }
+        }
+        return ans;
+    }
+
 
     /**
      * 229. 多数元素 II
