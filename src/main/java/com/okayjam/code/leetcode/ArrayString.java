@@ -45,6 +45,47 @@ public class ArrayString {
         nums[j] = temp;
     }
 
+    /**
+     * 245. 最短单词距离 III
+     * <a href="https://leetcode.cn/problems/shortest-word-distance-iii/">245.最短单词距离III</a>
+     */
+    public int shortestWordDistance(String[] wordsDict, String word1, String word2) {
+        int n = wordsDict.length;
+        int i1 = -1, i2 = -1;
+        int ans = Integer.MAX_VALUE;
+        for (int i = 0; i < n; i++) {
+            if (wordsDict[i].equals(word1)) {
+                i1 = i;
+                ans = ( i2 != -1 && i1 != i2) ? Math.min(ans, Math.abs(i1 - i2)) : ans;
+            }
+            if (wordsDict[i].equals(word2)) {
+                i2 = i;
+                ans = (i1 !=-1 && i1 != i2) ? Math.min(ans, Math.abs(i1 - i2)) : ans;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 243. 最短单词距离
+     * <a href="https://leetcode.cn/problems/shortest-word-distance/description/">...</a>
+     */
+    public int shortestDistance(String[] wordsDict, String word1, String word2) {
+        int n = wordsDict.length;
+        int i1 = -1, i2 = -1;
+        int ans = Integer.MAX_VALUE;
+        for (int i = 0; i < n; i++) {
+            if (wordsDict[i].equals(word1)) {
+                i1 = i;
+                ans = ( i2 != -1 ) ? Math.min(ans, Math.abs(i1 - i2)) : ans;
+            } else if (wordsDict[i].equals(word2)) {
+                i2 = i;
+                ans = (i1 !=-1) ? Math.min(ans, Math.abs(i1 - i2)) : ans;
+            }
+        }
+        return ans;
+    }
+
 
     /**
      * 239. 滑动窗口最大值

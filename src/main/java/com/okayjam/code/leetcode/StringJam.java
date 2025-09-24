@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 import java.util.stream.Collectors;
 
 public class StringJam {
@@ -42,8 +41,103 @@ public class StringJam {
 //        System.out.println(new StringJam().findRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"));
 //        System.out.println(new StringJam().reverseBits(43261596));
 //        System.out.println(new StringJam().isHappy(19));
-        System.out.println(new StringJam().calculate(" 3+5 / 2 "));
+//        System.out.println(new StringJam().calculate(" 3+5 / 2 "));
+//        System.out.println(new StringJam().diffWaysToCompute("10+5"));
+        System.out.println(new StringJam().isAnagram("anagram", "nagaram"));
     }
+
+
+    /**
+     * 242. 有效的字母异位词
+     * https://leetcode.cn/problems/valid-anagram/description/
+     * @param s s
+     * @param t t
+     * @return ans
+     */
+    public boolean isAnagram(String s, String t) {
+        if (s.length() != t.length()) {return false;}
+        char[] str1 = s.toCharArray();
+        char[] str2 = t.toCharArray();
+        Arrays.sort(str1);
+        Arrays.sort(str2);
+        return Arrays.equals(str1, str2);
+    }
+
+
+    public boolean isAnagram2(String s, String t) {
+        if (s.length() != t.length()) {return false;}
+        Map<Character, Integer> map1 = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            map1.put(s.charAt(i), map1.getOrDefault(s.charAt(i), 0) + 1);
+        }
+        for (int i = 0; i < t.length(); i++) {
+            Character c = t.charAt(i);
+            if (map1.getOrDefault(c , 0) < 1 ) {
+                return false;
+            }
+            map1.put(c, map1.get(c) - 1);
+        }
+        return true;
+    }
+
+
+    static final int ADDITION = -1;
+    static final int SUBTRACTION = -2;
+    static final int MULTIPLICATION = -3;
+    /**
+     * 241. 为运算表达式设计优先级
+     * <a href="https://leetcode.cn/problems/different-ways-to-add-parentheses/description/">...</a>
+     * @param expression 表达式
+     * @return  ans
+     */
+    public List<Integer> diffWaysToCompute(String expression) {
+        List<Integer> ops = new ArrayList<>();
+        String[] op = expression.split("\\d+");
+        String[] nums = expression.split("[+\\-*]");
+        ops.add(Integer.valueOf(nums[0]));
+        for (int i = 1; i < op.length; i++) {
+            switch (op[i]) {
+                case "+" : ops.add(ADDITION); break;
+                case "-" : ops.add(SUBTRACTION); break;
+                case "*" : ops.add(MULTIPLICATION); break;
+                default: break;
+            }
+            ops.add(Integer.valueOf(nums[i]));
+        }
+        List[][] dp = new ArrayList[ops.size()][ops.size()];
+        for (int i = 0; i < ops.size(); i++) {
+            for (int j = 0; j < ops.size(); j++) {
+                dp[i][j] = new ArrayList<>();
+            }
+        }
+        return diffWaysToCompute(dp, 0, ops.size() - 1, ops);
+    }
+
+    public List<Integer> diffWaysToCompute(List<Integer>[][] dp, int l, int r, List<Integer> ops) {
+        if (dp[l][r].isEmpty()) {
+            if (l == r) {
+                dp[l][r].add(ops.get(l));
+            } else {
+                for (int i = l; i < r; i += 2) {
+                    List<Integer> left = diffWaysToCompute(dp, l, i, ops);
+                    List<Integer> right = diffWaysToCompute(dp, i + 2, r, ops);
+                    for (int lv : left) {
+                        for (int rv : right) {
+                            if (ops.get(i + 1) == ADDITION) {
+                                dp[l][r].add(lv + rv);
+                            } else if (ops.get(i + 1) == SUBTRACTION) {
+                                dp[l][r].add(lv - rv);
+                            } else {
+                                dp[l][r].add(lv * rv);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return dp[l][r];
+    }
+
 
 
     /**
