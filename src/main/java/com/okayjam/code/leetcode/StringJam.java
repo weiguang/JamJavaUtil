@@ -48,15 +48,55 @@ public class StringJam {
     }
 
     /**
+     * 247. 中心对称数 II
+     * <a href="https://leetcode.cn/problems/strobogrammatic-number-ii/">247. 中心对称数 II</a>
+     * @param n n
+     * @return ans
+     */
+    public List<String> findStrobogrammatic(int n) {
+        List<String> list = findStrobogrammatic0(n);
+        int size = list.size();
+        for (int i = size - 1; i >= 0; i--) {
+            String s = list.get(i);
+            if (s.length() > 1 && s.charAt(0) == '0') {
+                list.remove(i);
+            }
+        }
+        return list;
+    }
+
+    public List<String> findStrobogrammatic0(int n) {
+        List<String> list = new ArrayList<>();
+        if (n == 0) {
+            list.add("");
+        } else if (n == 1) {
+            list.add("0");
+            list.add("1");
+            list.add("8");
+        } else {
+            List<String> subList = findStrobogrammatic0(n - 2);
+            for (String pre : subList) {
+                list.add("0" + pre + "0");
+                list.add("1" + pre + "1");
+                list.add("8" + pre + "8");
+                list.add("6" + pre + "9");
+                list.add("9" + pre + "6");
+            }
+        }
+        return list;
+    }
+
+
+    /**
      * 246. 中心对称数
      * <a href="https://leetcode.cn/problems/strobogrammatic-number">246. 中心对称数</a>
      */
     public boolean isStrobogrammatic(String num) {
-        for (int i = 0 ; i  <= num.length() / 2; i++) {
+        for (int i = 0; i <= num.length() / 2; i++) {
             char c1 = num.charAt(i);
-            char c2 = num.charAt( num.length() - i -1);
+            char c2 = num.charAt(num.length() - i - 1);
             if ((c1 == '0' || c1 == '1' || c1 == '8') && c1 == c2) {
-            } else if ( c1 == '6' && c2 == '9' || c1 == '9' && c2 == '6') {
+            } else if (c1 == '6' && c2 == '9' || c1 == '9' && c2 == '6') {
             } else {
                 return false;
             }
@@ -64,16 +104,18 @@ public class StringJam {
         return true;
     }
 
-
     /**
      * 242. 有效的字母异位词
      * https://leetcode.cn/problems/valid-anagram/description/
+     *
      * @param s s
      * @param t t
      * @return ans
      */
     public boolean isAnagram(String s, String t) {
-        if (s.length() != t.length()) {return false;}
+        if (s.length() != t.length()) {
+            return false;
+        }
         char[] str1 = s.toCharArray();
         char[] str2 = t.toCharArray();
         Arrays.sort(str1);
@@ -83,14 +125,16 @@ public class StringJam {
 
 
     public boolean isAnagram2(String s, String t) {
-        if (s.length() != t.length()) {return false;}
+        if (s.length() != t.length()) {
+            return false;
+        }
         Map<Character, Integer> map1 = new HashMap<>();
         for (int i = 0; i < s.length(); i++) {
             map1.put(s.charAt(i), map1.getOrDefault(s.charAt(i), 0) + 1);
         }
         for (int i = 0; i < t.length(); i++) {
             Character c = t.charAt(i);
-            if (map1.getOrDefault(c , 0) < 1 ) {
+            if (map1.getOrDefault(c, 0) < 1) {
                 return false;
             }
             map1.put(c, map1.get(c) - 1);
@@ -102,11 +146,13 @@ public class StringJam {
     static final int ADDITION = -1;
     static final int SUBTRACTION = -2;
     static final int MULTIPLICATION = -3;
+
     /**
      * 241. 为运算表达式设计优先级
      * <a href="https://leetcode.cn/problems/different-ways-to-add-parentheses/description/">...</a>
+     *
      * @param expression 表达式
-     * @return  ans
+     * @return ans
      */
     public List<Integer> diffWaysToCompute(String expression) {
         List<Integer> ops = new ArrayList<>();
@@ -115,10 +161,17 @@ public class StringJam {
         ops.add(Integer.valueOf(nums[0]));
         for (int i = 1; i < op.length; i++) {
             switch (op[i]) {
-                case "+" : ops.add(ADDITION); break;
-                case "-" : ops.add(SUBTRACTION); break;
-                case "*" : ops.add(MULTIPLICATION); break;
-                default: break;
+                case "+":
+                    ops.add(ADDITION);
+                    break;
+                case "-":
+                    ops.add(SUBTRACTION);
+                    break;
+                case "*":
+                    ops.add(MULTIPLICATION);
+                    break;
+                default:
+                    break;
             }
             ops.add(Integer.valueOf(nums[i]));
         }
@@ -157,10 +210,10 @@ public class StringJam {
     }
 
 
-
     /**
      * 227. 基本计算器 II
      * <a href="https://leetcode.cn/problems/basic-calculator-ii/description/">leetcode地址</a>
+     *
      * @param s 表达式
      * @return 结果
      */
@@ -176,13 +229,23 @@ public class StringJam {
                 num = num * 10 + c - '0';
             }
             // 如果计算到最好一位，无论是什么数字还是空格都要做最后一次运算
-            if ((Character.isDigit(c) ||  c == ' ') &&i != s.length()-1 ) continue;
+            if ((Character.isDigit(c) || c == ' ') && i != s.length() - 1) continue;
             switch (preSign) {
-                case '+': stackNums.push(num); break;
-                case '-': stackNums.push(-num);;break;
-                case '*': stackNums.push(stackNums.pop() * num); break;
-                case '/': stackNums.push(stackNums.pop() / num); break;
-                default: break;
+                case '+':
+                    stackNums.push(num);
+                    break;
+                case '-':
+                    stackNums.push(-num);
+                    ;
+                    break;
+                case '*':
+                    stackNums.push(stackNums.pop() * num);
+                    break;
+                case '/':
+                    stackNums.push(stackNums.pop() / num);
+                    break;
+                default:
+                    break;
             }
             preSign = c;
             num = 0;
