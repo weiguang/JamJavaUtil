@@ -41,6 +41,41 @@ public class LinkedListJam {
 		new LinkedListJam().insertionSortList(head1);
 	}
 
+	public void deleteNode(ListNode node) {
+		node.val = node.next.val;
+		node.next = node.next.next;
+	}
+
+
+	/**
+	 * 234. 回文链表
+	 * https://leetcode.cn/problems/palindrome-linked-list/description/
+	 * @param head
+	 * @return
+	 */
+	public boolean isPalindrome(ListNode head) {
+		if(head == null || head.next == null) return true;
+		int n = 0;
+		ListNode dummy = new ListNode(0, head);
+		ListNode p1 = dummy, p2 = dummy;
+		while (p2 != null && p2.next != null) {
+			p1 = p1.next;
+			p2 = p2.next.next;
+		}
+		p2 = reverseList(p1.next);
+		p1.next = null;
+		p1 = head;
+		while (p1 != null && p2 != null) {
+			if (p1.val != p2.val) {
+				return false;
+			}
+			p1 = p1.next;
+			p2 = p2.next;
+		}
+		return true;
+	}
+
+
 	/**
 	 * 203. 移除链表元素
 	 * https://leetcode.cn/problems/remove-linked-list-elements/description/

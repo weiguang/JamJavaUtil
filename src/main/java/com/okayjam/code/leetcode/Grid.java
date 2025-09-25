@@ -20,6 +20,27 @@ public class Grid {
 
 
 	/**
+	 * 240. 搜索二维矩阵 II
+	 * https://leetcode.cn/problems/search-a-2d-matrix-ii/description/
+	 * @param matrix  matrix
+	 * @param target target
+	 * @return ans
+	 */
+	public boolean searchMatrix(int[][] matrix, int target) {
+		int m = matrix.length, n = matrix[0].length;
+		int i = m-1, j = 0;
+		while (i >= 0 && j< n) {
+			if (matrix[i][j] == target) {return true;}
+			if (matrix[i][j] < target) {
+				j++;
+			} else  if (matrix[i][j] > target) {
+				i--;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * https://leetcode.cn/problems/maximal-square/description/
 	 * @param matrix
 	 * @return

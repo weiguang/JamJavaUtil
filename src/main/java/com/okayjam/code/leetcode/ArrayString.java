@@ -35,7 +35,8 @@ public class ArrayString {
 //        System.out.println(new ArrayString().combinationSum3(3,9));
 //        System.out.println(new ArrayString().containsNearbyAlmostDuplicate(new int[] {1,5,9,1,5,9}, 2, 3));
 //        System.out.println(new ArrayString().containsNearbyAlmostDuplicate(new int[] {8,7,15,1,6,1,9,15}, 1, 3));
-        System.out.println(new ArrayString().computeArea(-3,0,3,4, 0, -1, 9, 2));
+//        System.out.println(new ArrayString().computeArea(-3, 0, 3, 4, 0, -1, 9, 2));
+        System.out.println(new ArrayString().maxSlidingWindow(new int[] {1,3,1,2,0,5}, 3));
     }
 
     public void swap(int[] nums, int i, int j) {
@@ -45,23 +46,139 @@ public class ArrayString {
     }
 
     /**
+     * 245. 最短单词距离 III
+     * <a href="https://leetcode.cn/problems/shortest-word-distance-iii/">245.最短单词距离III</a>
+     */
+    public int shortestWordDistance(String[] wordsDict, String word1, String word2) {
+        int n = wordsDict.length;
+        int i1 = -1, i2 = -1;
+        int ans = Integer.MAX_VALUE;
+        for (int i = 0; i < n; i++) {
+            if (wordsDict[i].equals(word1)) {
+                i1 = i;
+                ans = ( i2 != -1 && i1 != i2) ? Math.min(ans, Math.abs(i1 - i2)) : ans;
+            }
+            if (wordsDict[i].equals(word2)) {
+                i2 = i;
+                ans = (i1 !=-1 && i1 != i2) ? Math.min(ans, Math.abs(i1 - i2)) : ans;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 243. 最短单词距离
+     * <a href="https://leetcode.cn/problems/shortest-word-distance/description/">...</a>
+     */
+    public int shortestDistance(String[] wordsDict, String word1, String word2) {
+        int n = wordsDict.length;
+        int i1 = -1, i2 = -1;
+        int ans = Integer.MAX_VALUE;
+        for (int i = 0; i < n; i++) {
+            if (wordsDict[i].equals(word1)) {
+                i1 = i;
+                ans = ( i2 != -1 ) ? Math.min(ans, Math.abs(i1 - i2)) : ans;
+            } else if (wordsDict[i].equals(word2)) {
+                i2 = i;
+                ans = (i1 !=-1) ? Math.min(ans, Math.abs(i1 - i2)) : ans;
+            }
+        }
+        return ans;
+    }
+
+
+    /**
+     * 239. 滑动窗口最大值
+     * https://leetcode.cn/problems/sliding-window-maximum/description/
+     * @param nums 数组
+     * @param k 窗口大小
+     * @return ans
+     */
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int[] ans = new int[nums.length - k + 1];
+        Deque<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (i > k -1   && queue.peekFirst() < i-k+1) {
+                queue.pollFirst();
+            }
+            while (!queue.isEmpty() && nums[queue.peekLast()] < nums[i]) {
+                queue.pollLast();
+            }
+            queue.offer(i);
+            if (i >= k -1) {
+                ans[i-k+1] = nums[queue.peek()];
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 238. 除自身以外数组的乘积
+     * https://leetcode.cn/problems/product-of-array-except-self/description/
+     * @param nums
+     * @return
+     */
+    public int[] productExceptSelf(int[] nums) {
+        long sum = 1;
+        int zero = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 0 ) {
+                if (zero == 0) sum *= nums[i] == 0 ? 1 : nums[i];
+                else {sum = 0; break;}
+                zero++;
+            } else {sum *= nums[i];}
+        }
+        int[] ans = new int[nums.length];
+        // 两个0以上
+        if (zero > 1) return ans;
+        for (int i = 0; i < nums.length; i++) {
+            // 没有0
+          if (zero == 0) {
+              ans[i] = (int)(sum / nums[i]);
+              // 1个0
+          } else if ( nums[i] == 0) {
+              ans[i] = (int)sum;
+          }
+        }
+        return ans;
+    }
+
+
+    /**
+     * 229. 多数元素 II
+     * https://leetcode.cn/problems/majority-element-ii/description/
+     * @param nums
+     * @return
+     */
+    public List<Integer> majorityElement2(int[] nums) {
+        return Arrays.stream(nums).boxed()
+                .collect(Collectors.groupingBy(v -> v, Collectors.counting()))
+                .entrySet().stream()
+                .filter(e -> e.getValue() > nums.length / 3)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+    }
+
+
+    /**
      * 223. 矩形面积
      * https://leetcode.cn/problems/rectangle-area
+     *
      * @return int
      */
     public int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2) {
-        int x = calJiaoDistance(ax1,ax2, bx1, bx2);
-        int y = calJiaoDistance(ay1,ay2, by1, by2);
-        int a1= (ax2 - ax1) * (ay2-ay1);
-        int a2 = (bx2 - bx1) * (by2-by1);
-        return   a1 +  a2 -  x*y;
+        int x = calJiaoDistance(ax1, ax2, bx1, bx2);
+        int y = calJiaoDistance(ay1, ay2, by1, by2);
+        int a1 = (ax2 - ax1) * (ay2 - ay1);
+        int a2 = (bx2 - bx1) * (by2 - by1);
+        return a1 + a2 - x * y;
     }
 
-    public int  calJiaoDistance(int ax1,int ax2 ,int bx1,int bx2) {
-        return  Math.max(Math.min(ax2, bx2) - Math.max(ax1, bx1), 0);
+    public int calJiaoDistance(int ax1, int ax2, int bx1, int bx2) {
+        return Math.max(Math.min(ax2, bx2) - Math.max(ax1, bx1), 0);
     }
 
-    public int  calJiaoDistance2(int ax1,int ax2 ,int bx1,int bx2) {
+    public int calJiaoDistance2(int ax1, int ax2, int bx1, int bx2) {
         int[][] points = new int[2][2];
         if (ax1 <= bx1) {
             points[0][0] = ax1;
@@ -75,20 +192,21 @@ public class ArrayString {
             points[1][1] = ax2;
         }
         // 无相交
-        if (points[1][0]  >= points[0][1] ) {
-            return 0 ;
+        if (points[1][0] >= points[0][1]) {
+            return 0;
         }
         // 包含关系
-        if (points[1][1]  <= points[0][1] ) {
-            return points[1][1]  - points[1][0] ;
+        if (points[1][1] <= points[0][1]) {
+            return points[1][1] - points[1][0];
         }
-        return points[0][1]  - points[1][0] ;
+        return points[0][1] - points[1][0];
     }
 
 
     /**
      * 220. 存在重复元素 III
      * https://leetcode.cn/problems/contains-duplicate-iii
+     *
      * @param nums
      * @param indexDiff
      * @param valueDiff
@@ -106,7 +224,7 @@ public class ArrayString {
             if (set.contains(nums[right])) {
                 return true;
             }
-            Integer ceiling = set.ceiling( nums[right] - valueDiff);
+            Integer ceiling = set.ceiling(nums[right] - valueDiff);
             if (ceiling != null && Math.abs(ceiling - nums[right]) <= valueDiff) {
                 return true;
             }
@@ -120,7 +238,7 @@ public class ArrayString {
         HashMap<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
             Integer idx = map.get(nums[i]);
-            if (idx != null && Math.abs(idx - i) <= k ) {
+            if (idx != null && Math.abs(idx - i) <= k) {
                 return true;
             }
             map.put(nums[i], i);
@@ -132,12 +250,13 @@ public class ArrayString {
     /**
      * 217. 存在重复元素
      * https://leetcode.cn/problems/contains-duplicate/description/
+     *
      * @param nums
      * @return
      */
     public boolean containsDuplicate(int[] nums) {
         Arrays.sort(nums);
-        for (int i = 1; i < nums.length  -1; i++) {
+        for (int i = 1; i < nums.length - 1; i++) {
             if (nums[i] == nums[i - 1]) {
                 return true;
             }
@@ -149,6 +268,7 @@ public class ArrayString {
     /**
      * 216. 组合总和 III
      * https://leetcode.cn/problems/combination-sum-iii/
+     *
      * @param k
      * @param n
      * @return
@@ -158,13 +278,13 @@ public class ArrayString {
         if (n < k) {
             return Collections.emptyList();
         }
-        List<List<Integer>> ans =new ArrayList<>();
+        List<List<Integer>> ans = new ArrayList<>();
         List<Integer> t = new ArrayList<>();
-        combinationSum3(n,k, ans , t, 0, 1);
+        combinationSum3(n, k, ans, t, 0, 1);
         return ans;
     }
 
-    public void combinationSum3(int n, int k , List<List<Integer>> ans, List<Integer> cur,  int curSum, int index) {
+    public void combinationSum3(int n, int k, List<List<Integer>> ans, List<Integer> cur, int curSum, int index) {
         if (curSum > n || cur.size() > k) {
             return;
         }
@@ -173,22 +293,24 @@ public class ArrayString {
             return;
         }
         for (int i = index; i <= 9; i++) {
-            if (curSum + i > n ) {return;}
+            if (curSum + i > n) {
+                return;
+            }
             cur.add(i);
             curSum += i;
-            combinationSum3(n, k , ans, cur, curSum, i +1);
-            cur.remove(cur.size() -1);
+            combinationSum3(n, k, ans, cur, curSum, i + 1);
+            cur.remove(cur.size() - 1);
             curSum -= i;
         }
     }
 
 
     public int findKthLargest(int[] nums, int k) {
-        if (nums.length == 0 ) {
+        if (nums.length == 0) {
             return 0;
         }
         PriorityQueue<Integer> queue = new PriorityQueue<>();
-        for (int i = 0; i <nums.length; i++) {
+        for (int i = 0; i < nums.length; i++) {
             if (i < k) {
                 queue.add(nums[i]);
             } else if (queue.peek() < nums[i]) {
@@ -207,7 +329,7 @@ public class ArrayString {
         } else if (length == 2) {
             return Math.max(nums[0], nums[1]);
         }
-        return Math.max(robRange(nums, 0, nums.length -2), robRange(nums, 1, length -1));
+        return Math.max(robRange(nums, 0, nums.length - 2), robRange(nums, 1, length - 1));
     }
 
     public int robRange(int[] nums, int start, int end) {
@@ -215,7 +337,7 @@ public class ArrayString {
         int noRob = 0;
         for (int i = start + 1; i <= end; i++) {
             System.out.printf("%d :%d, %d\n", i, noRob, rob);
-            int tempNoRob  = Math.max(rob, noRob);
+            int tempNoRob = Math.max(rob, noRob);
             rob = noRob + nums[i];
             noRob = tempNoRob;
         }
@@ -227,10 +349,10 @@ public class ArrayString {
         int ans = Integer.MAX_VALUE;
         int left = 0;
         int sum = 0;
-        for (int right = 0; right <  nums.length ; right++) {
+        for (int right = 0; right < nums.length; right++) {
             sum += nums[right];
             while (sum >= target && left <= right) {
-                ans = Math.min(ans, right - left+1);
+                ans = Math.min(ans, right - left + 1);
                 sum -= nums[left];
                 left++;
             }
@@ -245,7 +367,9 @@ public class ArrayString {
         for (int i = 2; i < n; i++) {
             if (notPrimes[i] == 0) {
                 ans++;
-                if (((long) i * i) >= n) { continue;}
+                if (((long) i * i) >= n) {
+                    continue;
+                }
                 for (int j = i * i; j < n; j += i) {
                     notPrimes[j] = 1;
                 }
@@ -266,9 +390,12 @@ public class ArrayString {
         }
         return ans;
     }
+
     public boolean isPrimes(int n) {
-        for (int i = 2; i *i <= n; i++) {
-            if (n % i == 0) {return false;}
+        for (int i = 2; i * i <= n; i++) {
+            if (n % i == 0) {
+                return false;
+            }
         }
         return true;
     }
@@ -277,6 +404,7 @@ public class ArrayString {
     /**
      * 198. 打家劫舍
      * https://leetcode.cn/problems/house-robber/
+     *
      * @param nums
      * @return
      */
@@ -285,7 +413,7 @@ public class ArrayString {
         int noRob = 0;
         for (int i = 1; i < nums.length; i++) {
             System.out.printf("%d :%d, %d\n", i, noRob, rob);
-            int tempNoRob  = Math.max(rob, noRob);
+            int tempNoRob = Math.max(rob, noRob);
             rob = noRob + nums[i];
             noRob = tempNoRob;
         }
@@ -293,12 +421,12 @@ public class ArrayString {
     }
 
 
-
     /**
      * 191. 位1的个数
      * https://leetcode.cn/problems/number-of-1-bits/description/
      * 第一种方法，每次 n & n-1 把最低位变为0
      * 第二种方法，直观的每次判断最后一位是否为1，然后右移继续判断最后一位
+     *
      * @param n
      * @return
      */
@@ -315,7 +443,7 @@ public class ArrayString {
         int ans = 0;
         while (n != 0) {
             ans += n & 1;
-            n = n >>>1;
+            n = n >>> 1;
         }
         return ans;
     }
@@ -324,6 +452,7 @@ public class ArrayString {
     /**
      * 189. 轮转数组
      * https://leetcode.cn/problems/rotate-array/description/
+     *
      * @param nums
      * @param k
      */
@@ -336,10 +465,12 @@ public class ArrayString {
         reverse(nums, 0, k - 1);
         reverse(nums, k, nums.length - 1);
     }
+
     public void reverse(int[] nums, int s, int e) {
         while (s < e) {
             swap(nums, s, e);
-            s++;e--;
+            s++;
+            e--;
         }
     }
 
@@ -347,11 +478,12 @@ public class ArrayString {
     /**
      * 179. 最大数
      * https://leetcode.cn/problems/largest-number/
+     *
      * @param nums
      * @return
      */
     public String largestNumber(int[] nums) {
-        String s = Arrays.stream(nums).mapToObj(String::valueOf).sorted((v1, v2) ->  (v2+v1).compareTo(v1+v2)).collect(Collectors.joining());
+        String s = Arrays.stream(nums).mapToObj(String::valueOf).sorted((v1, v2) -> (v2 + v1).compareTo(v1 + v2)).collect(Collectors.joining());
         return s.charAt(0) == '0' ? "0" : s;
     }
 
@@ -361,12 +493,13 @@ public class ArrayString {
      * 方法一：优化后5的质因数
      * 方法二：正常数学的求5的质因数方法
      * https://leetcode.cn/problems/factorial-trailing-zeroes/submissions/662331594/
+     *
      * @param n
      * @return
      */
     public int trailingZeroes(int n) {
         int ans = 0;
-        while (n != 0 ) {
+        while (n != 0) {
             ans += n / 5;
             n = n / 5;
         }
@@ -376,13 +509,12 @@ public class ArrayString {
     public int trailingZeroes2(int n) {
         int ans = 0;
         for (int i = 5; i < n; i++) {
-            for (int j = i; j  % 5 == 0 ; j /= 5) {
+            for (int j = i; j % 5 == 0; j /= 5) {
                 ans++;
             }
         }
         return ans;
     }
-
 
 
     public int majorityElement(int[] nums) {
@@ -404,6 +536,7 @@ public class ArrayString {
     /**
      * 163. 缺失的区间
      * https://leetcode.cn/problems/missing-ranges/
+     *
      * @param nums
      * @param lower
      * @param upper
@@ -417,20 +550,19 @@ public class ArrayString {
         }
 //        Arrays.sort(nums);
         if (lower < nums[0]) {
-            ans.add(Arrays.asList(lower, nums[0]-1));
+            ans.add(Arrays.asList(lower, nums[0] - 1));
         }
-        for (int i = 0; i < nums.length-1; i++) {
-            if (nums[i] + 1 == nums[i+1]) {
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] + 1 == nums[i + 1]) {
                 continue;
             }
-            ans.add(Arrays.asList(nums[i]+1, nums[i+1]-1));
+            ans.add(Arrays.asList(nums[i] + 1, nums[i + 1] - 1));
         }
-        if (upper > nums[nums.length-1]) {
-            ans.add(Arrays.asList(nums[nums.length-1] +1, upper));
+        if (upper > nums[nums.length - 1]) {
+            ans.add(Arrays.asList(nums[nums.length - 1] + 1, upper));
         }
         return ans;
     }
-
 
 
     public int findMin(int[] nums) {
@@ -442,7 +574,7 @@ public class ArrayString {
             } else if (nums[mid] < nums[r]) {
                 r = mid;
             } else {
-                r =  r -1;
+                r = r - 1;
             }
         }
         return nums[l];
@@ -451,6 +583,7 @@ public class ArrayString {
 
     /**
      * https://leetcode.cn/problems/find-peak-element/submissions/661522727/
+     *
      * @param nums
      * @return
      */
@@ -458,10 +591,10 @@ public class ArrayString {
         int left = 0, right = nums.length - 1;
         while (left < right) {
             int mid = left + (right - left) / 2;
-            if (nums[mid] < nums[mid +1]) {
-            //说明此时mid为上坡路，既然是上坡，那么mid肯定不是山峰，所以left=mid+1（题目要求nums[i]!=nums[i+1]，所以不可能存在“平峰”的情况）
+            if (nums[mid] < nums[mid + 1]) {
+                //说明此时mid为上坡路，既然是上坡，那么mid肯定不是山峰，所以left=mid+1（题目要求nums[i]!=nums[i+1]，所以不可能存在“平峰”的情况）
                 left = mid + 1;
-            } else  {
+            } else {
                 //说明此时mid为下坡路，那么有可能自己本身就是山峰，或者在下山的过程中，所以right=mid而不能等于mid-1
                 right = mid;
             }
@@ -470,31 +603,32 @@ public class ArrayString {
     }
 
 
-
     public int maxProduct(int[] nums) {
-        if(nums.length == 0) return 0;
+        if (nums.length == 0) return 0;
         long ans = nums[0];
         long max = nums[0], min = nums[0];
-        for(int i = 1; i < nums.length; i++) {
+        for (int i = 1; i < nums.length; i++) {
             long mx = max, mn = min;
             max = Math.max(mx * nums[i], Math.max(nums[i], mn * nums[i]));
             min = Math.min(mn * nums[i], Math.min(nums[i], mx * nums[i]));
             ans = Math.max(ans, max);
         }
 
-        return (int)ans;
+        return (int) ans;
     }
-
 
 
     /**
      * 150. 逆波兰表达式求值
      * https://leetcode.cn/problems/evaluate-reverse-polish-notation/description/
+     *
      * @param tokens
      * @return
      */
     public int evalRPN(String[] tokens) {
-        if  (tokens == null || tokens.length == 0) {return 0;}
+        if (tokens == null || tokens.length == 0) {
+            return 0;
+        }
         LinkedList<Integer> stack = new LinkedList<>();
         for (String token : tokens) {
             switch (token) {
@@ -503,14 +637,14 @@ public class ArrayString {
                     break;
                 case "-":
                     Integer b = stack.pop();
-                    stack.push( stack.pop() - b);
+                    stack.push(stack.pop() - b);
                     break;
                 case "*":
                     stack.push(stack.pop() * stack.pop());
                     break;
                 case "/":
-                     b = stack.pop();
-                    stack.push( stack.pop() / b);
+                    b = stack.pop();
+                    stack.push(stack.pop() / b);
                     break;
                 default:
                     stack.push(Integer.parseInt(token));
@@ -523,6 +657,7 @@ public class ArrayString {
     /**
      * 137. 只出现一次的数字 II
      * https://leetcode.cn/problems/single-number-ii/
+     *
      * @param nums
      * @return
      */
@@ -532,7 +667,7 @@ public class ArrayString {
             // 统计对应位数为1的数量
             int total = 0;
             for (int num : nums) {
-                total += (num >> i) &1;
+                total += (num >> i) & 1;
             }
             // 如果不是不是3的倍数，说明有额外的一个数这位是1
             if (total % 3 != 0) {
@@ -542,6 +677,7 @@ public class ArrayString {
         }
         return ans;
     }
+
     public int singleNumber21(int[] nums) {
         Map<Integer, Integer> freq = new HashMap<Integer, Integer>();
         for (int num : nums) {
@@ -559,6 +695,7 @@ public class ArrayString {
     /**
      * 136. 只出现一次的数字
      * https://leetcode.cn/problems/single-number/solutions/242211/zhi-chu-xian-yi-ci-de-shu-zi-by-leetcode-solution/
+     *
      * @param nums
      * @return
      */
@@ -573,6 +710,7 @@ public class ArrayString {
     /**
      * 45. 跳跃游戏 II
      * https://leetcode.cn/problems/jump-game-ii/
+     *
      * @param nums
      * @return
      */
@@ -598,15 +736,18 @@ public class ArrayString {
     /**
      * 78. 子集 (第三个解法，递归)
      * https://leetcode.cn/problems/subsets/
+     *
      * @param nums
      * @return
      */
     List<List<Integer>> ans = new ArrayList<>();
     List<Integer> t = new ArrayList<>();
+
     public List<List<Integer>> subsets(int[] nums) {
         subsets(nums, 0);
         return ans;
     }
+
     public void subsets(int[] nums, int start) {
         ans.add(new ArrayList<>(t));
         for (int i = start; i < nums.length; i++) {
@@ -620,6 +761,7 @@ public class ArrayString {
     /**
      * 78. 子集 (第一个解法，模拟二进制)
      * https://leetcode.cn/problems/subsets/
+     *
      * @param nums
      * @return
      */
@@ -641,6 +783,7 @@ public class ArrayString {
     /**
      * 78. 子集 (第二个解法)
      * https://leetcode.cn/problems/subsets/
+     *
      * @param nums
      * @return
      */
@@ -667,6 +810,7 @@ public class ArrayString {
     /**
      * 90. 子集 II （带重复元素的子集，78题不带重复元素）
      * https://leetcode.cn/problems/subsets-ii/
+     *
      * @param nums
      * @param start
      */
@@ -686,6 +830,7 @@ public class ArrayString {
     /**
      * 81. 搜索旋转排序数组 II
      * https://leetcode.cn/problems/search-in-rotated-sorted-array-ii/
+     *
      * @param nums
      * @param target
      * @return
@@ -718,7 +863,6 @@ public class ArrayString {
             return search(nums, target, ++start, --end);
         }
     }
-
 
 
     public int maxProfit22(int[] prices) {
@@ -1514,20 +1658,24 @@ public class ArrayString {
                 sum = 0;
             }
         }
-        return total >= 0 ? idx +1 : -1;
+        return total >= 0 ? idx + 1 : -1;
     }
 
     public int canCompleteCircuit1(int[] gas, int[] cost) {
         int n = gas.length;
         for (int i = 0; i < n; i++) {
-            if (gas[i] < cost[i] || gas[i] == 0) { continue; }
+            if (gas[i] < cost[i] || gas[i] == 0) {
+                continue;
+            }
             int remaining = gas[i] - cost[i];
             int j = i;
-            for ( j = i +1; j < i + n  ; j++) {
+            for (j = i + 1; j < i + n; j++) {
                 remaining = remaining + gas[j % n] - cost[j % n];
-                if (remaining < 0) {  break;}
+                if (remaining < 0) {
+                    break;
+                }
             }
-            if (j == i + n ) {
+            if (j == i + n) {
                 return i;
             }
             i = j;
