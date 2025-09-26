@@ -20,6 +20,31 @@ public class Tree {
         }
     }
 
+
+
+    /**
+     * 250. 统计同值子树
+     * <a href="https://leetcode.cn/problems/count-univalue-subtrees/">250. 统计同值子树</a>
+     * @param root root
+     * @return ans
+     */
+    public int countUnivalSubtrees(TreeNode root) {
+        countUnivalSubtreesDfs(root);
+        return countUnivalSubtreesAns;
+    }
+    int countUnivalSubtreesAns = 0;
+    public boolean countUnivalSubtreesDfs(TreeNode root) {
+        if (root == null) return true;
+        if (root.left == null && root.right == null)  {countUnivalSubtreesAns++; return true;}
+        boolean l = countUnivalSubtreesDfs(root.left);
+        boolean r = countUnivalSubtreesDfs(root.right);
+        if (!l || (root.left != null && root.left.val != root.val)) return false;
+        if (!r || (root.right != null && root.right.val != root.val)) return false;
+        countUnivalSubtreesAns++;
+        return true;
+    }
+
+
     TreeNode lowestAns = null;
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         lowestCommonAncestorSearch(root,p, q);
@@ -73,7 +98,6 @@ public class Tree {
 
 
     TreeNode ansk = null;
-
     public int kthSmallest2(TreeNode root, int k) {
         deepSearch(root, k, 0);
         return ansk.val;

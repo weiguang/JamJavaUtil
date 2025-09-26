@@ -47,6 +47,33 @@ public class StringJam {
         System.out.println(new StringJam().isStrobogrammatic("2"));
     }
 
+
+    /**
+     *  249. 移位字符串分组
+     * <a href="https://leetcode.cn/problems/group-shifted-strings/">249. 移位字符串分组</a>
+     * @param strings s
+     * @return ans
+     */
+    public List<List<String>> groupStrings(String[] strings) {
+        Map<String, List<String>> map = new HashMap<>();
+        for (String s : strings) {
+            int[] group = genGroup(s);
+            String key = Arrays.toString(group);
+            map.computeIfAbsent(key, k -> new ArrayList<>()).add(s);
+        }
+        return new ArrayList<>(map.values());
+    }
+
+    int[] genGroup(String s1) {
+        if (s1.length() == 1) return new int[0];
+        int[] group = new int[s1.length()];
+        for (int i = 1; i < s1.length(); i++) {
+            group[i] = (s1.charAt(i) - s1.charAt(i-1) +26) % 26;
+        }
+        return group;
+    }
+
+
     /**
      * 247. 中心对称数 II
      * <a href="https://leetcode.cn/problems/strobogrammatic-number-ii/">247. 中心对称数 II</a>
