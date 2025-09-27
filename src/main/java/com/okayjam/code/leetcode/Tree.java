@@ -1,6 +1,7 @@
 package com.okayjam.code.leetcode;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.okayjam.code.leetcode.LinkedListJam.ListNode;
 
@@ -19,6 +20,31 @@ public class Tree {
             System.out.println(iterator.next());
         }
     }
+
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<String> ans = new ArrayList<>();
+        if (root == null) {
+            return ans;
+        }
+        List<String>  cur = new ArrayList<>();
+        binaryTreePaths(root, ans, cur);
+        return ans;
+    }
+
+    public void binaryTreePaths(TreeNode root, List<String> ans, List<String> cur ){
+        if (root == null) return;
+        cur.add(root.val + "");
+        if (root.left == null && root.right == null){
+            ans.add(String.join("->", cur));
+        } else {
+            binaryTreePaths(root.left, ans, cur);
+            binaryTreePaths(root.right, ans, cur);
+        }
+        cur.remove(cur.size()-1);
+    }
+
+
+
 
     /**
      * 255. 验证二叉搜索树的前序遍历序列

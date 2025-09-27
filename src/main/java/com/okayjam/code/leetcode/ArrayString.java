@@ -36,7 +36,7 @@ public class ArrayString {
 //        System.out.println(new ArrayString().containsNearbyAlmostDuplicate(new int[] {1,5,9,1,5,9}, 2, 3));
 //        System.out.println(new ArrayString().containsNearbyAlmostDuplicate(new int[] {8,7,15,1,6,1,9,15}, 1, 3));
 //        System.out.println(new ArrayString().computeArea(-3, 0, 3, 4, 0, -1, 9, 2));
-        System.out.println(new ArrayString().maxSlidingWindow(new int[] {1,3,1,2,0,5}, 3));
+//        System.out.println(new ArrayString().maxSlidingWindow(new int[] {1,3,1,2,0,5}, 3));
     }
 
     public void swap(int[] nums, int i, int j) {
@@ -44,6 +44,65 @@ public class ArrayString {
         nums[i] = nums[j];
         nums[j] = temp;
     }
+
+
+    /**
+     * 258. 各位相加
+     * <a href="https://leetcode.cn/problems/add-digits/">258. 各位相加</a>
+     * @param num num
+     * @return ans
+     */
+    public int addDigits(int num) {
+        return (num - 1) % 9 + 1;
+    }
+
+    public int addDigits2(int num) {
+        while (num > 9) {
+            int x = num;
+            num = 0;
+            while (x > 0){
+                num += x % 10;
+                x = x/10;
+            }
+        }
+        return num;
+    }
+
+
+    /**
+     * 256. 粉刷房子
+     * <a href="https://leetcode.cn/problems/paint-house">256. 粉刷房子</a>
+     * @param costs c
+     * @return ans
+     */
+    public int minCost(int[][] costs) {
+        if (costs.length == 0) {return 0;}
+        int dp0 =costs[0][0], dp1= costs[0][1], dp2= costs[0][2];
+        int dp0New,dp1New;
+        for (int i = 1; i < costs.length; i++) {
+            dp0New =  Math.min(dp1, dp2)  + costs[i][0];
+            dp1New = Math.min(dp0, dp2)  + costs[i][1];
+            dp2 = Math.min(dp0, dp1)  + costs[i][2];
+            dp0 = dp0New;
+            dp1 = dp1New;
+        }
+        return Math.min(Math.min(dp0, dp1), dp2);
+    }
+
+    public int minCost2(int[][] costs) {
+        if (costs.length == 0) {return 0;}
+        int[][] dp = new int[costs.length][3];
+        dp[0][0] = costs[0][0];
+        dp[0][1] = costs[0][1];
+        dp[0][2] = costs[0][2];
+        for (int i = 1; i < costs.length; i++) {
+            dp[i][0] = Math.min(dp[i - 1][1], dp[i - 1][2])  + costs[i][0];
+            dp[i][1] = Math.min(dp[i - 1][0], dp[i - 1][2])  + costs[i][1];
+            dp[i][2] = Math.min(dp[i - 1][0], dp[i - 1][1])  + costs[i][2];
+        }
+        return Math.min(Math.min(dp[costs.length - 1][0], dp[costs.length - 1][1]), dp[costs.length - 1][2]);
+    }
+
 
     /**
      * 245. 最短单词距离 III
