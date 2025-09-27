@@ -20,6 +20,47 @@ public class Tree {
         }
     }
 
+    /**
+     * 255. 验证二叉搜索树的前序遍历序列
+     * <a href="https://leetcode.cn/problems/verify-preorder-sequence-in-binary-search-tree">255. 验证二叉搜索树的前序遍历序列</a>
+     * @param preorder
+     * @return
+     */
+    public boolean verifyPreorder(int[] preorder) {
+     Deque<Integer> stack = new LinkedList<>();
+     int min = Integer.MIN_VALUE;
+     for (int i = 0; i < preorder.length; i++) {
+         int num = preorder[i];
+         if (num <= min) {
+             return false;
+         }
+         while(!stack.isEmpty() && num > stack.peek() ){
+            min =  stack.pop();
+         }
+         stack.push(num);
+     }
+     return true;
+    }
+
+        public boolean verifyPreorder2(int[] preorder) {
+        return verifyPreorderDfs(preorder, 0, preorder.length);
+    }
+
+     public boolean verifyPreorderDfs(int[] preorder, int start, int end) {
+        if  (start >= end) return true;
+        int mid = start +1;
+        while (mid < end && preorder[mid] < preorder[start]) {
+                mid++;
+        }
+         for (int i = mid; i < end; i++) {
+             if (preorder[i] < preorder[start]) {
+                 return false;
+             }
+         }
+        return verifyPreorderDfs(preorder, start+1, mid) &&
+                verifyPreorderDfs(preorder, mid, end);
+     }
+
 
 
     /**

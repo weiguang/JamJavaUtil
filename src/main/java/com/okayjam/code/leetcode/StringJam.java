@@ -44,7 +44,46 @@ public class StringJam {
 //        System.out.println(new StringJam().calculate(" 3+5 / 2 "));
 //        System.out.println(new StringJam().diffWaysToCompute("10+5"));
 //        System.out.println(new StringJam().isAnagram("anagram", "nagaram"));
-        System.out.println(new StringJam().isStrobogrammatic("2"));
+//        System.out.println(new StringJam().isStrobogrammatic("2"));
+        System.out.println(new StringJam().getFactors(12));
+    }
+
+
+    /**
+     * 254. 因子的组合
+     * <a href="https://leetcode.cn/problems/factor-combinations/">254. 因子的组合</a>
+     * @param n
+     * @return ans
+     */
+    public List<List<Integer>> getFactors(int n) {
+        if  (n == 1 || n == 2) return new ArrayList<>();
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> l  = new ArrayList<>();
+        return getFactorsSub(n , 2, l, ans);
+    }
+
+    /**
+     *  因子的组合 递归
+     * @param n 分解的数
+     * @param start 开始数，这个为了解决重复
+     * @param l 递归的记录
+     * @param ans 答案
+     * @return 答案
+     */
+    public List<List<Integer>> getFactorsSub(int n, int start , List<Integer> l,  List<List<Integer>> ans) {
+        if (l.size() > 0) {
+            ArrayList<Integer> t = new ArrayList<>(l);
+            t.add(n);
+            ans.add(t);
+        }
+        for (int i = start; i <= Math.sqrt(n); i++) {
+            if(n % i == 0) {
+                l.add(i);
+                getFactorsSub(n / i, i , l, ans);
+                l.remove(l.size() - 1);
+            }
+        }
+        return ans;
     }
 
 
