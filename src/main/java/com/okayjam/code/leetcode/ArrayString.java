@@ -37,6 +37,7 @@ public class ArrayString {
 //        System.out.println(new ArrayString().containsNearbyAlmostDuplicate(new int[] {8,7,15,1,6,1,9,15}, 1, 3));
 //        System.out.println(new ArrayString().computeArea(-3, 0, 3, 4, 0, -1, 9, 2));
 //        System.out.println(new ArrayString().maxSlidingWindow(new int[] {1,3,1,2,0,5}, 3));
+        System.out.println(new ArrayString().threeSumSmaller(new int[] {-1,1,-1,-1}, -1));
     }
 
     public void swap(int[] nums, int i, int j) {
@@ -44,6 +45,34 @@ public class ArrayString {
         nums[i] = nums[j];
         nums[j] = temp;
     }
+
+
+    /**
+     * 259. 较小的三数之和
+     * <a href="https://leetcode.cn/problems/3sum-smaller">259. 较小的三数之和</a>
+     * @param nums nuns
+     * @param target target
+     * @return ans
+     */
+    public int threeSumSmaller(int[] nums, int target) {
+        if(nums == null || nums.length == 0) return 0;
+        Arrays.sort(nums);
+        int ans = 0;
+        for (int i = 0; i < nums.length - 2; i++) {
+            int j = i+1, k = nums.length - 1;
+            while (j < k) {
+                int sum = nums[i] + nums[j] + nums[k];
+                if (sum >= target) {
+                    k--;
+                } else {
+                    ans += k-j;
+                    j++;
+                }
+            }
+        }
+        return ans;
+    }
+
 
 
     /**
