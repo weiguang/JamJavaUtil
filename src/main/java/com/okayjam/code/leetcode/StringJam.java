@@ -48,38 +48,52 @@ public class StringJam {
         System.out.println(new StringJam().getFactors(12));
     }
 
+    public boolean isUgly(int n) {
+        if (n < 1) return false;
+        while (n > 1) {
+            if (n % 2 == 0) n /= 2;
+            else if (n % 3 == 0) n /= 3;
+            else if (n % 5 == 0) n /= 5;
+            else return false;
+        }
+        return true;
+
+    }
+
 
     /**
      * 254. 因子的组合
      * <a href="https://leetcode.cn/problems/factor-combinations/">254. 因子的组合</a>
+     *
      * @param n
      * @return ans
      */
     public List<List<Integer>> getFactors(int n) {
-        if  (n == 1 || n == 2) return new ArrayList<>();
+        if (n == 1 || n == 2) return new ArrayList<>();
         List<List<Integer>> ans = new ArrayList<>();
-        List<Integer> l  = new ArrayList<>();
-        return getFactorsSub(n , 2, l, ans);
+        List<Integer> l = new ArrayList<>();
+        return getFactorsSub(n, 2, l, ans);
     }
 
     /**
-     *  因子的组合 递归
-     * @param n 分解的数
+     * 因子的组合 递归
+     *
+     * @param n     分解的数
      * @param start 开始数，这个为了解决重复
-     * @param l 递归的记录
-     * @param ans 答案
+     * @param l     递归的记录
+     * @param ans   答案
      * @return 答案
      */
-    public List<List<Integer>> getFactorsSub(int n, int start , List<Integer> l,  List<List<Integer>> ans) {
+    public List<List<Integer>> getFactorsSub(int n, int start, List<Integer> l, List<List<Integer>> ans) {
         if (l.size() > 0) {
             ArrayList<Integer> t = new ArrayList<>(l);
             t.add(n);
             ans.add(t);
         }
         for (int i = start; i <= Math.sqrt(n); i++) {
-            if(n % i == 0) {
+            if (n % i == 0) {
                 l.add(i);
-                getFactorsSub(n / i, i , l, ans);
+                getFactorsSub(n / i, i, l, ans);
                 l.remove(l.size() - 1);
             }
         }
@@ -88,8 +102,9 @@ public class StringJam {
 
 
     /**
-     *  249. 移位字符串分组
+     * 249. 移位字符串分组
      * <a href="https://leetcode.cn/problems/group-shifted-strings/">249. 移位字符串分组</a>
+     *
      * @param strings s
      * @return ans
      */
@@ -107,7 +122,7 @@ public class StringJam {
         if (s1.length() == 1) return new int[0];
         int[] group = new int[s1.length()];
         for (int i = 1; i < s1.length(); i++) {
-            group[i] = (s1.charAt(i) - s1.charAt(i-1) +26) % 26;
+            group[i] = (s1.charAt(i) - s1.charAt(i - 1) + 26) % 26;
         }
         return group;
     }
@@ -116,6 +131,7 @@ public class StringJam {
     /**
      * 247. 中心对称数 II
      * <a href="https://leetcode.cn/problems/strobogrammatic-number-ii/">247. 中心对称数 II</a>
+     *
      * @param n n
      * @return ans
      */
