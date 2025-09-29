@@ -46,6 +46,29 @@ public class ArrayString {
         nums[j] = temp;
     }
 
+    /**
+     * 260. 只出现一次的数字 III
+     * <a href="https://leetcode.cn/problems/single-number-iii/">260. 只出现一次的数字 III</a>
+     * @param nums
+     * @return
+     */
+    public int[] singleNumber3(int[] nums) {
+        int xor = 0;
+        for (int num : nums) {
+            xor ^= num;
+        }
+        int lsb = (xor == Integer.MIN_VALUE ? xor : xor & -xor);
+        int n1 = 0, n2 = 0;
+        for (int num : nums) {
+            if ((num & lsb) != 0 ) {
+                n1 ^= num;
+            } else {
+                n2 ^= num;
+            }
+        }
+        return new int[]{n1, n2};
+    }
+
 
     /**
      * 259. 较小的三数之和
