@@ -46,6 +46,40 @@ public class ArrayString {
         nums[j] = temp;
     }
 
+
+    public boolean isUgly(int n) {
+        if (n < 1) return false;
+        while (n > 1) {
+            if (n % 2 == 0) n /= 2;
+            else if (n % 3 == 0) n /= 3;
+            else if (n % 5 == 0) n /= 5;
+            else return false;
+        }
+        return true;
+
+    }
+
+    public int nthUglyNumber(int n) {
+        int[] dp = new int[n];
+        dp[0] = 1;
+        int i2 = 1, i3 = 1, i5 = 1;
+        for (int i = 1; i < n; i++) {
+            int min = Math.min(Math.min(dp[i2] * 2, dp[i3] * 3),  dp[i5] * 5);
+            dp[i] = min;
+            if (dp[i] == dp[i2] * 2) {
+                i2++;
+            }
+            if (dp[i] == dp[i3] * 3) {
+                i3++;
+            }
+            if (dp[i] ==  dp[i5] * 5) {
+                i5++;
+            }
+        }
+        return dp[n - 1];
+    }
+
+
     /**
      * 260. 只出现一次的数字 III
      * <a href="https://leetcode.cn/problems/single-number-iii/">260. 只出现一次的数字 III</a>

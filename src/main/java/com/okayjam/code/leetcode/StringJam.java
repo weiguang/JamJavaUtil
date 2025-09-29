@@ -48,16 +48,24 @@ public class StringJam {
         System.out.println(new StringJam().getFactors(12));
     }
 
-    public boolean isUgly(int n) {
-        if (n < 1) return false;
-        while (n > 1) {
-            if (n % 2 == 0) n /= 2;
-            else if (n % 3 == 0) n /= 3;
-            else if (n % 5 == 0) n /= 5;
-            else return false;
+    /**
+     * 266. 回文排列
+     * <a href="https://leetcode.cn/problems/palindrome-permutation/">266. 回文排列</a>
+     * @param s s
+     * @return ans
+     */
+    public boolean canPermutePalindrome(String s) {
+        int[] ch =  new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            ch[s.charAt(i) - 'a']++;
         }
-        return true;
-
+        int remain = 0 ;
+        for (int i = 0; i < 26; i++) {
+            if ((ch[i] & 1) == 1) {
+                remain++;
+            }
+        }
+        return remain == 0 ||( (s.length()&1) == 1 && remain == 1);
     }
 
 
