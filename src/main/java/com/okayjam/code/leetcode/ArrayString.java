@@ -47,6 +47,24 @@ public class ArrayString {
     }
 
     /**
+     * 274. H 指数
+     * <a href="https://leetcode.cn/problems/h-index/">274. H 指数</a>
+     * @param citations c
+     * @return ans
+     */
+    public int hIndex(int[] citations) {
+       Arrays.sort(citations);
+       int n = citations.length;
+        for (int i = n ; i > 0 ; i--) {
+            if (citations[n-i] >= i) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+
+    /**
      * 268. 丢失的数字
      * <a href="https://leetcode.cn/problems/missing-number/">268. 丢失的数字</a>
      * 方法一是计算0-n的总和 - 数组的总和， 就会得到缺失的数字

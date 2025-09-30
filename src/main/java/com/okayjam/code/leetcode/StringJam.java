@@ -46,6 +46,7 @@ public class StringJam {
         s[j] = temp;
     }
 
+
     public List<String> generatePalindromes(String s) {
         int[] map =  new int[26];
         for (int i = 0; i < s.length(); i++) {
