@@ -46,6 +46,36 @@ public class ArrayString {
         nums[j] = temp;
     }
 
+    /**
+     * 268. 丢失的数字
+     * <a href="https://leetcode.cn/problems/missing-number/">268. 丢失的数字</a>
+     * 方法一是计算0-n的总和 - 数组的总和， 就会得到缺失的数字
+     * 方法二是异或一次数组的，然后再异或0-n，缺失的就是数字就是结果，因为出现两次的被异或为0了
+     * @param nums nums
+     * @return ans
+     */
+    public int missingNumber(int[] nums) {
+        long sum = 0;
+        long n = nums.length;
+        for (int num : nums) {
+            sum += num;
+        }
+        return (int)(n * (n + 1) / 2 - sum);
+    }
+
+    public int missingNumber2(int[] nums) {
+        int xor = 0;
+        int n = nums.length;
+        for (int num : nums) {
+            xor ^= num;
+        }
+        for (int i = 0; i <= n; i++) {
+            xor ^= i;
+        }
+        return xor;
+    }
+
+
 
     public boolean isUgly(int n) {
         if (n < 1) return false;

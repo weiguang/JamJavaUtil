@@ -22,9 +22,42 @@ public class Tree {
     }
 
     /**
+     * 270. 最接近的二叉搜索树值
+     * <a href="https://leetcode.cn/problems/closest-binary-search-tree-value/">270. 最接近的二叉搜索树值</a>
+     *
+     * @param root   root
+     * @param target target
+     * @return ans
+     */
+    public int closestValue(TreeNode root, double target) {
+        TreeNode ans = root, cur = root;
+        while (cur != null) {
+            double ansVal = Math.abs(ans.val - target);
+            double curVal = Math.abs(cur.val - target);
+            if (ansVal > curVal || (ansVal == curVal && cur.val < ans.val)) {
+                ans = cur;
+            }
+            if (Math.abs(target - cur.val) < 0.0000001) {
+                return cur.val;
+            }
+            if (cur.left == null) {
+                cur = cur.right;
+            } else if (cur.right == null) {
+                cur = cur.left;
+            } else if (cur.val > target) {
+                cur = cur.left;
+            } else {
+                cur = cur.right;
+            }
+        }
+        return ans.val;
+    }
+
+    /**
      * 261. 以图判树
      * <a href="https://leetcode.cn/problems/graph-valid-tree/">261. 以图判树</a>
-     * @param n n
+     *
+     * @param n     n
      * @param edges edges
      * @return ans
      */
@@ -48,7 +81,7 @@ public class Tree {
                 if (parent.get(node) == neighbour) {
                     continue;
                 }
-                if(parent.containsKey(neighbour)) {
+                if (parent.containsKey(neighbour)) {
                     return false;
                 }
                 stack.push(neighbour);
@@ -58,75 +91,76 @@ public class Tree {
         return parent.size() == n;
     }
 
-   public List<String> binaryTreePaths(TreeNode root) {
+    public List<String> binaryTreePaths(TreeNode root) {
         List<String> ans = new ArrayList<>();
         if (root == null) {
             return ans;
         }
-        List<String>  cur = new ArrayList<>();
+        List<String> cur = new ArrayList<>();
         binaryTreePaths(root, ans, cur);
         return ans;
     }
 
-    public void binaryTreePaths(TreeNode root, List<String> ans, List<String> cur ){
+    public void binaryTreePaths(TreeNode root, List<String> ans, List<String> cur) {
         if (root == null) return;
         cur.add(root.val + "");
-        if (root.left == null && root.right == null){
+        if (root.left == null && root.right == null) {
             ans.add(String.join("->", cur));
         } else {
             binaryTreePaths(root.left, ans, cur);
             binaryTreePaths(root.right, ans, cur);
         }
-        cur.remove(cur.size()-1);
+        cur.remove(cur.size() - 1);
     }
 
 
     /**
      * 255. 验证二叉搜索树的前序遍历序列
      * <a href="https://leetcode.cn/problems/verify-preorder-sequence-in-binary-search-tree">255. 验证二叉搜索树的前序遍历序列</a>
+     *
      * @param preorder
      * @return
      */
     public boolean verifyPreorder(int[] preorder) {
-     Deque<Integer> stack = new LinkedList<>();
-     int min = Integer.MIN_VALUE;
-     for (int i = 0; i < preorder.length; i++) {
-         int num = preorder[i];
-         if (num <= min) {
-             return false;
-         }
-         while(!stack.isEmpty() && num > stack.peek() ){
-            min =  stack.pop();
-         }
-         stack.push(num);
-     }
-     return true;
+        Deque<Integer> stack = new LinkedList<>();
+        int min = Integer.MIN_VALUE;
+        for (int i = 0; i < preorder.length; i++) {
+            int num = preorder[i];
+            if (num <= min) {
+                return false;
+            }
+            while (!stack.isEmpty() && num > stack.peek()) {
+                min = stack.pop();
+            }
+            stack.push(num);
+        }
+        return true;
     }
 
-        public boolean verifyPreorder2(int[] preorder) {
+    public boolean verifyPreorder2(int[] preorder) {
         return verifyPreorderDfs(preorder, 0, preorder.length);
     }
 
-     public boolean verifyPreorderDfs(int[] preorder, int start, int end) {
-        if  (start >= end) return true;
-        int mid = start +1;
+    public boolean verifyPreorderDfs(int[] preorder, int start, int end) {
+        if (start >= end) return true;
+        int mid = start + 1;
         while (mid < end && preorder[mid] < preorder[start]) {
-                mid++;
+            mid++;
         }
-         for (int i = mid; i < end; i++) {
-             if (preorder[i] < preorder[start]) {
-                 return false;
-             }
-         }
-        return verifyPreorderDfs(preorder, start+1, mid) &&
+        for (int i = mid; i < end; i++) {
+            if (preorder[i] < preorder[start]) {
+                return false;
+            }
+        }
+        return verifyPreorderDfs(preorder, start + 1, mid) &&
                 verifyPreorderDfs(preorder, mid, end);
-     }
-
+    }
 
 
     /**
      * 250. 统计同值子树
      * <a href="https://leetcode.cn/problems/count-univalue-subtrees/">250. 统计同值子树</a>
+     *
      * @param root root
      * @return ans
      */
@@ -134,10 +168,15 @@ public class Tree {
         countUnivalSubtreesDfs(root);
         return countUnivalSubtreesAns;
     }
+
     int countUnivalSubtreesAns = 0;
+
     public boolean countUnivalSubtreesDfs(TreeNode root) {
         if (root == null) return true;
-        if (root.left == null && root.right == null)  {countUnivalSubtreesAns++; return true;}
+        if (root.left == null && root.right == null) {
+            countUnivalSubtreesAns++;
+            return true;
+        }
         boolean l = countUnivalSubtreesDfs(root.left);
         boolean r = countUnivalSubtreesDfs(root.right);
         if (!l || (root.left != null && root.left.val != root.val)) return false;
@@ -148,23 +187,28 @@ public class Tree {
 
 
     TreeNode lowestAns = null;
+
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        lowestCommonAncestorSearch(root,p, q);
+        lowestCommonAncestorSearch(root, p, q);
         return lowestAns;
     }
 
-    public boolean lowestCommonAncestorSearch(TreeNode cur, TreeNode p, TreeNode q ) {
+    public boolean lowestCommonAncestorSearch(TreeNode cur, TreeNode p, TreeNode q) {
         if (cur == null) return false;
-       boolean l =  lowestCommonAncestorSearch(cur.left, p, q);
-       boolean r =  lowestCommonAncestorSearch(cur.right, p, q);
-       if (l && r)  {lowestAns = cur;}
-       else if ( (l || r) && (cur.val == q.val || cur.val == p.val)) {lowestAns = cur;}
-       return l || r || cur.val == q.val || cur.val == p.val;
+        boolean l = lowestCommonAncestorSearch(cur.left, p, q);
+        boolean r = lowestCommonAncestorSearch(cur.right, p, q);
+        if (l && r) {
+            lowestAns = cur;
+        } else if ((l || r) && (cur.val == q.val || cur.val == p.val)) {
+            lowestAns = cur;
+        }
+        return l || r || cur.val == q.val || cur.val == p.val;
     }
 
     /**
      * 235. 二叉搜索树的最近公共祖先
      * https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-search-tree/description/
+     *
      * @return common
      */
     public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
@@ -181,6 +225,7 @@ public class Tree {
     /**
      * 230. 二叉搜索树中第 K 小的元素
      * <a href="https://leetcode.cn/problems/kth-smallest-element-in-a-bst/description/">...</a>
+     *
      * @return int
      */
     public int kthSmallest(TreeNode root, int k) {
@@ -200,6 +245,7 @@ public class Tree {
 
 
     TreeNode ansk = null;
+
     public int kthSmallest2(TreeNode root, int k) {
         deepSearch(root, k, 0);
         return ansk.val;

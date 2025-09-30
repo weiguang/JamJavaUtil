@@ -1,14 +1,6 @@
 package com.okayjam.code.leetcode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class StringJam {
@@ -47,6 +39,58 @@ public class StringJam {
 //        System.out.println(new StringJam().isStrobogrammatic("2"));
         System.out.println(new StringJam().getFactors(12));
     }
+
+    public void swap(char[] s, int i, int j) {
+        char temp = s[i];
+        s[i] = s[j];
+        s[j] = temp;
+    }
+
+    public List<String> generatePalindromes(String s) {
+        int[] map =  new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            map[s.charAt(i) - 'a']++;
+        }
+        int remain = 0 ;
+        for (int i = 0; i < 26; i++) {
+            if ((map[i] & 1) == 1) {
+                remain++;
+            }
+        }
+        // 如果不能构成构成，返回空
+        if ( !(remain == 0 ||( (s.length()&1) == 1 && remain == 1))) {
+            return Collections.emptyList();
+        }
+        char ch = 0;
+        int k = 0;
+        char[] st = new char[s.length()/2];
+        for (int i = 0; i < map.length; i++) {
+            if (map[i] % 2 == 1) {
+                ch = (char) (i + 'a');
+            }
+            for (int j = 0; j < map[i]/2; j++) {
+                st[k++] = (char) (i + 'a');
+            }
+        }
+        Set< String > set = new HashSet < > ();
+        permute(st, 0, ch, set);
+        return new ArrayList<>(set);
+    }
+
+    void permute(char[] st, int l, char ch, Set< String > set) {
+        if (l == st.length) {
+            set.add(new String(st) + (ch == 0 ? "" : ch) + new StringBuffer(new String(st)).reverse());
+        } else {
+            for (int i = l; i < st.length; i++) {
+                if (st[l] != st[i] || l == i) {
+                    swap(st, l, i);
+                    permute(st, l + 1, ch, set);
+                    swap(st, l, i);
+                }
+            }
+        }
+    }
+
 
     /**
      * 266. 回文排列
