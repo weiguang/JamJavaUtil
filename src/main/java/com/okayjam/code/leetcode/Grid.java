@@ -19,6 +19,37 @@ public class Grid {
     }
 
     /**
+     * 277. 搜寻名人
+     * <a href="https://leetcode.cn/problems/find-the-celebrity">277. 搜寻名人</a>
+     * @param n n
+     * @return ans
+     */
+    public int findCelebrity(int n) {
+        int candidate = 0;
+        // 同通过这一步可以定位出
+        for (int i = 0; i < n; i++) {
+            if (knows(candidate, i)) {
+                candidate = i;
+            }
+        }
+        if (isCelebrity(candidate, n)) {
+            return candidate;
+        }
+        return -1;
+    }
+
+    private boolean isCelebrity(int i, int n) {
+        for (int j = 0; j < n; j++) {
+            if (i == j) continue;
+            if (knows(i, j) || !knows(j, i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    /**
      * 253. 会议室 II
      * <a href="https://leetcode.cn/problems/meeting-rooms-ii/">253. 会议室 II</a>
      * @param intervals 会议时间
