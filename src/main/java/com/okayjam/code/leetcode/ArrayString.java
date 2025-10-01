@@ -47,6 +47,26 @@ public class ArrayString {
     }
 
     /**
+     * 276. 栅栏涂色
+     * <a href="https://leetcode.cn/problems/paint-fence">276. 栅栏涂色</a>
+     * @param n n
+     * @param k k
+     * @return ans
+     */
+    public int numWays(int n, int k) {
+        if (n == 1) return k;
+        if (n == 2) return k*k;
+        int p1 = k, p2 = k*k, t = 0;
+        for (int i = 3; i <= n; i++) {
+            t = (k -1) * (p1 + p2);
+            p1 = p2;
+            p2 = t;
+        }
+        return p2;
+    }
+
+
+    /**
      * 274. H 指数
      * <a href="https://leetcode.cn/problems/h-index/">274. H 指数</a>
      * @param citations c
