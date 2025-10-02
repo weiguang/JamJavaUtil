@@ -37,13 +37,51 @@ public class ArrayString {
 //        System.out.println(new ArrayString().containsNearbyAlmostDuplicate(new int[] {8,7,15,1,6,1,9,15}, 1, 3));
 //        System.out.println(new ArrayString().computeArea(-3, 0, 3, 4, 0, -1, 9, 2));
 //        System.out.println(new ArrayString().maxSlidingWindow(new int[] {1,3,1,2,0,5}, 3));
-        System.out.println(new ArrayString().threeSumSmaller(new int[] {-1,1,-1,-1}, -1));
+//        System.out.println(new ArrayString().threeSumSmaller(new int[] {-1,1,-1,-1}, -1));
+        System.out.println(new ArrayString().numSquares(13));
     }
 
     public void swap(int[] nums, int i, int j) {
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
+    }
+
+
+    /**
+     * 279. 完全平方数
+     * <a href="https://leetcode.cn/problems/perfect-squares">279. 完全平方数</a>
+     * 其实答案只有 1-4， 有数学公式
+     * @param n n
+     * @return ans
+     */
+    public int numSquares(int n) {
+        int[] f = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            int minn = n;
+            for (int j = 1; j * j <= i; j++) {
+                minn = Math.min(minn, f[i - j * j]);
+            }
+            f[i] = minn + 1;
+        }
+        return f[n];
+    }
+
+
+    public int numSquares2(int n) {
+        if (n <= 0) return 0;
+        if (n < 4) return n;
+        int square = n;
+        int sqrt = (int)Math.sqrt(n);
+        for (int i = sqrt; i > 1 ; i--) {
+            int curSquare = 0;
+            int c = 0 ;
+            while(n -(c + i * i) >= 0 )  {c += i*i; curSquare ++;}
+             curSquare += numSquares(n - c);
+            if (curSquare < square) square = curSquare;
+            else return square;
+        }
+        return square;
     }
 
 
@@ -66,6 +104,7 @@ public class ArrayString {
         }
         return start;
     }
+    boolean isBadVersion(int n) {return true;}
 
     /**
      * 276. 栅栏涂色

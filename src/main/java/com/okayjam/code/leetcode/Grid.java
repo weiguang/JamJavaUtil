@@ -47,6 +47,7 @@ public class Grid {
         }
         return true;
     }
+    boolean knows(int i, int j) {return true;}
 
 
     /**
