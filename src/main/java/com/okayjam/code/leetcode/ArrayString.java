@@ -37,14 +37,27 @@ public class ArrayString {
 //        System.out.println(new ArrayString().containsNearbyAlmostDuplicate(new int[] {8,7,15,1,6,1,9,15}, 1, 3));
 //        System.out.println(new ArrayString().computeArea(-3, 0, 3, 4, 0, -1, 9, 2));
 //        System.out.println(new ArrayString().maxSlidingWindow(new int[] {1,3,1,2,0,5}, 3));
-//        System.out.println(new ArrayString().threeSumSmaller(new int[] {-1,1,-1,-1}, -1));
-        System.out.println(new ArrayString().numSquares(13));
+//        System.out.println(new ArrayString().numSquares(13));
+          new ArrayString().moveZeroes(new int[] {0,1,0,3,12});
     }
 
     public void swap(int[] nums, int i, int j) {
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
+    }
+
+    /**
+     * 283. 移动零
+     * <a href="https://leetcode.cn/problems/move-zeroes/">283. 移动零</a>
+     * @param nums nums
+     */
+    public void moveZeroes(int[] nums) {
+     int l = 0, r = 0;
+     while ( r < nums.length) {
+         if (nums[r] != 0) swap(nums, l++, r);
+         r++;
+     }
     }
 
     /**
