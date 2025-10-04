@@ -18,6 +18,30 @@ public class Grid {
         System.out.println("Default main method!");
     }
 
+    public void wallsAndGates(int[][] rooms) {
+        int m = rooms.length;
+        int n = rooms[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (rooms[i][j] == 0) {
+                    wallsAndGatesDfs(rooms, i, j, 0);
+                }
+            }
+        }
+    }
+    public void wallsAndGatesDfs(int[][] rooms, int i, int j, int distance ) {
+        if (i <0 || i>= rooms.length || j <0 || j >= rooms[0].length || rooms[i][j]  == -1 || (rooms[i][j] <= distance && rooms[i][j] !=0)) {
+            return;
+        }
+        // 遍历到其他门的
+        if (rooms[i][j] == 0 && distance != 0) return;
+        rooms[i][j] = distance++;
+        wallsAndGatesDfs(rooms, i-1, j, distance );
+        wallsAndGatesDfs(rooms, i+1, j, distance);
+        wallsAndGatesDfs(rooms, i, j-1, distance);
+        wallsAndGatesDfs(rooms, i, j+1, distance);
+    }
+
     /**
      * 277. 搜寻名人
      * <a href="https://leetcode.cn/problems/find-the-celebrity">277. 搜寻名人</a>
