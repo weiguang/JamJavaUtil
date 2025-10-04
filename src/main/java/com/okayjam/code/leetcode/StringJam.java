@@ -46,6 +46,36 @@ public class StringJam {
         s[j] = temp;
     }
 
+    /**
+     * 290. 单词规律
+     * <a href="https://leetcode.cn/problems/word-pattern">290. 单词规律</a>
+     * @param pattern pattern
+     * @param s s
+     * @return ans
+     */
+    public boolean wordPattern(String pattern, String s) {
+        String[] s1 = s.split(" ");
+        if (pattern.length() != s1.length) return false;
+        Map<Character, String> map1 = new HashMap<>();
+        Map<String, Character> map2 = new HashMap<>();
+        for (int i = 0; i < pattern.length(); i++) {
+            String v1 = map1.get(pattern.charAt(i));
+            Character v2 = map2.get(s1[i]);
+            if ((v1 != null && v2 == null) || (v1 == null && v2 != null)) {
+                return false;
+            }
+            if (v1 == null && v2 == null) {
+                map1.put(pattern.charAt(i), s1[i]);
+                map2.put(s1[i], pattern.charAt(i));
+                continue;
+            }
+            if (!v1.equals(s1[i]) || v2 != pattern.charAt(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     public List<String> generatePalindromes(String s) {
         int[] map =  new int[26];

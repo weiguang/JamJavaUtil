@@ -18,6 +18,47 @@ public class Grid {
         System.out.println("Default main method!");
     }
 
+    int[][] direction = new int[][] {{-1,-1},{-1,0},{-1,1}, {0,-1},{0,1}, {1,-1},{1,0},{1,1}};
+    /**
+     * 289. 生命游戏
+     * <a href="https://leetcode.cn/problems/game-of-life/">289. 生命游戏</a>
+     * @param board input
+     */
+    public void gameOfLife(int[][] board) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                int count1 = 0;
+                for (int[] ints : direction) {
+                    int i1 = ints[0] + i;
+                    int j1 = ints[1] + j;
+                    if (i1 <0 || i1 >= board.length || j1 <0 || j1 >= board[0].length
+                            || (board[i1][j1] == 0)  || board[i1][j1] == 3) {
+                        continue;
+                    }
+                    count1++;
+                    if (count1 > 3) {
+                        break;
+                    }
+                }
+                if (board[i][j] == 0) {
+                    if (count1 ==3) board[i][j] =3;
+                } else if (count1 <2  || count1 >3) {
+                    board[i][j] = 2;
+                }
+            }
+        }
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (board[i][j] == 2) {
+                    board[i][j] = 0;
+                } else if(board[i][j] == 3) {
+                    board[i][j] = 1;
+                }
+            }
+        }
+    }
+
+
     public void wallsAndGates(int[][] rooms) {
         int m = rooms.length;
         int n = rooms[0].length;
