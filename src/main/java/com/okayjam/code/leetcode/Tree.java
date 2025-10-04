@@ -21,6 +21,52 @@ public class Tree {
         }
     }
 
+    /**
+     * 285. 二叉搜索树中的中序后继
+     * <a href="https://leetcode.cn/problems/inorder-successor-in-bst">285. 二叉搜索树中的中序后继</a>
+     * @param root root
+     * @param p p
+     * @return ans
+     */
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        TreeNode ans = null;
+        if (p.right != null) {
+            ans = p.right;
+            while(ans.left != null) {
+                ans = ans.left;
+            }
+            return ans;
+        }
+        TreeNode node = root;
+        while (node != null) {
+            if (node.val > p.val) {
+                ans = node;
+                node = node.left;
+            } else {
+                node = node.right;
+            }
+        }
+        return ans;
+    }
+
+    public TreeNode inorderSuccessor2(TreeNode root, TreeNode p) {
+        Deque<TreeNode> stack = new LinkedList<>();
+        TreeNode pre = null, node = root;
+        while(!stack.isEmpty() || node != null) {
+            while (node != null) {
+                stack.push(node);
+                node = node.left;
+            }
+            node = stack.pop();
+            if (pre == p) {
+                return node;
+            }
+            pre = node;
+            node = node.right;
+        }
+        return null;
+    }
+
 
     /**
      * 270. 最接近的二叉搜索树值
