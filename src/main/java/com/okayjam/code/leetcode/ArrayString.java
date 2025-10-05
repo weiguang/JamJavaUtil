@@ -38,13 +38,76 @@ public class ArrayString {
 //        System.out.println(new ArrayString().computeArea(-3, 0, 3, 4, 0, -1, 9, 2));
 //        System.out.println(new ArrayString().maxSlidingWindow(new int[] {1,3,1,2,0,5}, 3));
 //        System.out.println(new ArrayString().numSquares(13));
-          new ArrayString().moveZeroes(new int[] {0,1,0,3,12});
+//          new ArrayString().moveZeroes(new int[] {0,1,0,3,12});
+        System.out.println(new ArrayString().canWin("+++++"));
     }
 
     public void swap(int[] nums, int i, int j) {
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
+    }
+
+
+    /**
+     * 294. 翻转游戏 II
+     * <a href="https://leetcode.cn/problems/flip-game-ii">294. 翻转游戏 II</a>
+     * @param currentState state
+     * @return ans
+     */
+    public boolean canWin(String currentState) {
+        return canWin(new StringBuilder(currentState));
+    }
+
+    public boolean canWin(StringBuilder state) {
+        int n = state.length();
+        for (int i = 1; i < n; i++) {
+            if (state.charAt(i) == '+' && state.charAt(i-1) == '+') {
+                state.setCharAt(i, '-');
+                state.setCharAt(i -1, '-');
+                if (!canWin(state)) {
+                    state.setCharAt(i, '+');
+                    state.setCharAt(i -1, '+');
+                    return true;
+                }
+                state.setCharAt(i, '+');
+                state.setCharAt(i -1, '+');
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * 293. 翻转游戏
+     * <a href="https://leetcode.cn/problems/flip-game">293. 翻转游戏</a>
+     * @param currentState cs
+     * @return ans
+     */
+    public List<String> generatePossibleNextMoves(String currentState) {
+        List<String> ans = new ArrayList<>();
+        StringBuilder sb = new StringBuilder(currentState);
+        for (int i = 1; i < currentState.length(); i++) {
+            if (currentState.charAt(i-1) == '+' && currentState.charAt(i) == '+' ) {
+                sb.setCharAt(i-1, '-');
+                sb.setCharAt(i, '-');
+                ans.add(sb.toString());
+                sb.setCharAt(i-1, '+');
+                sb.setCharAt(i, '+');
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 292. Nim 游戏
+     * <a href="https://leetcode.cn/problems/nim-game">292. Nim 游戏</a>
+     * @param n
+     * @return
+     */
+    public boolean canWinNim(int n) {
+            if (n <4) return true;
+            return n % 4 != 0;
     }
 
     /**
