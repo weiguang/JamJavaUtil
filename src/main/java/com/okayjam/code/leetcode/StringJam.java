@@ -37,7 +37,8 @@ public class StringJam {
 //        System.out.println(new StringJam().diffWaysToCompute("10+5"));
 //        System.out.println(new StringJam().isAnagram("anagram", "nagaram"));
 //        System.out.println(new StringJam().isStrobogrammatic("2"));
-        System.out.println(new StringJam().getFactors(12));
+//        System.out.println(new StringJam().getFactors(12));
+        System.out.println(new StringJam().wordPatternMatch("abab", "redblueredblue"));
     }
 
     public void swap(char[] s, int i, int j) {
@@ -45,6 +46,50 @@ public class StringJam {
         s[i] = s[j];
         s[j] = temp;
     }
+
+    /**
+     * 291. 单词规律 II
+     * <a href="https://leetcode.cn/problems/word-pattern-ii/">291. 单词规律 II</a>
+     * @param pattern pattern
+     * @param s s
+     * @return ans
+     */
+    public boolean wordPatternMatch(String pattern, String s) {
+        return wordPatternMatchDfs(pattern,s ,0,0,new HashMap<>(),new HashSet<>());
+    }
+
+    private boolean wordPatternMatchDfs(String pattern, String s, int idx1, int idx2, Map<Character,String>map, Set<String>hashSet) {
+        int patternLength = pattern.length();
+        if (idx1 == patternLength) {
+            //保证每个s没有未匹配到的部分
+            if (idx2 == s.length())
+                return true;
+            else
+                return false;
+        }
+        // 匹配过
+        char pch = pattern.charAt(idx1);
+        if(map.containsKey(pch)){
+            String str = map.get(pch);
+            if (idx2 + str.length() <= s.length() &&  s.substring(idx2, idx2+ str.length()).equals(str))
+                return wordPatternMatchDfs(pattern, s, idx1 + 1, idx2 +str.length(), map, hashSet);
+            else
+                return false;
+        }
+        //没添加过
+        for (int i = idx2 + 1; i <= s.length(); i++) {
+            String str = s.substring(idx2, i);
+            if (!hashSet.contains(str)) {
+                hashSet.add(str);
+                map.put(pch, str);
+                if (wordPatternMatchDfs(pattern,s,idx1+1,i, map, hashSet)) return true;
+                map.remove(pch);
+                hashSet.remove(str);
+            }
+        }
+        return false;
+    }
+
 
     /**
      * 290. 单词规律
