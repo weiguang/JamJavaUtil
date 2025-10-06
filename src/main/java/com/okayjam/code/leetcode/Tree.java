@@ -21,18 +21,44 @@ public class Tree {
         }
     }
 
+
+    /**
+     * 298. 二叉树最长连续序列
+     * <a href="https://leetcode.cn/problems/binary-tree-longest-consecutive-sequence/">298. 二叉树最长连续序列</a>
+     *
+     * @param root root
+     * @return ans
+     */
+    public int longestConsecutive(TreeNode root) {
+        return root == null ? 0 : longestConsecutive(root, 1);
+    }
+
+    public int longestConsecutive(TreeNode root, int cur) {
+        if (root == null) return cur;
+        int l = 1, r = 1;
+        if (root.left != null) {
+            l = longestConsecutive(root.left, root.left.val == root.val + 1 ? cur + 1 : 1);
+        }
+        if (root.right != null) {
+            r = longestConsecutive(root.right, root.right.val == root.val + 1 ? cur + 1 : 1);
+        }
+        return Math.max(cur, Math.max(l, r));
+    }
+
+
     /**
      * 285. 二叉搜索树中的中序后继
      * <a href="https://leetcode.cn/problems/inorder-successor-in-bst">285. 二叉搜索树中的中序后继</a>
+     *
      * @param root root
-     * @param p p
+     * @param p    p
      * @return ans
      */
     public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
         TreeNode ans = null;
         if (p.right != null) {
             ans = p.right;
-            while(ans.left != null) {
+            while (ans.left != null) {
                 ans = ans.left;
             }
             return ans;
@@ -52,7 +78,7 @@ public class Tree {
     public TreeNode inorderSuccessor2(TreeNode root, TreeNode p) {
         Deque<TreeNode> stack = new LinkedList<>();
         TreeNode pre = null, node = root;
-        while(!stack.isEmpty() || node != null) {
+        while (!stack.isEmpty() || node != null) {
             while (node != null) {
                 stack.push(node);
                 node = node.left;

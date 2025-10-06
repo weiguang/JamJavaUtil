@@ -48,6 +48,34 @@ public class StringJam {
     }
 
     /**
+     * 299. 猜数字游戏
+     * <a href="https://leetcode.cn/problems/bulls-and-cows">299. 猜数字游戏</a>
+     * @param secret secret
+     * @param guess guess
+     * @return ans
+     */
+    public String getHint(String secret, String guess) {
+       int[] s =  new int[10];
+       int[] g =  new int[10];
+       int a= 0 , b = 0, si, gi;
+        for (int i = 0; i < secret.length(); i++) {
+            si = secret.charAt(i) ;
+            gi = guess.charAt(i);
+            if (si == gi) {
+                a++;
+            } else {
+                s[si - '0']++;
+                g[gi - '0']++;
+            }
+        }
+        for (int i = 0; i < 10; i++) {
+            b += Math.min(s[i],g[i]);
+        }
+        return String.format("%dA%dB", a, b);
+    }
+
+
+    /**
      * 291. 单词规律 II
      * <a href="https://leetcode.cn/problems/word-pattern-ii/">291. 单词规律 II</a>
      * @param pattern pattern
