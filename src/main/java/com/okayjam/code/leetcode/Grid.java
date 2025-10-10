@@ -17,8 +17,41 @@ public class Grid {
     public static void main(String[] args) {
         System.out.println("Default main method!");
     }
-
+    private final static int[][] DIRECTIONS4 = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
     int[][] direction = new int[][] {{-1,-1},{-1,0},{-1,1}, {0,-1},{0,1}, {1,-1},{1,0},{1,1}};
+
+
+    public List<Integer> numIslands2(int m, int n, int[][] positions) {
+        UnionFind unionFind = new UnionFind(m * n);
+        boolean[] visited = new boolean[m * n];
+
+        List<Integer> res = new ArrayList<>();
+        for (int[] position : positions) {
+            int x = position[0];
+            int y = position[1];
+            int index = x * n + y;
+            if (visited[index]) {res.add(unionFind.getCount());continue;}
+            visited[index] = true;
+            // 把水变成陆地，连通分量个数加 1
+            unionFind.addCount();
+            for (int[] direction : DIRECTIONS4) {
+                int newX = x + direction[0];
+                int newY = y + direction[1];
+                int newIndex = newX * n + newY;
+                if (inArea(newX, newY, m, n ) && visited[newIndex] && !unionFind.isConnected(index, newIndex))  {
+                    unionFind.union(index, newIndex);
+                }
+            }
+            res.add(unionFind.getCount());
+        }
+        return res;
+    }
+
+    public boolean inArea(int x, int y, int m, int n) {
+        return 0 <= x && x < m && 0 <= y && y < n;
+    }
+
+
     /**
      * 289. 生命游戏
      * <a href="https://leetcode.cn/problems/game-of-life/">289. 生命游戏</a>
