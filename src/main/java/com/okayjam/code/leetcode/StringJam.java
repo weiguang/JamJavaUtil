@@ -38,7 +38,9 @@ public class StringJam {
 //        System.out.println(new StringJam().isAnagram("anagram", "nagaram"));
 //        System.out.println(new StringJam().isStrobogrammatic("2"));
 //        System.out.println(new StringJam().getFactors(12));
-        System.out.println(new StringJam().wordPatternMatch("abab", "redblueredblue"));
+//        System.out.println(new StringJam().wordPatternMatch("abab", "redblueredblue"));
+//          System.out.println(new StringJam().isAdditiveNumber("011112"));
+          System.out.println(new StringJam().isAdditiveNumber("12012122436"));
     }
 
     public void swap(char[] s, int i, int j) {
@@ -46,6 +48,118 @@ public class StringJam {
         s[i] = s[j];
         s[j] = temp;
     }
+
+
+    /**
+     * 306. 累加数
+     * <a href="https://leetcode.cn/problems/additive-number">306. 累加数</a>
+     * @param num num
+     * @return ans
+     */
+    public boolean isAdditiveNumber(String num) {
+        if(num.length() < 3) return false;
+        return isAdditiveNumber(num, 0, 0 );
+    }
+
+    public boolean isAdditiveNumber(String num , int firstLen, int secondLen) {
+        if(num.length() < 3) return false;
+        if (firstLen > num.length() - secondLen ||  secondLen > num.length() - firstLen) return false;
+        long numi;
+        long numj;
+        //  如果指定了长度
+        if (firstLen != 0 && secondLen != 0) {
+            numi = Long.parseLong(num.substring(0, firstLen));
+            numj = Long.parseLong(num.substring(firstLen , firstLen + secondLen));
+            String sum = String.valueOf(numi +numj);
+            String remain = num.substring(firstLen + secondLen);
+            if (remain.equals(sum)) { return true; }
+            if (remain.startsWith(sum)) {
+                return isAdditiveNumber(num.substring(firstLen), secondLen, sum.length());
+            }
+            return false;
+        } else {
+            // 没有指定长度
+            for (int i = 0; i < num.length() / 2; i++) {
+                if(num.charAt(0) == '0' && i > 0) return false;
+                numi = Long.parseLong(num.substring(0, i +1));
+                for (int j = i+1; j < num.length()-1; j++) {
+                    if (num.charAt(i +1) == '0' && j > i+1) break;
+                    numj = Long.parseLong(num.substring(i+1, j+1));
+                    if (num.length() - j -1 < (j-i) || num.length() - j -1  < i ) {break;}
+                    String sum = String.valueOf(numi +numj);
+                    String remain = num.substring(j + 1);
+                    if (remain.equals(sum)) { return true; }
+                    if (remain.startsWith(sum)) {
+                        boolean f2 = isAdditiveNumber(num.substring(i+1), j-i, sum.length());
+                        if (f2) {return true;}
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isAdditiveNumber2(String num) {
+        int n = num.length();
+        for (int secondStart = 1; secondStart < n - 1; ++secondStart) {
+            if (num.charAt(0) == '0' && secondStart != 1) {
+                break;
+            }
+            for (int secondEnd = secondStart; secondEnd < n - 1; ++secondEnd) {
+                if (num.charAt(secondStart) == '0' && secondStart != secondEnd) {
+                    break;
+                }
+                if (valid(secondStart, secondEnd, num)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean valid(int secondStart, int secondEnd, String num) {
+        int n = num.length();
+        int firstStart = 0, firstEnd = secondStart - 1;
+        while (secondEnd <= n - 1) {
+            String third = stringAdd(num, firstStart, firstEnd, secondStart, secondEnd);
+            int thirdStart = secondEnd + 1;
+            int thirdEnd = secondEnd + third.length();
+            if (thirdEnd >= n || !num.substring(thirdStart, thirdEnd + 1).equals(third)) {
+                break;
+            }
+            if (thirdEnd == n - 1) {
+                return true;
+            }
+            firstStart = secondStart;
+            firstEnd = secondEnd;
+            secondStart = thirdStart;
+            secondEnd = thirdEnd;
+        }
+        return false;
+    }
+
+    public String stringAdd(String s, int firstStart, int firstEnd, int secondStart, int secondEnd) {
+        StringBuffer third = new StringBuffer();
+        int carry = 0, cur = 0;
+        while (firstEnd >= firstStart || secondEnd >= secondStart || carry != 0) {
+            cur = carry;
+            if (firstEnd >= firstStart) {
+                cur += s.charAt(firstEnd) - '0';
+                --firstEnd;
+            }
+            if (secondEnd >= secondStart) {
+                cur += s.charAt(secondEnd) - '0';
+                --secondEnd;
+            }
+            carry = cur / 10;
+            cur %= 10;
+            third.append((char) (cur + '0'));
+        }
+        third.reverse();
+        return third.toString();
+    }
+
+
 
     /**
      * 299. 猜数字游戏
