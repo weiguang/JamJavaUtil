@@ -50,6 +50,29 @@ public class ArrayString {
     }
 
     /**
+     * 309. 买卖股票的最佳时机含冷冻期
+     * <a href="https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-cooldown">309. 买卖股票的最佳时机含冷冻期</a>
+     * @param prices p
+     * @return ans
+     */
+    public int maxProfit(int[] prices) {
+        if( prices.length < 2) return 0;
+        int f0 = -prices[0];
+        int f1 = 0, f2= 0;
+        int nf0,nf1, nf2;
+        for (int i = 1; i < prices.length; i++) {
+            nf0 = Math.max(f0, f2 - prices[i]);
+            nf1 = f0 + prices[i];
+            nf2 = Math.max(f1, f2);
+            f0 = nf0;
+            f1 = nf1;
+            f2 = nf2;
+        }
+        return Math.max(f1, f2);
+    }
+
+
+    /**
      * 300. 最长递增子序列
      * <a href="https://leetcode.cn/problems/longest-increasing-subsequence">300. 最长递增子序列</a>
      * @param nums nums
