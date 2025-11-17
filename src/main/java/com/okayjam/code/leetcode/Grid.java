@@ -1,13 +1,7 @@
 package com.okayjam.code.leetcode;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Chen weiguang chen2621978@gmail.com
@@ -20,8 +14,81 @@ public class Grid {
     private final static int[][] DIRECTIONS4 = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
     int[][] direction = new int[][] {{-1,-1},{-1,0},{-1,1}, {0,-1},{0,1}, {1,-1},{1,0},{1,1}};
 
+    /**
+     * 310. 最小高度树
+     * <a href="https://leetcode.cn/problems/minimum-height-trees/description/">310. 最小高度树</a>
+     * @param n n
+     * @param edges edges
+     * @return ans
+     */
+    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+        List<Integer> ans = new ArrayList<Integer>();
+        if (n == 1) {
+            ans.add(0);
+            return ans;
+        }
+        List<Integer>[] adj = new List[n];
+        for (int i = 0; i < n; i++) {
+            adj[i] = new ArrayList<>();
+        }
+        for (int[] edge : edges) {
+            adj[edge[0]].add(edge[1]);
+            adj[edge[1]].add(edge[0]);
+        }
 
-    public List<Integer> numIslands2(int m, int n, int[][] positions) {
+        int[] parents = new int[n];
+        Arrays.fill(parents, -1);
+        //   找到与节点 0 最远的节点 x
+        int x = findLongestNode(0, parents, adj);
+        // 找到与节点 x 最远的节点 y
+        int y = findLongestNode(x, parents, adj);
+        // 求出节点 x 到节点 y 的路径
+        List<Integer> path = new ArrayList<>();
+        parents[x] = -1;
+        while(y != -1) {
+            path.add(y);
+            y = parents[y];
+        }
+        int m = path.size();
+        if ((m & 1) == 0 ) {
+            ans.add(path.get(m/2 - 1));
+        }
+        ans.add(path.get(m/2));
+        return ans;
+    }
+
+    /**
+     *  找到最远的节点
+     *  广度搜索，最后访问到就是最远路径的节点
+     * @param u u
+     * @param parent parent
+     * @param adj edges
+     * @return ans
+     */
+    public int findLongestNode(int u, int[] parent, List<Integer>[] adj) {
+        int n  = adj.length;
+        Queue<Integer> queue = new LinkedList<>();
+        boolean[] visit = new boolean[n];
+        queue.offer(u);
+        visit[u] = true;
+        int node = -1;
+        while(!queue.isEmpty()) {
+            int cur = queue.poll();
+            node = cur;
+            for (int v : adj[cur]) {
+                if (!visit[v]) {
+                    visit[v] = true;
+                    parent[v] = cur;
+                    queue.offer(v);
+
+                }
+            }
+        }
+        return node;
+    }
+
+
+        public List<Integer> numIslands2(int m, int n, int[][] positions) {
         UnionFind unionFind = new UnionFind(m * n);
         boolean[] visited = new boolean[m * n];
 

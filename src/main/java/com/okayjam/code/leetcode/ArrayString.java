@@ -40,7 +40,7 @@ public class ArrayString {
 //        System.out.println(new ArrayString().numSquares(13));
 //          new ArrayString().moveZeroes(new int[] {0,1,0,3,12});
 //        System.out.println(new ArrayString().canWin("+++++"));
-        System.out.println(new ArrayString().lengthOfLIS(new int[] {0,8,9,4,2}));
+//        System.out.println(new ArrayString().lengthOfLIS(new int[] {0,8,9,4,2}));
     }
 
     public void swap(int[] nums, int i, int j) {
@@ -48,6 +48,27 @@ public class ArrayString {
         nums[i] = nums[j];
         nums[j] = temp;
     }
+
+
+    public int nthSuperUglyNumber(int n, int[] primes) {
+        int[] dp = new int[n + 1];
+        int m = primes.length;
+        int[] pointers = new int[m];
+        long[] nums = new long[m];
+        Arrays.fill(nums, 1);
+        for (int i = 1; i <= n; i++) {
+            long min = Arrays.stream(nums).min().getAsLong();
+            dp[i] = Math.toIntExact(min);
+            for (int j = 0; j < m; j++) {
+                if (nums[j] == min) {
+                    pointers[j]++;
+                    nums[j] = (long) dp[pointers[j]] * primes[j];
+                }
+            }
+        }
+        return dp[n];
+    }
+
 
     /**
      * 309. 买卖股票的最佳时机含冷冻期
