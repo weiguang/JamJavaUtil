@@ -49,6 +49,33 @@ public class StringJam {
         s[j] = temp;
     }
 
+    public String removeDuplicateLetters(String s) {
+        int n = s.length();
+        int[] count = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            count[s.charAt(i) - 'a']++;
+        }
+        boolean[] vis = new boolean[26];
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            int idx = c - 'a';
+            if (vis[idx]) {count[idx]--; continue;}
+            while(sb.length() >0 && sb.charAt(sb.length() -1) > c) {
+                if (count[sb.charAt(sb.length() - 1) - 'a'] > 0) {
+                    vis[sb.charAt(sb.length() - 1) - 'a'] = false;
+                    sb.deleteCharAt(sb.length() - 1);
+                } else {
+                    break;
+                }
+            }
+            vis[idx] = true;
+            sb.append(c);
+            count[idx]--;
+        }
+        return sb.toString();
+    }
+
 
     /**
      * 306. 累加数
