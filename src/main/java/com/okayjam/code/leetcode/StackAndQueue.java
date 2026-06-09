@@ -2,6 +2,8 @@ package com.okayjam.code.leetcode;
 
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Stack;
 
 /**
  * @author chen2
@@ -11,6 +13,62 @@ public class StackAndQueue {
 //	    System.out.println(isValid("()[]{}"));
 		System.out.println(largestRectangleArea(new int[]{2,1,5,6,2,3}));
 	}
+
+	// [73,74,75,71,69,72,76,73]
+	//                ,72,76
+	public int[] dailyTemperatures(int[] temperatures) {
+		int len = temperatures.length;
+		int[] ans = new int[len];
+		Deque<Integer> stack = new LinkedList<>();
+		for(int i = len -1; i >= 0; i--) {
+			while(!stack.isEmpty() && temperatures[stack.peek()] <= temperatures[i]) {
+				stack.pop();
+			}
+			ans[i] = stack.isEmpty() ? 0 : stack.peek() - i;
+			stack.push(i);
+		}
+		return ans;
+	}
+
+	public int[] finalPrices(int[] prices) {
+		int len = prices.length;
+		int[] res = new int[len];
+		Deque<Integer> stack  = new LinkedList<>();
+		for (int i = len -1; i >= 0; i--) {
+			while (!stack.isEmpty() && stack.peek() > prices[i]) {
+				stack.pop();
+			}
+			res[i] = stack.isEmpty() ? prices[i] : prices[i] - stack.peek();
+			stack.push(prices[i]);
+		}
+		return res;
+	}
+
+	public int[] exclusiveTime(int n, List<String> logs) {
+		Deque<String[]> stack = new LinkedList<>();
+		Deque<Integer> curs = new LinkedList<>();
+		int[] ans = new int[n];
+		int cur;
+		for(String log : logs) {
+			String[] logSplit = log.split(":");
+			if (logSplit[1].equals("start")) {
+				stack.push(logSplit);
+				curs.push(0);
+			}  else {
+				int idx = Integer.parseInt(logSplit[0]);
+				String[] pop = stack.pop() ;
+				cur = curs.pop();
+				int dur = Integer.parseInt(logSplit[2]) - Integer.parseInt(pop[2]) + 1 - cur;
+				ans[idx] += dur;
+				if (!curs.isEmpty()) {
+					cur += curs.pop() + dur;
+					curs.push(cur);
+				}
+			}
+		}
+		return ans;
+	}
+
 
 
 	/**

@@ -41,12 +41,180 @@ public class ArrayString {
 //          new ArrayString().moveZeroes(new int[] {0,1,0,3,12});
 //        System.out.println(new ArrayString().canWin("+++++"));
 //        System.out.println(new ArrayString().lengthOfLIS(new int[] {0,8,9,4,2}));
+//        System.out.println(new ArrayString().canReach("01111010111101110110111011110", 2,2));
+//        System.out.println(new ArrayString().bulbSwitch(5));
+//        System.out.println(new ArrayString().coinChange(new int[]{186,419,83,408}, 6249));
+//          new ArrayString().wiggleSort2(new int[]{1,3,2,2,3,2});
+        System.out.println(Math.pow(3,19));
     }
+
 
     public void swap(int[] nums, int i, int j) {
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
+    }
+
+
+    /**
+     * <a href="https://leetcode.cn/problems/increasing-triplet-subsequence">334. 递增的三元子序列</a>
+     * @param nums nums
+     * @return f
+     */
+    public boolean increasingTriplet(int[] nums) {
+        int n = nums.length;
+        if (n < 3) {
+            return false;
+        }
+        int first = nums[0], second = Integer.MAX_VALUE;
+        for (int i = 1; i < n; i++) {
+            if (nums[i] > second) {
+                return true;
+            } else if (nums[i] > first) {
+                second = nums[i];
+            } else {
+                first = nums[i];
+            }
+        }
+        return false;
+    }
+
+    /**
+     * <a href="https://leetcode.cn/problems/wiggle-sort-ii/">324. 摆动排序 II</a>
+     * @param nums 测试 [1,3,2,2,3,2]
+     */
+    public void wiggleSort2(int[] nums) {
+            int[] arr = nums.clone();
+            Arrays.sort(arr);
+            int n = nums.length;
+            int x = (n + 1) / 2;
+            for (int i = 0, j = x - 1, k = n - 1; i < n; i += 2, j--, k--) {
+                nums[i] = arr[j];
+                if (i + 1 < n) {
+                    nums[i + 1] = arr[k];
+                }
+            }
+        }
+
+
+    /**
+     * <a href="https://leetcode.cn/problems/coin-change">322. 零钱兑换</a>
+     * @param coins c
+     * @param amount a
+     * @return ans
+     */
+    public int coinChange(int[] coins, int amount) {
+       int[] dp = new int[amount + 1];
+       Arrays.fill(dp, amount + 1);
+       dp[0] = 0;
+       for(int i = 1; i <= amount; i++) {
+           for (int coin : coins) {
+               if (coin <= i) {
+                   dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+               }
+           }
+       }
+       return dp[amount] > amount ? -1 : dp[amount];
+    }
+
+    /**
+     * <a href="https://leetcode.cn/problems/bulb-switcher">319. 灯泡开关</a>
+     * 第 i 个灯泡状态的修改次数等于 i 的约数个数，当 i 的约数个数为 偶数 时，第 i 个灯泡的状态等价于没有修改（关闭状态）；
+     * 当 i 的约数个数为 奇数 时，第 i 个灯泡的状态等价于修改一次（打开状态）
+     * 有个推论：约数个数为 奇数 的正整数一定是一个完全平方数！
+     * 问题转为 n 个正整数(1, 2, ..., n) 中有多少完全平方数？ 而n中完全平方数个数 答案为 int(sqrt(n)) ， +0.5 是处理精度问题
+     * 大概说明这个结论：设P,A,B 为正整数，如果 P=A*B，则A和B为P的因数，因数A和B总是成对出现，是如果他们相等呢？这个时候他们一起只会为因数的个数贡献 1
+     *                P=A*A，这种情况对于P来说最多只能出现1次，而这种情况只可能出现在完全平方数中，只有完全平方数的因数的个数是奇数个
+     * @param n n
+     * @return 亮灯数
+     */
+    public int bulbSwitch(int n) {
+        return (int) Math.sqrt(n + 0.5);
+    }
+
+
+    public int maxProduct(String[] words) {
+        int ans = 0;
+        Arrays.sort(words, Comparator.nullsLast(Comparator.comparingInt(String::length).reversed()));
+        int[] masks = new int[words.length];
+        for (int i = 0; i < words.length; i++) {
+            masks[i] = letterMask(words[i]);
+        }
+        for (int i = 0; i <words.length -1; i++) {
+            for (int j = i+1; j < words.length; j++) {
+                // 没有交集的情况
+                if ((masks[i] & masks[j]) ==0 ) {
+                    ans = Math.max(ans, words[i].length() * words[j].length());
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+
+    public static int letterMask(String word) {
+        int wordMask = 0;
+        for (int i = 0, len = word.length(); i < len; i++) {
+            // 将对应字母的位置为 1
+            wordMask |= (1 << (word.charAt(i) - 'a'));
+        }
+        return wordMask;
+    }
+
+    public static boolean hasCommonLetter(String... words) {
+        if (words == null || words.length < 2) return false;
+
+        int mask = 0xFFFFFFFF;
+
+        for (String word : words) {
+            int wordMask = 0;
+            for (int i = 0, len = word.length(); i < len; i++) {
+                // 将对应字母的位置为 1
+                wordMask |= (1 << (word.charAt(i) - 'a'));
+            }
+            // 求所有单词掩码的交集
+            mask &= wordMask;
+
+            // 交集已为空，无需继续处理后续单词，直接返回
+            if (mask == 0) return false;
+        }
+        return true;
+    }
+
+    public boolean canReach(String s, int minJump, int maxJump) {
+        if (minJump > s.length() || maxJump < minJump) {
+            return false;
+        }
+        int len = s.length();
+        boolean[] dp = new boolean[len];
+        dp[0] = s.charAt(0) == '0';
+        for (int i = 1; i < minJump; i++) {
+            dp[i] = false;
+        }
+        int cur = 0 ;
+        for (int i = minJump ; i < len; i++) {
+            if (maxJump == minJump) {dp[i] = s.charAt(i) == '0' && dp[i-maxJump] ;continue;}
+            int a = i - maxJump - 1;
+            if (a >= 0 && dp[a]) cur--;
+            int b = i - minJump;
+            if (b < len && dp[b]) cur++;
+            dp[i] = s.charAt(i) == '0' &&  cur > 0 ;
+        }
+        return dp[s.length() - 1];
+    }
+
+    public int furthestDistanceFromOrigin(String moves) {
+        int r = 0, l = 0;
+        for (int i = 0; i < moves.length(); i++) {
+            switch (moves.charAt(i)) {
+                case 'R': r++; break;
+                case 'L': l++; break;
+                default:  break;
+            }
+        }
+        if (r > l) return  moves.length() - 2 * l;
+        else if (l > r) return  moves.length()- 2 *r ;
+        else return moves.length() - r - l;
     }
 
 
@@ -243,7 +411,7 @@ public class ArrayString {
         }
         return -1;
     }
-    
+
 
     /**
      * 283. 移动零

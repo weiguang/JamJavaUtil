@@ -17,7 +17,7 @@
         <poi.version>5.4.0</poi.version>
         <mysql.version>8.2.0</mysql.version>
         <tess4j.version>4.4.1</tess4j.version>
-        <selenium.version>3.141.59</selenium.version>
+        <selenium.version>4.34.0</selenium.version>
     </properties>
 
     <build>
@@ -172,6 +172,13 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-chrome-driver</artifactId>
             <version>${selenium.version}</version>
         </dependency>
 

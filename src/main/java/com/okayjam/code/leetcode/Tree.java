@@ -1,5 +1,6 @@
 package com.okayjam.code.leetcode;
 
+import java.text.NumberFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -12,13 +13,32 @@ import com.okayjam.code.leetcode.LinkedListJam.ListNode;
 public class Tree {
 
     public static void main(String[] args) {
-        TreeNode left = new TreeNode(3, null, null);
-        TreeNode right = new TreeNode(15, null, null);
-        TreeNode root = new TreeNode(7, left, right);
-        BSTIterator iterator = new BSTIterator(root);
-        while (iterator.hasNext()) {
-            System.out.println(iterator.next());
+//        TreeNode left = new TreeNode(3, null, null);
+//        TreeNode right = new TreeNode(15, null, null);
+//        TreeNode root = new TreeNode(7, left, right);
+//        BSTIterator iterator = new BSTIterator(root);
+//        while (iterator.hasNext()) {
+//            System.out.println(iterator.next());
+//        }
+        new Tree().isValidSerialization("9,3,4,#,#,1,#,#,2,#,6,#,#");
+    }
+
+
+    public boolean isValidSerialization(String preorder) {
+        int count = 0;
+        String[] split = preorder.split(",");
+        if ("#".equals(preorder)) return true;
+        if(split[0].charAt(0) == '#') {return false;}
+        count = 2;
+        for (int i = 1; i < split.length; i++) {
+            if (split[i].charAt(0) == '#') {
+                count--;
+                if (count == 0 && i < split.length -1) {return false;}
+            } else {
+                count++;
+            }
         }
+        return count == 0;
     }
 
 

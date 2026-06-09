@@ -46,6 +46,27 @@ public class LinkedListJam {
 		node.next = node.next.next;
 	}
 
+	public ListNode oddEvenList(ListNode head) {
+		ListNode oDummy = new ListNode(0);
+		ListNode eDummy = new ListNode(0);
+		ListNode p = head, o1 = oDummy, e1 = eDummy;
+		boolean oflag = true;
+		while (p != null) {
+			if (oflag) {
+				o1.next = p;
+				o1 = o1.next;
+			} else {
+				e1.next = p;
+				e1 = e1.next;
+			}
+			oflag = !oflag;
+			p = p.next;
+		}
+		e1.next = null;
+		o1.next = eDummy.next;
+		return oDummy.next;
+	}
+
 
 	/**
 	 * 234. 回文链表
