@@ -4,38 +4,33 @@ package com.okayjam.net.socket.msgpack;
  * @author Chen weiguang chen2621978@gmail.com
  * @date 2020/10/14 19:33
  **/
-import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.*;
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 
-/**
- * netty的客户端
- */
-public class EchoClient {
-
-    private final String host;
+public class EchoServer {
     private final int port;
-    private final int sendNum;
 
-    private EchoClient(String host, int port, int sendNum) {
-        this.host = host;
+    public EchoServer(int port) {
         this.port = port;
-        this.sendNum = sendNum;
     }
 
     public void run() throws Exception {
-        EventLoopGroup group = new NioEventLoopGroup();
+        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
-            Bootstrap b = new Bootstrap();
-            b.group(group)
-                    .channel(NioSocketChannel.class)
-                    .option(ChannelOption.TCP_NODELAY, true)
-                    .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3000)
-                    .handler(new ChannelInitializer<SocketChannel>() {
+            ServerBootstrap b = new ServerBootstrap();
+            b.group(bossGroup, workerGroup)
+                    .channel(NioServerSocketChannel.class)
+                    .option(ChannelOption.SO_BACKLOG, 1024)
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             socketChannel.pipeline().addLast("frameDecode",
@@ -43,21 +38,20 @@ public class EchoClient {
                             socketChannel.pipeline().addLast("msgpack decoder", new MsgpackDecoder());
                             socketChannel.pipeline().addLast("frameEncode", new LengthFieldPrepender(2));
                             socketChannel.pipeline().addLast("msgpack encoder", new MsgpackEncoder());
-                            socketChannel.pipeline().addLast(new EchoClientHandler(sendNum));
+                            socketChannel.pipeline().addLast(new EchoServerHandler());
                         }
                     });
 
-            ChannelFuture f = b.connect(host, port).sync();
+            ChannelFuture f = b.bind(port).sync();
+            System.out.println("Msgpack EchoServer started on port: " + port);
             f.channel().closeFuture().sync();
         } finally {
-            group.shutdownGracefully();
+            bossGroup.shutdownGracefully();
+            workerGroup.shutdownGracefully();
         }
     }
 
     public static void main(String[] args) throws Exception {
-        String host = "localhost";
-        int port = 63000;
-        int sendNum = 3;
-        new EchoClient(host, port, sendNum).run();
+        new EchoServer(63000).run();
     }
 }
