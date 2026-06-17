@@ -24,6 +24,47 @@ public class Tree {
     }
 
 
+    public int[] countBits(int n) {
+        int[] bits = new int[n + 1];
+        int highBit = 0;
+        for (int i = 1; i <= n; i++) {
+            if ((i & (i - 1)) == 0) {
+                highBit = i;
+            }
+            bits[i] = bits[i - highBit] + 1;
+        }
+        return bits;
+    }
+
+    public int[] countBits2(int n) {
+        int[] res = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            int t = i;
+            while (t != 0 ) {
+                t &= t - 1;
+                res[i]++;
+            }
+        }
+        return res;
+    }
+
+    public int rob(TreeNode root) {
+        int[] ints = robDfs(root);
+        return Math.max(ints[0], ints[1]);
+    }
+
+    public int[] robDfs(TreeNode root) {
+        if (root == null) {
+            return new int[2];
+        }
+        int[] left = robDfs(root.left);
+        int[] right = robDfs(root.right);
+        int selected = left[1] + right[1] + root.val;
+        int nonSelected = Math.max(left[0], left[1]) + Math.max(right[0], right[1]) ;
+        return new int[]{selected, nonSelected};
+    }
+
+
     public boolean isValidSerialization(String preorder) {
         int count = 0;
         String[] split = preorder.split(",");

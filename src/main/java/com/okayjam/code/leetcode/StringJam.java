@@ -49,6 +49,40 @@ public class StringJam {
         s[j] = temp;
     }
 
+    boolean isBase(char c) {
+       return "aeiouAEIOU".indexOf(c) != -1;
+    }
+
+    public String reverseVowels(String s) {
+        int n = s.length();
+        int i= 0, j = n-1;
+        char[] chars = s.toCharArray();
+        while (i <= j) {
+            while(i < j && !isBase(chars[i])) {
+                i++;
+            }
+            while(i < j && !isBase(chars[j])) {
+                j--;
+            }
+            swap(chars, i, j);
+            i++;j--;
+        }
+        return new String(chars);
+    }
+
+
+
+    public void reverseString(char[] s) {
+         int i = 0, j = s.length -1;
+        while (i < j) {
+            char temp = s[i];
+            s[i] = s[j];
+            s[j] = temp;
+            i++; j--;
+        }
+    }
+
+
     public String removeDuplicateLetters(String s) {
         int n = s.length();
         int[] count = new int[26];

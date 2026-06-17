@@ -1,6 +1,7 @@
 package com.okayjam.code.leetcode;
 
 
+import java.awt.event.WindowFocusListener;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -45,14 +46,238 @@ public class ArrayString {
 //        System.out.println(new ArrayString().bulbSwitch(5));
 //        System.out.println(new ArrayString().coinChange(new int[]{186,419,83,408}, 6249));
 //          new ArrayString().wiggleSort2(new int[]{1,3,2,2,3,2});
-        System.out.println(Math.pow(3,19));
-    }
+//        System.out.println( new ArrayString().canMeasureWater(3,5,4));
+        System.out.println( new ArrayString().largestDivisibleSubset(new int[]{1,2,4,8}));
+     }
 
 
     public void swap(int[] nums, int i, int j) {
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
+    }
+
+
+    public int getSum(int a, int b) {
+        while (b != 0 ) {
+            int  carry = (a & b) << 1;
+            a ^= b;
+            b = carry;
+        }
+        return a;
+    }
+
+    public List<Integer> largestDivisibleSubset(int[] nums) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);
+        int maxVal = 0, maxSize = 1;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] % nums[j] == 0 ) { dp[i] = Math.max(dp[i], dp[j] + 1); }
+            }
+            if (dp[i] > maxSize) {
+                maxSize = dp[i];
+                maxVal = nums[i];
+            }
+        }
+        // 第 2 步：倒推获得最大子集
+        List<Integer> ans = new ArrayList<>();
+        // 如果答案只有一个，不需要遍历，返回第一就行
+        if (maxSize == 1) {
+            ans.add(nums[0]);
+            return ans;
+        }
+
+        for (int i = n - 1; i >=0 && maxSize > 0 ; i--) {
+            if (dp[i] == maxSize && maxVal % nums[i] == 0) {
+                ans.add(nums[i]);
+                maxVal = nums[i];
+                maxSize--;
+            }
+        }
+        return ans;
+    }
+
+
+
+
+    public boolean isPerfectSquare(int num) {
+        int left = 1, right = num;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            long square = (long)mid * mid;
+            if (square == num) {
+                return true;
+            }
+            if (square < num) {
+                left = mid + 1;
+            } else  {
+                right = mid - 1;
+            }
+        }
+        return false;
+    }
+
+
+
+    /**
+     * 365. 水壶问题
+     * <a href="https://leetcode.cn/problems/water-and-jug-problem">365. 水壶问题</a>
+     * @param x x
+     * @param y y
+     * @param target target
+     * @return ans
+     */
+    public boolean canMeasureWater2(int x, int y, int target) {
+        if (target == 0 ) {return true;}
+        if (x + y < target ) { return false;}
+        return target % gcd(x,y) == 0;
+    }
+
+    public boolean canMeasureWater(int x, int y, int target) {
+        Deque<int[]> queue = new LinkedList<>();
+        Set<Long> visited = new HashSet<>();
+        queue.offer(new int[]{0, 0});
+         while (!queue.isEmpty()) {
+            int[] pop = queue.pop();
+            int remainX = pop[0];
+            int remainY = pop[1];
+            long hash = ((long) remainX << 32) | remainY;
+            if (visited.contains(hash)) {continue;}
+            // visited
+            visited.add(hash);
+            if (remainX == target || remainY == target || remainX + remainY == target) {return true;}
+            // add state
+            queue.offerLast(new int[]{0, remainY});
+            queue.offerLast(new int[]{remainX, 0});
+            queue.offerLast(new int[]{x, remainY});
+            queue.offerLast(new int[]{remainX, y});
+            // x > y
+            int x1 = Math.min(remainX, y - remainY);
+            queue.offerLast(new int[]{remainX - x1, remainY + x1});
+            // y ->x
+            int y1 = Math.min(remainY, x - remainX);
+            queue.offerLast(new int[]{remainX + y1,  remainY - y1});
+        }
+        return false;
+    }
+
+    public int gcd(int a, int b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
+
+
+
+    /**
+     * 357. 统计各位数字都不同的数字个数
+     * <a href="https://leetcode.cn/problems/count-numbers-with-unique-digits/">357. 统计各位数字都不同的数字个数</a>
+     * 对于d位数不同数字的个数，d>=2,使用排列组合 ，最高位可选 9,次低位8，然后9-i，到1，
+     * 例如 d=3，就是 9*9*8
+     *     d=4，就是 9*9*8*7
+     *     d=5，就是 9*9*8*7*6
+     * 最后累加1-d位数的不同个数就是答案了
+     * @param n n
+     * @return ans
+     */
+    public int countNumbersWithUniqueDigits(int n) {
+        if (n == 0 ) return 1;
+        if (n == 1) return 10;
+        int ans = 10, cur = 9;
+        for (int i = 0; i < n - 1; i++) {
+            cur *= (9 - i);
+            ans += cur;
+        }
+        return ans;
+    }
+
+
+    public int[] intersect(int[] nums1, int[] nums2) {
+        if (nums1.length > nums2.length) { return intersect(nums2, nums1); }
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i : nums1) {
+            map.compute(i, (k, v) -> v == null ? 1 : v + 1);
+        }
+        ArrayList<Integer> ans = new ArrayList<>();
+        for (int i : nums2) {
+            Integer value = map.computeIfPresent(i, (k, v) -> v - 1);
+            if (value !=null && value >=0) {
+                ans.add(i);
+            }
+        }
+        return ans.stream().mapToInt(Integer::intValue).toArray();
+    }
+
+    public int[] intersection(int[] nums1, int[] nums2) {
+        if (nums1.length > nums2.length) { return intersection(nums2, nums1); }
+            Set<Integer> set = new HashSet<>();
+        for (int num : nums1) {
+            set.add(num);
+        }
+        Set<Integer> ansSet = new HashSet<>();
+        for (int num : nums2) {
+            if (set.contains(num)) {
+                ansSet.add(num);
+            }
+        }
+        return ansSet.stream().mapToInt(Integer::intValue).toArray();
+    }
+
+    public int[] topKFrequent(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        PriorityQueue<Map.Entry<Integer, Integer>> queue = new PriorityQueue<>(Map.Entry.comparingByValue());
+        for (Map.Entry<Integer, Integer> integerIntegerEntry : map.entrySet()) {
+            if (queue.size() < k) {
+                queue.add(integerIntegerEntry);
+            }  else {
+                if (queue.peek().getValue() < integerIntegerEntry.getValue()) {
+                    queue.poll();
+                    queue.add(integerIntegerEntry);
+                }
+            }
+        }
+
+        return queue.stream().mapToInt(Map.Entry::getKey).toArray();
+    }
+
+
+    /**
+     * 343. 整数拆分
+     * <a href="https://leetcode.cn/problems/integer-break">343. 整数拆分</a>
+     * 给定一个正整数 n ，将其拆分为 k 个 正整数 的和（ k >= 2 ），并使这些整数的乘积最大化。
+     *
+     * 返回 你可以获得的最大乘积 。
+     * 大于1的数，只需要关注2，3 的拆分，4能拆分为2*2， 大于 4的数据，其实只需要按3拆分就行，
+     * @param n n
+     * @return ans
+     */
+    public int integerBreak(int n) {
+        int[] dp = new int[n + 1];
+        dp[2] = 1;
+        for (int i = 3; i <= n; i++) {
+            dp[i] = Math.max(Math.max(2 * (i - 2), 2 * dp[i - 2]), Math.max(3 * (i - 3), dp[3] * dp[i - 3]));
+        }
+        return dp[n];
+    }
+
+    /**
+     * 342. 4的幂
+     * 给定一个整数，写一个函数来判断它是否是 4 的幂次方。如果是，返回 true ；否则，返回 false 。
+     *
+     * 整数 n 是 4 的幂次方需满足：存在整数 x 使得 n == 4x
+     * <a href="https://leetcode.cn/problems/power-of-four">342. 4的幂</a>
+     * @param n n
+     * @return ans
+     */
+    public boolean isPowerOfFour(int n) {
+        // (n & (n - 1)) == 0 这个是判断是2次幂，保证只有1个1
+        // 然后4的次幂在前面的条件下， 1是在 奇数位置的， 例如0 ， 4：100， 16：10000，通过mask确认偶数数位置是0就行
+        // 如果是负整数，最高位可以为0，也符合条件
+        return n > 0 && (n & (n - 1)) == 0 && (n & 0x2aaaaaaa) == 0;
     }
 
 
