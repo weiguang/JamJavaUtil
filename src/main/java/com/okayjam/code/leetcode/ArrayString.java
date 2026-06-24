@@ -47,7 +47,8 @@ public class ArrayString {
 //        System.out.println(new ArrayString().coinChange(new int[]{186,419,83,408}, 6249));
 //          new ArrayString().wiggleSort2(new int[]{1,3,2,2,3,2});
 //        System.out.println( new ArrayString().canMeasureWater(3,5,4));
-        System.out.println( new ArrayString().largestDivisibleSubset(new int[]{1,2,4,8}));
+//        System.out.println( new ArrayString().largestDivisibleSubset(new int[]{1,2,4,8}));
+        System.out.println( new ArrayString().kSmallestPairs(new int[]{1,7,11}, new int[] {2,4,6}, 3));
      }
 
 
@@ -57,6 +58,115 @@ public class ArrayString {
         nums[j] = temp;
     }
 
+
+    /**
+     * 375. 猜数字大小 II
+     * <a href="https://leetcode.cn/problems/guess-number-higher-or-lower-ii">375. 猜数字大小 II</a>
+     * 第一种dp 官方答案，第二重dfs更容易理解
+     * @param n n
+     * @return ans
+     */
+    public int getMoneyAmount(int n) {
+        // 严格使用 n + 1 的空间
+        int[][] dp = new int[n+1][n +1];
+        // 从下往上遍历起点 i
+        for (int i = n-1; i > 0; i--) {
+            // 从左往右遍历终点 j
+            for (int j = i+1; j <= n; j++) {
+                // 【核心微调】：先假设第一次猜最大值 j，此时右边没有数字，开销为 j + dp[i][j-1]
+                dp[i][j] = j + dp[i][j-1];
+                // 然后让 k 只遍历到 j - 1，这样 k + 1 最大就是 j，永远不会越界
+//                关于为什么k<j即可，
+//                当k=j时 cost = j + max(cost[i,j-1], cost[j+1,j]) = j + max(cost[i,j-1], 0) = j + cost[i,j-1]
+//                当k=j-1时 cost = j-1 + max(cost[i,j-2], cost[j,j]) = j-1 + max(cost[i,j-2], 0) = j-1 + cost[i,j-2]
+//                后者显然小于前者，故无需考虑k=j的情况
+                for (int k = i; k < j; k++) {
+                    int cost = k + Math.max(dp[i][k-1], dp[k+1][j]);
+                    dp[i][j] = Math.min(dp[i][j], cost);
+                }
+            }
+        }
+        return dp[1][n];
+    }
+
+    public int getMoneyAmount2(int n) {
+        int[][] memo = new int[n + 1][n + 1];
+        return getMoneyAmountDfs(1, n, memo);
+    }
+
+    int getMoneyAmountDfs(int i, int j, int[][] memo) {
+        if (i>=j) return 0;
+        if (memo[i][j] != 0 ) return memo[i][j];
+        int cost = Integer.MAX_VALUE;
+        for (int k = i; k <= j; k++) {
+            int c = k + Math.max(getMoneyAmountDfs(i, k - 1, memo), getMoneyAmountDfs(k + 1, j, memo));
+            cost = Math.min(cost, c);
+        }
+        memo[i][j] = cost;
+        return cost;
+    }
+
+
+
+    int guess(int num) {
+        return 0;
+    }
+
+    public int guessNumber(int n) {
+        int low = 1;
+        int high = n;
+        while(low <= high) {
+            int mid = low + (high - low)/2;
+            int guess = guess(mid);
+            if(guess == 0) {
+                return mid;
+            }  else if(guess == -1) {
+                high = mid - 1;
+            }  else {
+                low = mid + 1;
+            }
+        }
+        return -1;
+    }
+
+    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+        PriorityQueue<int[]> q = new PriorityQueue<>(k,Comparator.<int[]>comparingInt(l -> nums1[l[0]] + nums2[l[1]]));
+        for (int i = 0; i < Math.min(nums1.length, k); i++) {
+            q.offer(new int[]{i, 0});
+        }
+        List<List<Integer>> ans = new ArrayList<>();
+
+        while (k-- > 0 && !q.isEmpty()) {
+            int[] peek = q.poll();
+            ans.add(List.of(nums1[peek[0]], nums2[peek[1]]));
+
+            if (peek[1] + 1 < nums2.length ) {
+                q.offer(new int[]{peek[0], peek[1] + 1} );
+            }
+        }
+        return ans;
+    }
+
+    public List<List<Integer>> kSmallestPairs2(int[] nums1, int[] nums2, int k) {
+        PriorityQueue<List<Integer>> lists = new PriorityQueue<>(Comparator.<List<Integer>>comparingInt(l -> l.get(0) + l.get(1)).reversed());
+        for(int i = 0; i < nums1.length; i++) {
+            for(int j = 0; j < nums2.length; j++) {
+                ArrayList<Integer> cur = new ArrayList<>();
+                cur.add(nums1[i]);
+                cur.add(nums2[j]);
+                if (lists.size() < k) { lists.add(cur); continue; }
+                 List<Integer> peek = lists.peek();
+                if (peek.get(0) + peek.get(1)  <= cur.get(0) + cur.get(1)) {
+                    if (j == 0 ) { return new ArrayList<>(lists);}
+                    break;
+                } else {
+                    lists.poll();
+                    lists.add(cur);
+                }
+            }
+        }
+        return new ArrayList<>(lists);
+    }
 
     public int getSum(int a, int b) {
         while (b != 0 ) {
