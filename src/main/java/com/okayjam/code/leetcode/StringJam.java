@@ -40,13 +40,71 @@ public class StringJam {
 //        System.out.println(new StringJam().getFactors(12));
 //        System.out.println(new StringJam().wordPatternMatch("abab", "redblueredblue"));
 //          System.out.println(new StringJam().isAdditiveNumber("011112"));
-          System.out.println(new StringJam().isAdditiveNumber("12012122436"));
+//          System.out.println(new StringJam().isAdditiveNumber("12012122436"));
+          System.out.println(new StringJam().lengthLongestPath("a.txt"));
     }
 
     public void swap(char[] s, int i, int j) {
         char temp = s[i];
         s[i] = s[j];
         s[j] = temp;
+    }
+
+    public boolean isSubsequence(String s, String t) {
+        if (s == null || s.isEmpty()) {return true;}
+        int s1 = 0, t1 = 0;
+        while (s1 < s.length() && t1 < t.length() ) {
+            if (s.charAt(s1) == t.charAt(t1++)) {s1++;}
+        }
+        return s1 == s.length();
+    }
+
+    public char findTheDifference(String s, String t) {
+        if (s == null || s.isEmpty()) {return t.charAt(0);}
+        char res = 0;
+        for (int i = 0; i < s.length(); i++) {
+            res ^= s.charAt(i);
+        }
+        for (int i = 0; i < t.length(); i++) {
+            res ^= t.charAt(i);
+        }
+        return res;
+    }
+
+
+    public int lengthLongestPath(String input) {
+        if (input == null || input.isEmpty()) { return 0; }
+        List<Integer> dir = new ArrayList<>();
+        dir.add(0);
+        int cur = 0;
+        int level = 1;
+        int max = 0;
+        boolean isFile = false;
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            if (c == '\t') { level++; }
+            else if (c == '\n') {
+                    if (isFile) {
+                        max = Math.max(max, cur + dir.get(level - 1));
+                    } else {
+                        if (level >= dir.size()) {
+                            dir.add(dir.get(level - 1) + cur + 1);
+                        } else {
+                            dir.set(level, dir.get(level - 1) + cur + 1);
+                        }
+                    }
+                    cur = 0;
+                    level = 1;
+                    isFile = false;
+            } else {
+                if (c == '.') isFile = true;
+                cur++;
+            }
+        }
+        if (isFile) {
+            max = Math.max(max, cur + dir.get(level - 1));
+        }
+        return max;
     }
 
     boolean isBase(char c) {

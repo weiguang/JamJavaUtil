@@ -49,13 +49,148 @@ public class ArrayString {
 //        System.out.println( new ArrayString().canMeasureWater(3,5,4));
 //        System.out.println( new ArrayString().largestDivisibleSubset(new int[]{1,2,4,8}));
         System.out.println( new ArrayString().kSmallestPairs(new int[]{1,7,11}, new int[] {2,4,6}, 3));
-     }
+        Thread thread = new Thread(System.out::println);
+        thread.start();
+        thread.getState();
+    }
 
 
     public void swap(int[] nums, int i, int j) {
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
+    }
+
+    public int lastRemaining(int n) {
+        int a1 = 1;
+        int k = 0, cnt = n, step = 1;
+        while (cnt > 1) {
+            if ((k & 1) == 0) {
+                a1 += step;
+            } else if ( (cnt & 1) == 1) {
+                a1 += step;
+            }
+            k++;
+            cnt >>=1;
+            step <<=1;
+        }
+        return a1;
+    }
+
+
+    public int firstUniqChar(String s) {
+        if (s == null || s.isEmpty()) return -1;
+        int[] c  = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            c[s.charAt(i) - 'a']++;
+        }
+        for (int i = 0; i < s.length(); i++) {
+            if (c[s.charAt(i) - 'a'] == 1) return i;
+        }
+        return -1;
+    }
+
+    public List<Integer> lexicalOrder(int n) {
+        if (n < 1) return new ArrayList<>();
+        List<Integer> ans = new ArrayList<>();
+        int num = 1;
+        for (int i = 1; i <= n; i++) {
+            ans.add(num);
+            // 先尝试在最后一位添加0，这个是下一个最小的字典序数字，例如从 1，10， 然后尝试20的时候跳过
+            if (num * 10 <= n) {
+                num *= 10;
+            } else {
+                // 对于n=13
+                // 如果累加到9了，那么就需要前一位+1，所以num/10得到前一位 ++， 例如 遍历获取 2-9
+                // 如果累加的时候已经大于n了，就需要前一位加一， 遍历获取 11-13
+                while( num % 10 == 9  || num + 1 > n) {
+                    num /= 10;
+                }
+                num++;
+            }
+        }
+        return ans;
+    }
+
+
+    public int kthSmallest(int[][] matrix, int k) {
+        int n = matrix.length;
+        int left = matrix[0][0];
+        int right = matrix[n-1][n-1];
+        while(left < right) {
+            int mid = left + (right - left) / 2;
+            if(checkMidNums(matrix, k, mid)) {
+                right = mid ;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+
+     boolean checkMidNums(int[][] matrix, int k, int mid) {
+        int n = matrix.length;
+        int i = n -1, j = 0, num = 0;
+        while (i >= 0 && j < n) {
+            if (matrix[i][j] <= mid) {
+                num += i+1;
+                j++;
+            } else {
+                i--;
+            }
+        }
+        return num >= k;
+     }
+
+        public int kthSmallest2(int[][] matrix, int k) {
+        PriorityQueue<int[]> queue = new PriorityQueue<>(Comparator.<int[]>comparingInt(v -> v[0]));
+        int n = matrix.length;
+        for(int i = 0; i < n; i++) {
+            queue.offer(new int[]{matrix[i][0], i, 0});
+        }
+        for(int i = 1; i < k ; i++) {
+            int[] cur = queue.poll();
+            if (cur[2] < n -1) {
+              queue.offer(new int[]{matrix[cur[1]][cur[2] + 1], cur[1], cur[2] + 1});
+            }
+        }
+        return queue.poll()[0];
+    }
+
+
+    public int combinationSum4(int[] nums, int target) {
+        if (nums.length == 0) {return 0;}
+        int[] memo = new int[1001];
+        Arrays.fill(memo, -1);
+        return combinationSum4Dfs(nums, target, memo);
+    }
+
+    public int combinationSum4Dfs(int[] nums, int target, int[] memo) {
+        if (target < 0 ) return 0;
+        if (memo[target] != -1 ) return memo[target];
+        if (target == 0) return 1;
+        int cnt = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int t = combinationSum4Dfs(nums, target - nums[i], memo);
+            cnt += t;
+        }
+        memo[target] = cnt;
+        return cnt;
+    }
+
+    public int wiggleMaxLength(int[] nums) {
+        if (nums.length < 2) {
+            return nums.length;
+        }
+        int up  =1, down = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] > nums[i - 1]) {
+                    up = Math.max(up, down + 1);
+            } else  if (nums[i] < nums[i - 1]) {
+                down = Math.max(down, up + 1);
+            }
+        }
+        return Math.max(up, down);
     }
 
 
