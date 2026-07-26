@@ -42,18 +42,21 @@ public class ArrayString {
 //          new ArrayString().moveZeroes(new int[] {0,1,0,3,12});
 //        System.out.println(new ArrayString().canWin("+++++"));
 //        System.out.println(new ArrayString().lengthOfLIS(new int[] {0,8,9,4,2}));
+//        System.out.println(Arrays.toString(new ArrayString().findErrorNums(new int[] {3, 2, 2})));
+//        System.out.println(Arrays.toString(new ArrayString().smallerNumbersThanCurrent(new int[] {8,1,2,2,3})));
+//        System.out.println(new ArrayString().buildArray(new int[] {1, 2, 3}, 3));
+//        System.out.println(new ArrayString().canBeEqual("abcd", "dacb"));
+//        System.out.println(new ArrayString().lastStoneWeight(new  int[]{2,7,4,1,8,1}));
 //        System.out.println(new ArrayString().canReach("01111010111101110110111011110", 2,2));
 //        System.out.println(new ArrayString().bulbSwitch(5));
 //        System.out.println(new ArrayString().coinChange(new int[]{186,419,83,408}, 6249));
 //          new ArrayString().wiggleSort2(new int[]{1,3,2,2,3,2});
 //        System.out.println( new ArrayString().canMeasureWater(3,5,4));
 //        System.out.println( new ArrayString().largestDivisibleSubset(new int[]{1,2,4,8}));
-        System.out.println( new ArrayString().kSmallestPairs(new int[]{1,7,11}, new int[] {2,4,6}, 3));
         Thread thread = new Thread(System.out::println);
         thread.start();
         thread.getState();
     }
-
 
     public void swap(int[] nums, int i, int j) {
         int temp = nums[i];
@@ -264,7 +267,7 @@ public class ArrayString {
         return -1;
     }
 
-    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+    public List<List<Integer>> kSmallestPairs0(int[] nums1, int[] nums2, int k) {
         PriorityQueue<int[]> q = new PriorityQueue<>(k,Comparator.<int[]>comparingInt(l -> nums1[l[0]] + nums2[l[1]]));
         for (int i = 0; i < Math.min(nums1.length, k); i++) {
             q.offer(new int[]{i, 0});
@@ -687,6 +690,164 @@ public class ArrayString {
         else return moves.length() - r - l;
     }
 
+    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+        PriorityQueue<List<Integer>> queue = new PriorityQueue<>(
+                  Comparator.<List<Integer>>comparingInt(o -> o.get(0) +  o.get(1)).reversed());
+        int pre = Integer.MAX_VALUE;
+        for (int i = 0; i < nums1.length; i++) {
+            if (queue.size() >= k && nums1[i] >= pre) {break;}
+            for (int j = 0; j < nums2.length; j++) {
+                int i1 = nums2[j];
+                if (queue.size() < k) {
+                    queue.add(List.of(nums1[i], i1)); continue;
+                }
+                List<Integer> peek = queue.peek();
+                if (peek.get(0) + peek.get(1) <= nums1[i]+i1) {
+                    if (j == 0) return new ArrayList<>(queue);
+                   break;
+                }
+                queue.poll();
+                queue.add(List.of(nums1[i], i1));
+            }
+        }
+       return new ArrayList<>(queue);
+    }
+
+    public int lastStoneWeight(int[] stones) {
+        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>(Collections.reverseOrder());
+        for (int stone : stones) {
+            priorityQueue.add(stone);
+        }
+        while (priorityQueue.size() > 1) {
+            int a = priorityQueue.poll();
+            int b = priorityQueue.poll();
+            int diff = Math.abs(a - b);
+            if (diff > 0) {
+                priorityQueue.add(diff);
+            }
+        }
+        return !priorityQueue.isEmpty() ? priorityQueue.poll():0;
+    }
+
+    public boolean canBeEqual(String s1, String s2) {
+        char[] c1 = new char[]{s1.charAt(0),s1.charAt(2)};
+        char[] c2 = new char[]{s2.charAt(0),s2.charAt(2)};
+        Arrays.sort(c1);
+        Arrays.sort(c2);
+        if (!Arrays.equals(c1, c2)) return false;
+        c1 = new char[]{s1.charAt(1),s1.charAt(3)};
+        c2 = new char[]{s2.charAt(1),s2.charAt(3)};
+        Arrays.sort(c1);
+        Arrays.sort(c2);
+        return Arrays.equals(c1, c2);
+    }
+
+    public int binaryGap(int n) {
+        String binaryString = Integer.toBinaryString(n);
+        int ans = 0;
+        int idx = 0 ;
+        while(idx < binaryString.length() && binaryString.charAt(idx) != '1') { idx++;}
+        for (int i = idx +1; i < binaryString.length(); i++) {
+            if (binaryString.charAt(i) == '1') {
+                ans = Math.max(ans, i - idx);
+                idx = i;
+            }
+        }
+        return ans;
+    }
+
+
+    public List<String> buildArray(int[] target, int n) {
+        int i = 1;
+        List<String> list = new ArrayList<>();
+        for (int nums : target) {
+            for (; i <= n; i++) {
+                list.add("Push");
+                if (nums == i) {
+                    i++;
+                    break;
+                } else {
+                    list.add("Pop");
+                }
+            }
+        }
+        return list;
+    }
+
+
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+        int l = nums.length;
+        List<Integer> ans = new ArrayList<>();
+        for (int i = 0; i < l; ) {
+            if (nums[i] != i + 1 && nums[i] != nums[nums[i] - 1]) {
+                swap(nums, nums[i - 1], i);
+            } else {
+                i++;
+            }
+        }
+        for (int i = 0; i < l; i++) {
+            if (nums[i] != i + 1) {
+                ans.add(i + 1);
+            }
+        }
+        return ans;
+    }
+
+    public int[] smallerNumbersThanCurrent(int[] nums) {
+        int l = nums.length;
+        int[] cnt = new int[101];
+        for (int num : nums) {
+            cnt[num]++;
+        }
+        for (int i = 1; i < 101; i++) {
+            cnt[i] += cnt[i - 1];
+        }
+        int[] res = new int[l];
+        for (int i = 0; i < l; i++) {
+            res[i] = nums[i] == 0 ? 0 : cnt[nums[i] - 1];
+        }
+        return res;
+    }
+
+    public int[] smallerNumbersThanCurrent2(int[] nums) {
+        int l = nums.length;
+        int[] res = new int[l];
+        for (int i = 0; i < l; i++) {
+            for (int j = i + 1; j < l; j++) {
+                if (nums[i] > nums[j]) {
+                    res[i]++;
+                } else if (nums[i] < nums[j]) {
+                    res[j]++;
+                }
+            }
+        }
+        return res;
+    }
+
+
+    public int[] findErrorNums(int[] nums) {
+        int[] ans = new int[2];
+        for (int i = 0; i < nums.length; ) {
+            if (nums[i] != i + 1) {
+                if (nums[i] == nums[nums[i] - 1]) {
+                    ans[0] = nums[i];
+                    i++;
+                } else {
+                    swap(nums, i, nums[i] - 1);
+                }
+            } else {
+                i++;
+            }
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != i + 1) {
+                ans[1] = i + 1;
+                break;
+            }
+        }
+        return ans;
+    }
+
 
     public int nthSuperUglyNumber(int n, int[] primes) {
         int[] dp = new int[n + 1];
@@ -881,7 +1042,7 @@ public class ArrayString {
         }
         return -1;
     }
-
+    
 
     /**
      * 283. 移动零

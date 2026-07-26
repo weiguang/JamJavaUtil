@@ -11,9 +11,40 @@ import java.util.Stack;
 public class StackAndQueue {
 	public static void main(String[] args) {
 //	    System.out.println(isValid("()[]{}"));
-		System.out.println(largestRectangleArea(new int[]{2,1,5,6,2,3}));
+//		System.out.println(largestRectangleArea(new int[]{2,1,5,6,2,3}));
+		System.out.println(new StackAndQueue().countStudents(new int[]{1,1,1,0,0,1}, new int[]{1,0,0,0,1,1}));
 	}
 
+	public int timeRequiredToBuy(int[] tickets, int k) {
+		int sum =  tickets[k] * tickets.length;
+		for (int i = 0; i < tickets.length; i++) {
+			int ticket = tickets[i];
+			if (tickets[k]  > ticket ) {
+				sum -= (tickets[k] -  ticket);
+			} else {
+				if (i > k) sum--;
+			}
+		}
+		return sum;
+	}
+
+	public int countStudents(int[] students, int[] sandwiches) {
+		LinkedList<Integer> studentsQueue = new LinkedList<>();
+		for (Integer i : students) {
+			studentsQueue.addLast(i);
+		}
+		int count = studentsQueue.size();
+		for (int i = 0; i < sandwiches.length; ) {
+			if (!studentsQueue.isEmpty() && sandwiches[i] == studentsQueue.getFirst()) {
+				count= studentsQueue.size(); i++;studentsQueue.removeFirst();
+			continue;}
+			if (count-- == 0) {
+				return studentsQueue.size();
+			}
+			studentsQueue.addLast(studentsQueue.removeFirst());
+		}
+		return studentsQueue.size();
+	}
 	// [73,74,75,71,69,72,76,73]
 	//                ,72,76
 	public int[] dailyTemperatures(int[] temperatures) {
