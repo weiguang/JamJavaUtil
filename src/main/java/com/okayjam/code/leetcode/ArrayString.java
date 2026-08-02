@@ -64,6 +64,49 @@ public class ArrayString {
         nums[j] = temp;
     }
 
+        class IntervalClass {
+            public int idx;
+            public int[] interval;
+            IntervalClass(int idx, int[] interval) {
+                this.idx = idx;
+                this.interval = interval;
+            }
+        }
+
+    public int[] findRightInterval(int[][] intervals) {
+        IntervalClass[] obj = new IntervalClass[intervals.length];
+        for (int i = 0; i <intervals.length; i++) {
+            obj[i] = new IntervalClass(i, intervals[i]);
+        }
+        Arrays.sort(obj, (a, b) -> {if (a.interval[0] == b.interval[0]) return a.interval[1] - b.interval[1];  return a.interval[0] - b.interval[0];});
+        int[] ans = new int[intervals.length];
+        Arrays.fill(ans, -1);
+        for (int i = 0; i < intervals.length; i++) {
+
+        // 二分
+            int left = 0;
+            int right = intervals.length - 1;
+            int target = -1;
+            while (left <= right) {
+                int mid = (left + right) / 2;
+                if (obj[mid].interval[0]  >= intervals[i][1]) {
+                    target = obj[mid].idx;
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            }
+            ans[i] = target;
+// 普通查找
+//            for (int j = i ; j < intervals.length ; j++) {
+//                if (obj[j].interval[0] >=  obj[i].interval[1] ) {
+//                        ans[obj[i].idx] = obj[j].idx;
+//                    break;
+//                }
+//            }
+    }
+        return ans;
+    }
 
     public int eraseOverlapIntervals(int[][] intervals) {
         if (intervals.length == 0 ) return 0;
