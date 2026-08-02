@@ -51,6 +51,23 @@ public class StringJam {
         s[j] = temp;
     }
 
+    public int countSegments(String s) {
+        if (s == null || s.isEmpty()) return 0;
+        int ans = 0;
+        int i = 0;
+        boolean found = false;
+        while(i < s.length()) {
+            if (s.charAt(i) != ' ') {
+               if (!found) {ans++; found = true;}
+            }  else {
+                found = false;
+            }
+            i++;
+        }
+        return ans;
+    }
+
+
 
     public String originalDigits(String s) {
         int [] c = new int[128];
