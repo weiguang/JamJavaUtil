@@ -53,6 +53,31 @@ public class StringJam {
         s[j] = temp;
     }
 
+    public List<Integer> findAnagrams(String s, String p) {
+        if (p.length() > s.length()) return Collections.emptyList();
+        int[] map = new int[128];
+        for (int i = 0; i < p.length(); i++) {
+            map[p.charAt(i)]++;
+        }
+        List<Integer> ans = new ArrayList<>();
+        int start = 0;
+        int end = 0;
+        int cur = 0;
+        while(end < s.length()) {
+            if (map[s.charAt(end)] == 0 ) {
+              if (start < end) {map[s.charAt(start)]++; start++; cur--;}
+              else { end++; start = end;}
+              continue;
+            }
+            map[s.charAt(end)]--;
+            cur++;
+            if (cur == p.length()) {ans.add(start); map[s.charAt(start)]++; start++;cur--; }
+            end++;
+        }
+        return ans;
+    }
+
+
     public List<String> fizzBuzz(int n) {
         List<String> ans = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {

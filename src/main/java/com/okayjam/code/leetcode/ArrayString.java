@@ -2,6 +2,7 @@ package com.okayjam.code.leetcode;
 
 
 import java.awt.event.WindowFocusListener;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -56,9 +57,10 @@ public class ArrayString {
 //        System.out.println( new ArrayString().kSmallestPairs(new int[]{1,7,11}, new int[] {2,4,6}, 3));
 //        System.out.println( new ArrayString().integerReplacement(7));
 //        System.out.println( new ArrayString().toHex(26));
-        System.out.println(Arrays.deepToString(new ArrayString().reconstructQueue(
-                new int[][] {new int[] {7, 0}, new int[] {4, 4}, new int[] {7, 1}, new int[] {5, 0}, new int[] {6, 1},
-                        new int[] {5, 2}})));
+//        System.out.println(Arrays.deepToString(new ArrayString().reconstructQueue(
+//                new int[][] {new int[] {7, 0}, new int[] {4, 4}, new int[] {7, 1}, new int[] {5, 0}, new int[] {6, 1},
+//                        new int[] {5, 2}})));
+        new ArrayString().findDuplicates(new int[]{4,3,2,7,8,2,3,1});
     }
 
 
@@ -67,6 +69,36 @@ public class ArrayString {
         nums[i] = nums[j];
         nums[j] = temp;
     }
+
+
+    public List<Integer> findDuplicates(int[] nums) {
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] !=nums[nums[i] -1]) {
+                swap(nums, i, nums[i] - 1); i--;
+            }
+        }
+        List<Integer> ans = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (i  + 1 != nums[i]) ans.add(nums[i]);
+        }
+        return ans;
+    }
+
+
+    public int arrangeCoins(int n) {
+        int start = 1, end = 65535;
+        while (start < end ) {
+            int mid = (end - start + 1) / 2 + start;
+            long sum = (long) mid * (1 + mid) / 2;
+            if (sum <= n) start = mid;
+            else end = mid - 1;
+        }
+        return  start;
+    }
+
+
+
+
 
     public String addStrings2(String num1, String num2) {
         if (num1.isEmpty()) return num2;
