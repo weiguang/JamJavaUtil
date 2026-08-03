@@ -53,16 +53,250 @@ public class ArrayString {
 //          new ArrayString().wiggleSort2(new int[]{1,3,2,2,3,2});
 //        System.out.println( new ArrayString().canMeasureWater(3,5,4));
 //        System.out.println( new ArrayString().largestDivisibleSubset(new int[]{1,2,4,8}));
-        Thread thread = new Thread(System.out::println);
-        thread.start();
-        thread.getState();
+//        System.out.println( new ArrayString().kSmallestPairs(new int[]{1,7,11}, new int[] {2,4,6}, 3));
+//        System.out.println( new ArrayString().integerReplacement(7));
+//        System.out.println( new ArrayString().toHex(26));
+        System.out.println(Arrays.deepToString(new ArrayString().reconstructQueue(
+                new int[][] {new int[] {7, 0}, new int[] {4, 4}, new int[] {7, 1}, new int[] {5, 0}, new int[] {6, 1},
+                        new int[] {5, 2}})));
     }
+
 
     public void swap(int[] nums, int i, int j) {
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
     }
+
+    public String addStrings2(String num1, String num2) {
+        if (num1.isEmpty()) return num2;
+        if (num2.isEmpty()) return num1;
+        int d = 0;
+        StringBuilder sb = new StringBuilder();
+        int i = num1.length() - 1, j = num2.length() - 1;
+        while (i >= 0 || j >= 0 ) {
+            int a = i >= 0 ?  num1.charAt(i) - '0' : 0 ;
+            int b = j >= 0  ? num2.charAt(j) - '0' : 0;
+            d = a + b + d;
+            sb.append(d % 10);
+            d = d/10;
+            i--;j--;
+        }
+        if (d > 0) sb.append(d);
+        return sb.reverse().toString();
+    }
+
+
+
+
+    public int thirdMax(int[] nums) {
+        if (nums.length == 0) return 0;
+        Integer[] m = new Integer[]{null, null,null};
+        for (int num : nums) {
+            if (m[0] == null || num > m[0]) {
+                m[2] = m[1];
+                m[1] =  m[0];
+                m[0] = num;
+            } else if (m[1] == null || num > m[1] ) {
+                if (m[0] == num)  continue;
+                m[2] = m[1];
+                m[1] = num;
+            } else if ((m[2] == null || m[2] < num )  && m[1] != num ) {
+                m[2] = num;
+            }
+        }
+        return m[2] == null ? m[0] : m[2];
+    }
+
+
+    public int[][] reconstructQueue(int[][] people) {
+        Arrays.sort(people, (v1, v2) -> {if (v1[0] == v2[0]) return v1[1] - v2[1]; return v2[0] - v1[0];});
+//        Arrays.sort(people, Comparator.<int[]>comparingInt(a -> a[0]).reversed().thenComparing(v -> v[1]));
+        List<int[]> list = new ArrayList<>(people.length);
+        for (int[] p : people) {
+            // 直接插入到 k 指定的索引位置，省略了你原来的内层 for 循环
+            list.add(p[1], p);
+        }
+        return list.toArray(new int[list.size()][2]);
+    }
+
+
+    public String toHex(int num) {
+        if (num ==0 ) return "0";
+        StringBuilder sb = new StringBuilder(8);
+        while (num != 0 && sb.length() < 8) {
+            int digit = num & 0xf;
+            num >>= 4;
+            sb.append((char) (digit < 10 ? digit + 48 : digit + 87));
+        }
+        return sb.reverse().toString();
+    }
+
+    /**
+     * 402. 移掉 K 位数字
+     * <a href="https://leetcode.cn/problems/remove-k-digits">402. 移掉 K 位数字</a>
+     * @param num num
+     * @param k k
+     * @return ans
+     */
+    public String removeKdigits(String num, int k) {
+        int n = num.length();
+        if (k >= n) {
+            return "0";
+        }
+        // 单调栈：保证栈内字符非递减。当当前字符比栈顶小且还能删除时，弹出栈顶（删除左侧较大的数字能让结果更小）
+        char[] stack = new char[n];
+        int top = 0;
+        for (int i = 0; i < n; i++) {
+            char c = num.charAt(i);
+            while (top > 0 && k > 0 && stack[top - 1] > c) {
+                top--;
+                k--;
+            }
+            stack[top++] = c;
+        }
+        // 若仍可删除，此时栈是非递减的，直接从末尾截断即可
+        top -= k;
+
+        // 去除前导 0
+        int start = 0;
+        while (start < top && stack[start] == '0') {
+            start++;
+        }
+        return start == top ? "0" : new String(stack, start, top - start);
+    }
+
+    /**
+     * 401. 二进制手表
+     *<a href="https://leetcode.cn/problems/binary-watch">401. 二进制手表</a>
+     * 这道题的数据规模实在太小了（一天只有 $12 \times 60 = 720$ 分钟）。
+     * 如果我们不写复杂的递归回溯，而是直接遍历这 720 个时间点，利用位运算 Integer.bitCount() 来数它们二进制里有多少个 1，不仅代码极短，而且几乎没有任何递归压栈开销
+     * @param turnedOn n
+     * @return ans
+     */
+    public List<String> readBinaryWatch(int turnedOn) {
+        List<String> ans = new ArrayList<>();
+        // 直接枚举 12 * 60 种情况
+        for (int h = 0; h < 12; h++) {
+            for (int m = 0; m < 60; m++) {
+                // Integer.bitCount 属于 JVM 底层硬件级别的优化，速度快
+                if (Integer.bitCount(h) + Integer.bitCount(m) == turnedOn) {
+                    ans.add(h + ":" + (m < 10 ? "0" + m : m));
+                }
+            }
+        }
+        return ans;
+    }
+
+
+    int[] bits = new int[]{1, 2, 4, 8, 1, 2, 4, 8, 16, 32};
+    public List<String> readBinaryWatch2(int turnedOn) {
+        if (turnedOn >= 9) { return Collections.emptyList(); }
+        List<String> ans = new ArrayList<>();
+        readBinaryWatch(turnedOn, 0, 0, 0 , ans);
+//        Collections.sort(ans);
+        return ans;
+    }
+
+    public void readBinaryWatch(int turnedOn, int idx, int curHour, int curMin, List<String> ans) {
+        // 越界剪枝：小时不能 >= 12，分钟不能 >= 60
+        if (curHour >= 12 || curMin >= 60) {
+            return;
+        }
+        // 2. 剩余灯数不足剪枝：剩下的坑位不够填满 turnedOn
+        if (10 - idx < turnedOn) {
+            return;
+        }
+        if (turnedOn == 0) {
+            ans.add(curHour + ":" + (curMin < 10 ? "0" + curMin : curMin));
+            return ;
+        }
+        for (int i = idx; i < bits.length; i++) {
+            if (i < 4) { // 前4个元素是小时
+                readBinaryWatch(turnedOn - 1, i + 1, curHour + bits[i], curMin, ans);
+            } else { // 后6个元素是分钟
+                readBinaryWatch(turnedOn - 1, i + 1, curHour, curMin + bits[i], ans);
+            }
+        }
+    }
+
+
+    /**
+     * 400. 第 N 位数字
+     * <a href="https://leetcode.cn/problems/nth-digit/">400. 第 N 位数字</a>
+     * @param n n
+     * @return ans
+     */
+    public int findNthDigit(int n) {
+        if(n < 10) return n;
+        int[] m =  new int[10];
+        m[1] = 9;
+        int j = 1;
+        while(m[j] < n) {
+            m[j + 1] = (int) (m[j] + Math.pow(10, j) * 9 * (j + 1)) ;
+            j++;
+        }
+        int re = n - m[j -1] -1;
+        int start = (int) Math.pow(10, j -1);
+        // 对应的数字
+        int num = start + re / j ;
+        // 对应第几位
+        int b = re % j;
+        return (num / (int)(Math.pow(10, j - b - 1))) % 10;
+//        return Integer.toString(num).charAt(b) - '0';
+    }
+
+    public void union(int[] parent, int index1, int index2) {
+        parent[find(parent, index1)] = find(parent, index2);
+    }
+
+    public int find(int[] parent, int index) {
+        while (parent[index] != index) {
+            parent[index] = parent[parent[index]];
+            index = parent[index];
+        }
+        return index;
+    }
+
+    public boolean equationsPossible(String[] equations) {
+        int[] parent = new int[26];
+        for (int i = 0; i < 26; i++) {
+            parent[i] = i;
+        }
+        for (String str : equations) {
+            if (str.charAt(1) == '=') {
+                int index1 = str.charAt(0) - 'a';
+                int index2 = str.charAt(3) - 'a';
+                union(parent, index1, index2);
+            }
+        }
+        for (String str : equations) {
+            if (str.charAt(1) == '!') {
+                int index1 = str.charAt(0) - 'a';
+                int index2 = str.charAt(3) - 'a';
+                if (find(parent, index1) == find(parent, index2)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
+
+    Map<Integer, Integer> replaceMap = new HashMap<>();
+    public int integerReplacement(int n) {
+        if (n == 1  ) return 0;
+        if (replaceMap.containsKey(n)) return replaceMap.get(n);
+        int t;
+        if ((n & 1) == 0)  {
+            t = integerReplacement(n >> 1) + 1;
+        } else {
+            t = 2 + Math.min(integerReplacement(n / 2), integerReplacement(n / 2 + 1));
+        }
+        replaceMap.put(n, t);
+        return replaceMap.get(n);
+     }
 
         class IntervalClass {
             public int idx;
@@ -1115,7 +1349,7 @@ public class ArrayString {
         }
         return -1;
     }
-    
+
 
     /**
      * 283. 移动零

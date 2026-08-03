@@ -24,6 +24,17 @@ public class Tree {
     }
 
 
+    public int sumOfLeftLeaves(TreeNode root) {
+        return sumOfLeftLeaves(root, false);
+    }
+
+    public int sumOfLeftLeaves(TreeNode root, boolean left) {
+        if (root == null) return 0;
+        if (root.left == null && root.right == null) return left ? root.val: 0;
+        return sumOfLeftLeaves(root.left, true) + sumOfLeftLeaves(root.right, false);
+    }
+
+
     public int[] countBits(int n) {
         int[] bits = new int[n + 1];
         int highBit = 0;

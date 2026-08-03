@@ -1,7 +1,10 @@
 package com.okayjam.code.leetcode;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -102,6 +105,30 @@ public class Solution {
 
     }
 
+
+
+
+
 }
 
+
+class Solution1 {
+    private int[] nums;
+    private Map<Integer, List<Integer>> map;
+    Random random = new Random();
+
+    public Solution1(int[] nums) {
+        this.nums = nums;
+        this.map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            map.computeIfAbsent(nums[i], k -> new ArrayList<>()).add(i);
+        }
+    }
+
+    public int pick(int target) {
+        List<Integer> integers = map.get(target);
+        if (integers == null || integers.isEmpty()) { return -1; }
+        return integers.get(random.nextInt(integers.size()));
+    }
+}
 

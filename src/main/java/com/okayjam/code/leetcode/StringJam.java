@@ -41,6 +41,8 @@ public class StringJam {
 //        System.out.println(new StringJam().wordPatternMatch("abab", "redblueredblue"));
 //          System.out.println(new StringJam().isAdditiveNumber("011112"));
 //          System.out.println(new StringJam().isAdditiveNumber("12012122436"));
+//          System.out.println(new StringJam().lengthLongestPath("a.txt"));
+          System.out.println(new StringJam().decodeString("3[a2[c]]"));
           System.out.println(new StringJam().lengthLongestPath("a.txt"));
 
     }
@@ -50,6 +52,145 @@ public class StringJam {
         s[i] = s[j];
         s[j] = temp;
     }
+
+    public List<String> fizzBuzz(int n) {
+        List<String> ans = new ArrayList<>(n);
+        for (int i = 0; i < n; i++) {
+            if (i % 3 == 0 && i % 5 == 0) {
+                ans.add("FizzBuzz");
+            } else if (i % 3 == 0) {
+                ans.add("Fizz");
+            }  else if (i % 5 == 0) {
+                ans.add("Buzz");
+            }else  {
+                ans.add(String.valueOf(i));
+            }
+        }
+        return ans;
+    }
+
+    public int longestPalindrome(String s) {
+        int[] chars = new int[128];
+        for (int i = 0; i < s.length(); i++) chars[s.charAt(i)]++;
+        int max = 0;
+        for (int i = 0; i < 128; i++) {
+            // 如果是偶数全部取，奇数还要减一，&1如果是奇数刚好是1
+            max += chars[i] - (chars[i] & 1);
+        }
+        // 因为中间还可以有1位，如果有多余的字符，可以放到中间
+        return max == s.length() ? max : max + 1;
+    }
+
+
+    public int longestSubstring(String s, int k) {
+        int n = s.length();
+        return longestSubstringDfs(s, 0, n - 1, k);
+    }
+
+    public int longestSubstringDfs(String s, int l, int r, int k) {
+        int[] cnt = new int[26];
+        for (int i = l; i <= r; i++) {
+            cnt[s.charAt(i) - 'a']++;
+        }
+
+        char split = 0;
+        for (int i = 0; i < 26; i++) {
+            if (cnt[i] > 0 && cnt[i] < k) {
+                split = (char) (i + 'a');
+                break;
+            }
+        }
+        if (split == 0) {
+            return r - l + 1;
+        }
+
+        int i = l;
+        int ret = 0;
+        while (i <= r) {
+            while (i <= r && s.charAt(i) == split) {
+                i++;
+            }
+            if (i > r) {
+                break;
+            }
+            int start = i;
+            while (i <= r && s.charAt(i) != split) {
+                i++;
+            }
+
+            int length = longestSubstringDfs(s, start, i - 1, k);
+            ret = Math.max(ret, length);
+        }
+        return ret;
+    }
+
+
+
+    // a1[2[b]c]d
+    public String decodeString(String s) {
+        if  (s == null || s.isEmpty()) {
+            return s;
+        }
+        LinkedList<StringBuilder> strStack = new LinkedList<>();
+        LinkedList<Integer> numStack = new LinkedList<>();
+        strStack.push(new StringBuilder());
+        int i = 0;
+        while (i < s.length()) {
+            char c = s.charAt(i);
+            if (Character.isDigit(c)) {
+                int j = i + 1;
+                while (j < s.length() && Character.isDigit(s.charAt(j))) {j++;}
+                int num = Integer.parseInt(s.substring(i, j));
+                numStack.push(num);
+                i = j - 1;
+            }
+            else if (c == '[') {
+                strStack.push(new StringBuilder());
+            } else if( c == ']') {
+                if (!numStack.isEmpty() && strStack.size() > 1) {
+                    StringBuilder pop1 = strStack.pop();
+                    int num = numStack.pop();
+                    while (--num >= 0) {
+                        strStack.peek().append(pop1);
+                    }
+                }
+            } else {
+                strStack.peek().append(c);
+            }
+            i++;
+        }
+        return strStack.peek().toString();
+    }
+
+    public boolean validUtf8(int[] data) {
+        if (data == null || data.length == 0) {return true;}
+        int sub = 0;
+        for (int datum : data) {
+            if (sub == 0) {
+                if ((datum & 0xc0) == 0x80) {
+                    return false;
+                } else if ((datum & 0x80) == 0) {
+                    continue;
+                } else if ((datum & 0xe0) == 0xc0) {
+                    sub = 1;
+                } else if ((datum & 0xf0) == 0xe0) {
+                    sub = 2;
+                } else  if ((datum & 0xf8) == 0xf0) {
+                    sub = 3;
+                }else {
+                    return false ;
+                }
+            } else {
+                if ((datum & 0xc0) == 0x80 && sub > 0) {
+                    sub--;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return sub == 0;
+    }
+
 
     public int countSegments(String s) {
         if (s == null || s.isEmpty()) return 0;
