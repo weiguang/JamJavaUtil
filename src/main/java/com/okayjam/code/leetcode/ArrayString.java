@@ -70,6 +70,35 @@ public class ArrayString {
         nums[j] = temp;
     }
 
+    
+    public List<Integer> findMissingElements(int[] nums) {
+        Arrays.sort(nums);
+        if (nums.length  == nums[nums.length -1] - nums[0]  + 1) return Collections.emptyList();
+        List<Integer> ans = new ArrayList<>(nums[nums.length -1] - nums[0]  + 1 - nums.length );
+        int i, r = 0;
+        for (i = nums[0]; i < nums[nums.length -1]; i++) {
+            if (nums[r] > i) ans.add(i);
+            else r++;
+        }
+        return ans;
+    }
+
+    public int numberOfBoomerangs(int[][] points) {
+        int ans = 0;
+        for (int[] point : points) {
+            Map<Integer, Integer> cnt = new HashMap<>();
+            for (int[] ints : points) {
+                Integer distance = (point[0] - ints[0]) * (point[0] - ints[0]) + (point[1] - ints[1]) * (point[1] - ints[1]) ;
+                cnt.merge(distance, 1, Integer::sum);
+            }
+            for (Integer value : cnt.values()) {
+                ans += value * (value -1);
+            }
+        }
+        return ans;
+    }
+
+
 
     public List<Integer> findDuplicates(int[] nums) {
         for (int i = 0; i < nums.length; i++) {
