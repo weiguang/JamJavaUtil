@@ -46,6 +46,38 @@ public class LinkedListJam {
 		node.next = node.next.next;
 	}
 
+	/**
+     * 445. 两数相加 II
+     * <a href="https://leetcode.cn/problems/add-two-numbers-ii">445. 两数相加 II</a>
+     * 给你两个 非空 链表来代表两个非负整数。数字最高位位于链表开始位置。它们的每个节点只存储一位数字。将这两数相加会返回一个新的链表。
+     *
+     * 你可以假设除了数字 0 之外，这两个数字都不会以零开头。
+     * @param l1 l1
+     * @param l2 l2
+     * @return ans
+     */
+	public ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
+		Deque<Integer> stack1 = new LinkedList<>();
+		Deque<Integer> stack2 = new LinkedList<>();
+		ListNode p = l1;
+		while (p != null) {stack1.push(p.val); p= p.next;}
+		p = l2;
+		while (p != null) {stack2.push(p.val); p= p.next;}
+		int a, b , c = 0;
+		ListNode ans = null;
+		while (!stack1.isEmpty() || !stack2.isEmpty() || c != 0 ) {
+			a = stack1.isEmpty() ? 0 : stack1.pop();
+			b = stack2.isEmpty() ? 0 : stack2.pop();
+			int sum = a + b + c;
+			ListNode node = new ListNode(sum % 10);
+			c = sum / 10;
+			node.next = ans;
+			ans = node;
+		}
+		return ans;
+	}
+
+
 	public ListNode oddEvenList(ListNode head) {
 		ListNode oDummy = new ListNode(0);
 		ListNode eDummy = new ListNode(0);

@@ -53,6 +53,38 @@ public class StringJam {
         s[j] = temp;
     }
 
+    public int compress(char[] chars) {
+        int l = 1, r = 1;
+        int num = 1;
+        char before = chars[0];
+        while (r < chars.length) {
+            if (chars[r] == before) {
+                num++;
+                if (num == 1) l++;
+                before = chars[r];
+            } else {
+                before = chars[r];
+                if (num > 1) {
+                    String numStr = Integer.toString(num);
+                    for (int i = 0; i < numStr.length(); i++) {
+                        chars[l++] = numStr.charAt(i);
+                    }
+                    num = 1;
+                }
+                chars[l++] = before;
+            }
+            r++;
+        }
+        if (num > 1) {
+            String numStr = Integer.toString(num);
+            for (int i = 0; i < numStr.length(); i++) {
+                chars[l++] = numStr.charAt(i);
+            }
+        }
+        return l;
+    }
+
+
     public List<Integer> findAnagrams(String s, String p) {
         if (p.length() > s.length()) return Collections.emptyList();
         int[] map = new int[128];
