@@ -60,7 +60,8 @@ public class ArrayString {
 //        System.out.println(Arrays.deepToString(new ArrayString().reconstructQueue(
 //                new int[][] {new int[] {7, 0}, new int[] {4, 4}, new int[] {7, 1}, new int[] {5, 0}, new int[] {6, 1},
 //                        new int[] {5, 2}})));
-        new ArrayString().findDuplicates(new int[]{4,3,2,7,8,2,3,1});
+//        new ArrayString().findDuplicates(new int[]{4,3,2,7,8,2,3,1});
+        new ArrayString().frequencySort("tree");
     }
 
 
@@ -68,6 +69,26 @@ public class ArrayString {
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
+    }
+
+    /**
+     * 451. 根据字符出现频率排序
+     * <a href="https://leetcode.cn/problems/sort-characters-by-frequency">451. 根据字符出现频率排序</a>
+     * 给定一个字符串 s ，根据字符出现的 频率 对其进行 降序排序 。一个字符出现的 频率 是它出现在字符串中的次数。
+     *
+     * 返回 已排序的字符串 。如果有多个答案，返回其中任何一个。
+     * @param s
+     * @return
+     */
+    public String frequencySort(String s) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            map.merge(s.charAt(i), 1, Integer::sum);
+        }
+        return map.entrySet().stream()
+                .sorted(Comparator.<Map.Entry<Character, Integer>>comparingInt(Map.Entry::getValue).reversed())
+                .map(v -> String.valueOf(v.getKey()).repeat(v.getValue()))
+                .collect(Collectors.joining());
     }
 
     
