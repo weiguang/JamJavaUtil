@@ -71,6 +71,23 @@ public class ArrayString {
         nums[j] = temp;
     }
 
+    public int findMinArrowShots(int[][] points) {
+        Arrays.sort(points, Comparator.comparingInt(v -> v[1]));
+        int ans = 1;
+        int right = 0;
+        int pos = points[0][1];
+        while (right < points.length) {
+            if (pos < points[right][0]) {
+//                pos = Math.min(pos, points[right][1]);
+//            } else {
+                ans++;
+                pos = points[right][1];
+            }
+            right++;
+        }
+        return ans;
+    }
+
     /**
      * 451. 根据字符出现频率排序
      * <a href="https://leetcode.cn/problems/sort-characters-by-frequency">451. 根据字符出现频率排序</a>
@@ -91,7 +108,7 @@ public class ArrayString {
                 .collect(Collectors.joining());
     }
 
-    
+
     public List<Integer> findMissingElements(int[] nums) {
         Arrays.sort(nums);
         if (nums.length  == nums[nums.length -1] - nums[0]  + 1) return Collections.emptyList();
