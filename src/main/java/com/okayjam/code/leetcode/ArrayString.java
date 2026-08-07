@@ -1,8 +1,6 @@
 package com.okayjam.code.leetcode;
 
 
-import java.awt.event.WindowFocusListener;
-import java.sql.SQLOutput;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -71,6 +69,88 @@ public class ArrayString {
         nums[j] = temp;
     }
 
+    /**
+     * 456. 132 模式
+     * 给你一个整数数组 nums ，数组中共有 n 个整数。132 模式的子序列 由三个整数 nums[i]、nums[j] 和 nums[k] 组成，并同时满足：i < j < k 和 nums[i] < nums[k] < nums[j] 。
+     * 如果 nums 中存在 132 模式的子序列 ，返回 true ；否则，返回 false 。
+     * 这里的栈就是为了维护3的候选列表，然后2 要尽可能接近3，这样 1的选择范围才多
+     * @param nums nums
+     * @return ans
+     */
+    public boolean find132pattern(int[] nums) {
+        int n = nums.length;
+        if (n < 3) return false;
+        // 1. 维护候选的 "3"（单调递减栈）
+        Deque<Integer> stack = new LinkedList<>();
+        // 2. 记录当前找到的最大 "2"（次大值），初始为负无穷
+        int maxK = Integer.MIN_VALUE;
+        // 3. 从 n - 2 开始倒序遍历，寻找符合条件的 "1"
+        stack.push(nums[n -1]);
+        for (int i = n -2; i >= 0; i--) {
+            // 检查 1：当前元素能否作为 "1"？
+            // 只要 nums[i] 比当前找到的最大 "2" 还小，说明已经满足 nums[i] < maxK
+            // 同时 maxK 是由某个大于它的 "3" 弹出的，因此必定存在 132 模式！
+            if (nums[i] < maxK) return true;
+            // 检查 2：当前元素能否作为更大的 "3"？
+            // 如果 nums[i] 比栈顶大，说明它可以作为更靠左、更大的 "3"
+            // 此时弹出所有比 nums[i] 小的栈顶元素，这些被弹出的元素都可以退化为合法的 "2"
+            while(!stack.isEmpty() && nums[i] > stack.peek()) maxK = stack.pop();
+            // 检查 3：将当前元素入栈，作为后续潜在的 "3"
+            // 剪枝优化：如果 nums[i] <= maxK，它就算未来被弹出，也无法把 maxK 变大，因此无须入栈
+            if (nums[i] > maxK) stack.push(nums[i]);
+        }
+        return false;
+    }
+
+
+    /**
+     * 455. 分发饼干
+     * @param g g
+     * @param s s
+     * @return ans
+     */
+    public int findContentChildren(int[] g, int[] s) {
+        if (s.length == 0) return 0;
+        Arrays.sort(g);
+        Arrays.sort(s);
+        int g1 = 0, s1 = 0 , ans = 0 ;
+        while(g1 < g.length && s1 < s.length) {
+            if (s[s1] >= g[g1]) {ans++; g1++;}
+             s1++;
+        }
+        return ans;
+    }
+
+
+    /**
+     * 454. 四数相加 II
+     * <a href="https://leetcode.cn/problems/4sum-ii/">454. 四数相加 II</a>
+     * 给你四个整数数组 nums1、nums2、nums3 和 nums4 ，数组长度都是 n ，请你计算有多少个元组 (i, j, k, l) 能满足：
+     * 0 <= i, j, k, l < n
+     * nums1[i] + nums2[j] + nums3[k] + nums4[l] == 0
+     * @param nums1 1
+     * @param nums2 2
+     * @param nums3 3
+     * @param nums4 4
+     * @return ans
+     */
+    public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
+        int n = nums1.length;
+        int ans = 0;
+        HashMap<Integer, Integer> map1 = new HashMap<>();
+        for (int value : nums1) {
+            for (int j = 0; j < n; j++) {
+                map1.merge(-value - nums2[j], 1, Integer::sum);
+            }
+        }
+        for (int k = 0; k < n; k++) {
+            for (int l = 0; l < n; l++) {
+                ans += map1.getOrDefault(nums3[k] + nums4[l], 0);
+            }
+        }
+        return ans;
+    }
+
     public int findMinArrowShots(int[][] points) {
         Arrays.sort(points, Comparator.comparingInt(v -> v[1]));
         int ans = 1;
@@ -92,10 +172,9 @@ public class ArrayString {
      * 451. 根据字符出现频率排序
      * <a href="https://leetcode.cn/problems/sort-characters-by-frequency">451. 根据字符出现频率排序</a>
      * 给定一个字符串 s ，根据字符出现的 频率 对其进行 降序排序 。一个字符出现的 频率 是它出现在字符串中的次数。
-     *
      * 返回 已排序的字符串 。如果有多个答案，返回其中任何一个。
-     * @param s
-     * @return
+     * @param s s
+     * @return ans
      */
     public String frequencySort(String s) {
         HashMap<Character, Integer> map = new HashMap<>();
@@ -397,7 +476,7 @@ public class ArrayString {
         return replaceMap.get(n);
      }
 
-        class IntervalClass {
+        static class IntervalClass {
             public int idx;
             public int[] interval;
             IntervalClass(int idx, int[] interval) {
@@ -559,11 +638,11 @@ public class ArrayString {
         }
         for(int i = 1; i < k ; i++) {
             int[] cur = queue.poll();
-            if (cur[2] < n -1) {
-              queue.offer(new int[]{matrix[cur[1]][cur[2] + 1], cur[1], cur[2] + 1});
+            if (cur != null && cur[2] < n - 1) {
+                queue.offer(new int[] {matrix[cur[1]][cur[2] + 1], cur[1], cur[2] + 1});
             }
         }
-        return queue.poll()[0];
+        return Objects.requireNonNull(queue.poll())[0];
     }
 
 
@@ -579,8 +658,8 @@ public class ArrayString {
         if (memo[target] != -1 ) return memo[target];
         if (target == 0) return 1;
         int cnt = 0;
-        for (int i = 0; i < nums.length; i++) {
-            int t = combinationSum4Dfs(nums, target - nums[i], memo);
+        for (int num : nums) {
+            int t = combinationSum4Dfs(nums, target - num, memo);
             cnt += t;
         }
         memo[target] = cnt;
@@ -693,19 +772,21 @@ public class ArrayString {
 
     public List<List<Integer>> kSmallestPairs2(int[] nums1, int[] nums2, int k) {
         PriorityQueue<List<Integer>> lists = new PriorityQueue<>(Comparator.<List<Integer>>comparingInt(l -> l.get(0) + l.get(1)).reversed());
-        for(int i = 0; i < nums1.length; i++) {
-            for(int j = 0; j < nums2.length; j++) {
+        for (int value : nums1) {
+            for (int j = 0; j < nums2.length; j++) {
                 ArrayList<Integer> cur = new ArrayList<>();
-                cur.add(nums1[i]);
+                cur.add(value);
                 cur.add(nums2[j]);
-                if (lists.size() < k) { lists.add(cur); continue; }
-                 List<Integer> peek = lists.peek();
-                if (peek.get(0) + peek.get(1)  <= cur.get(0) + cur.get(1)) {
-                    if (j == 0 ) { return new ArrayList<>(lists);}
-                    break;
-                } else {
-                    lists.poll();
+                if (lists.size() < k) {
                     lists.add(cur);
+                    continue;
+                }
+                List<Integer> peek = lists.peek();
+                if (peek != null && peek.get(0) + peek.get(1) <= cur.get(0) + cur.get(1)) {
+                    if (j == 0) {
+                        return new ArrayList<>(lists);
+                    }
+                    break;
                 }
             }
         }
@@ -888,7 +969,7 @@ public class ArrayString {
             if (queue.size() < k) {
                 queue.add(integerIntegerEntry);
             }  else {
-                if (queue.peek().getValue() < integerIntegerEntry.getValue()) {
+                if (queue.peek() != null && queue.peek().getValue() < integerIntegerEntry.getValue()) {
                     queue.poll();
                     queue.add(integerIntegerEntry);
                 }
@@ -903,7 +984,6 @@ public class ArrayString {
      * 343. 整数拆分
      * <a href="https://leetcode.cn/problems/integer-break">343. 整数拆分</a>
      * 给定一个正整数 n ，将其拆分为 k 个 正整数 的和（ k >= 2 ），并使这些整数的乘积最大化。
-     *
      * 返回 你可以获得的最大乘积 。
      * 大于1的数，只需要关注2，3 的拆分，4能拆分为2*2， 大于 4的数据，其实只需要按3拆分就行，
      * @param n n
@@ -921,7 +1001,6 @@ public class ArrayString {
     /**
      * 342. 4的幂
      * 给定一个整数，写一个函数来判断它是否是 4 的幂次方。如果是，返回 true ；否则，返回 false 。
-     *
      * 整数 n 是 4 的幂次方需满足：存在整数 x 使得 n == 4x
      * <a href="https://leetcode.cn/problems/power-of-four">342. 4的幂</a>
      * @param n n
@@ -1100,20 +1179,23 @@ public class ArrayString {
         PriorityQueue<List<Integer>> queue = new PriorityQueue<>(
                   Comparator.<List<Integer>>comparingInt(o -> o.get(0) +  o.get(1)).reversed());
         int pre = Integer.MAX_VALUE;
-        for (int i = 0; i < nums1.length; i++) {
-            if (queue.size() >= k && nums1[i] >= pre) {break;}
+        for (int value : nums1) {
+            if (queue.size() >= k && value >= pre) {
+                break;
+            }
             for (int j = 0; j < nums2.length; j++) {
                 int i1 = nums2[j];
                 if (queue.size() < k) {
-                    queue.add(List.of(nums1[i], i1)); continue;
+                    queue.add(List.of(value, i1));
+                    continue;
                 }
                 List<Integer> peek = queue.peek();
-                if (peek.get(0) + peek.get(1) <= nums1[i]+i1) {
+                if (peek.get(0) + peek.get(1) <= value + i1) {
                     if (j == 0) return new ArrayList<>(queue);
-                   break;
+                    break;
                 }
                 queue.poll();
-                queue.add(List.of(nums1[i], i1));
+                queue.add(List.of(value, i1));
             }
         }
        return new ArrayList<>(queue);
@@ -1401,8 +1483,8 @@ public class ArrayString {
     /**
      * 292. Nim 游戏
      * <a href="https://leetcode.cn/problems/nim-game">292. Nim 游戏</a>
-     * @param n
-     * @return
+     * @param n n
+     * @return ans
      */
     public boolean canWinNim(int n) {
             if (n <4) return true;
