@@ -70,6 +70,92 @@ public class ArrayString {
     }
 
     /**
+     * 462. 最小操作次数使数组元素相等 II
+     * @param nums nums
+     * @return ans
+     */
+    public int minMoves2(int[] nums) {
+        Arrays.sort(nums);
+        int n = nums.length, ret = 0, x = nums[n / 2];
+        for (int num : nums) {
+            ret += Math.abs(num - x);
+        }
+        return ret;
+    }
+
+    /**
+     * 461. 汉明距离
+     * 与  2220. 转换数字的最少位翻转次数  思路一样
+     * @param x x
+     * @param y y
+     * @return ans
+     */
+    public int hammingDistance(int x, int y) {
+        int s = x ^ y, ret = 0;
+        // 调用系统函数
+//        ret = Integer.bitCount(s);
+        // 计算二进制1的方法
+        while (s != 0) {
+            s &= s - 1;
+            ret++;
+        }
+        return ret;
+    }
+
+    /**
+     * 457. 环形数组是否存在循环
+     * 将确定无法形成合法环的节点设为 0，使得时间复杂度稳定降至 $O(n)$，空间复杂度维持在 $O(1)。
+     * @param nums
+     * @return
+     */
+    public boolean circularArrayLoop(int[] nums) {
+        int n = nums.length;
+
+        for (int i = 0; i < n; i++) {
+            // 如果已经被标记为 0，说明从该点出发不可能构成合法环，直接跳过
+            if (nums[i] == 0) {
+                continue;
+            }
+
+            int slow = i;
+            int fast = next(nums, i);
+
+            // 保持同向的条件：确保 fast 指针走 1 步和走 2 步的节点与 slow 节点方向一致
+            while (nums[slow] * nums[fast] > 0 && nums[slow] * nums[next(nums, fast)] > 0) {
+                if (slow == fast) {
+                    // 相遇了！检查是否是自环（长度为 1）
+                    if (slow == next(nums, slow)) {
+                        break; // 自环无效，跳出
+                    }
+                    return true; // 找到合法的环
+                }
+
+                slow = next(nums, slow);             // 慢指针走 1 步
+                fast = next(nums, next(nums, fast)); // 快指针走 2 步
+            }
+
+            // 优化：如果这次探索没有成功找到合法的环，
+            // 将从 i 出发且同方向的节点置为 0，避免以后重复探索
+            int add = i;
+            while (nums[add] * nums[next(nums, add)] > 0) {
+                int tmp = add;
+                add = next(nums, add);
+                nums[tmp] = 0;
+            }
+        }
+
+        return false;
+    }
+
+    // 辅助函数：计算当前位置向前/向后移动后的下一个下标
+    private int next(int[] nums, int cur) {
+        int n = nums.length;
+        // (cur + nums[cur]) % n 可能为负数，加上 n 再 % n 可以确保结果落在 [0, n - 1]
+        return ((cur + nums[cur]) % n + n) % n;
+    }
+
+
+    /**
      * 456. 132 模式
      * 给你一个整数数组 nums ，数组中共有 n 个整数。132 模式的子序列 由三个整数 nums[i]、nums[j] 和 nums[k] 组成，并同时满足：i < j < k 和 nums[i] < nums[k] < nums[j] 。
      * 如果 nums 中存在 132 模式的子序列 ，返回 true ；否则，返回 false 。

@@ -42,8 +42,8 @@ public class StringJam {
 //          System.out.println(new StringJam().isAdditiveNumber("011112"));
 //          System.out.println(new StringJam().isAdditiveNumber("12012122436"));
 //          System.out.println(new StringJam().lengthLongestPath("a.txt"));
-          System.out.println(new StringJam().decodeString("3[a2[c]]"));
-          System.out.println(new StringJam().lengthLongestPath("a.txt"));
+//          System.out.println(new StringJam().decodeString("3[a2[c]]"));
+          System.out.println(new StringJam().repeatedSubstringPattern("babbabbabbabbab"));
 
     }
 
@@ -51,6 +51,24 @@ public class StringJam {
         char temp = s[i];
         s[i] = s[j];
         s[j] = temp;
+    }
+
+
+    /**
+     * 459. 重复的子字符串
+     * @param s s
+     * @return ans
+     */
+    public boolean repeatedSubstringPattern(String s) {
+//        return (s + s).indexOf(s, 1) != s.length();
+        int n = s.length();
+        for (int i = 0; i < n/2; i++) {
+            if (s.charAt(0) != s.charAt(i+1) || s.charAt(i) != s.charAt(n -1)) continue;
+            int t = n/(i +1);
+            if (t * (i +1) != n) continue;
+            if (s.equals(s.substring(0, i + 1).repeat(t))) return true;
+        }
+        return false;
     }
 
     public int compress(char[] chars) {

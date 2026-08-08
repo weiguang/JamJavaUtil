@@ -11,8 +11,11 @@ public class Grid {
     public static void main(String[] args) {
         System.out.println("Default main method!");
     }
+
     private final static int[][] DIRECTIONS4 = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
     int[][] direction = new int[][] {{-1,-1},{-1,0},{-1,1}, {0,-1},{0,1}, {1,-1},{1,0},{1,1}};
+
+
 
     /**
      * 310. 最小高度树
@@ -600,12 +603,13 @@ public class Grid {
 
     /**
      * 463. 岛屿的周长
-     * https://leetcode.cn/problems/island-perimeter/
-     *
-     * @param grid
-     * @return
+     * <a href="https://leetcode.cn/problems/island-perimeter/">463. 岛屿的周长</a>
+     * 第一种检查四个方向的情况
+     * 后面有一种更好的写法，检查有相连的领边，减少了两个方向
+     * @param grid grid
+     * @return ans
      */
-    public int islandPerimeter(int[][] grid) {
+    public int islandPerimeter1(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
         int re = 0;
@@ -632,12 +636,34 @@ public class Grid {
         return 0;
     }
 
+    public int islandPerimeter(int[][] grid) {
+        // 举例推导出公式 res = 4 * 岛屿格子数量 - 2 * 岛屿格子之间的相邻边
+        // 每个格子4条边，只要有相邻的格子，那么旧会少2条边
+        int m = 0, n= 0;
+        if(grid == null || (m = grid.length) == 0 || (n = grid[0].length) == 0) return 0;
+
+        int count = 0; // 岛屿格子数量
+        int edge = 0; // 岛屿格子之间的相邻边
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(grid[i][j] == 0) continue;
+                count++;
+                // 判断右边是不是 陆地格子
+                if(j+1 < n && grid[i][j+1] == 1)    edge++;
+                // 判断下面是不是 陆地格子
+                if(i+1 < m && grid[i+1][j] == 1)    edge++;
+            }
+        }
+        return 4 * count - 2 * edge;
+    }
+
+
     /**
      * 200. 岛屿数量
-     * https://leetcode.cn/problems/number-of-islands/
+     * <a href="https://leetcode.cn/problems/number-of-islands/">200. 岛屿数量</a>
      *
-     * @param grid
-     * @return
+     * @param grid grid
+     * @return ans
      */
     public int numIslands(char[][] grid) {
         int m = grid.length;
