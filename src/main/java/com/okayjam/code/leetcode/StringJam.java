@@ -43,7 +43,8 @@ public class StringJam {
 //          System.out.println(new StringJam().isAdditiveNumber("12012122436"));
 //          System.out.println(new StringJam().lengthLongestPath("a.txt"));
 //          System.out.println(new StringJam().decodeString("3[a2[c]]"));
-          System.out.println(new StringJam().repeatedSubstringPattern("babbabbabbabbab"));
+//          System.out.println(new StringJam().repeatedSubstringPattern("babbabbabbabbab"));
+          System.out.println(new StringJam().validIPAddress("2001:0db8:85a3:0:0:8A2E:0370:7334:"));
 
     }
 
@@ -51,6 +52,62 @@ public class StringJam {
         char temp = s[i];
         s[i] = s[j];
         s[j] = temp;
+    }
+
+    public String validIPAddress(String queryIP) {
+        if (queryIP.length() < 7 || queryIP.length() >= 40) return "Neither";
+        if (queryIP.contains(".")) {
+            if (queryIP.startsWith(".") || queryIP.endsWith(".")) return "Neither";
+            if (queryIP.length() > 15) return "Neither";
+            String[] split = queryIP.split("\\.");
+            if (split.length != 4) return "Neither";
+            for (String s : split) {
+                if (s.isEmpty() || (s.length() > 1 &&s.charAt(0) == '0') || s.length() > 3 || s.compareTo("255") > 0) return "Neither";
+                for (int i = 0; i < s.length(); i++) {
+                   if (!Character.isDigit(s.charAt(i))  ) return "Neither";
+                }
+            }
+            return "IPv4";
+        } else if (queryIP.contains(":")) {
+            if (queryIP.startsWith(":") || queryIP.endsWith(":")) return "Neither";
+            String[] split = queryIP.split(":");
+            if (split.length != 8) return "Neither";
+            for (String s : split) {
+                if (s.isEmpty() || s.length() > 4 || s.compareTo("ffff") > 0) return "Neither";
+                for (int i = 0; i < s.length(); i++) {
+                    if (!Character.isLetterOrDigit(s.charAt(i)) || Character.toLowerCase(s.charAt(i)) > 'f') return "Neither";
+                }
+            }
+            return "IPv6";
+        }
+        return "Neither";
+    }
+
+
+    /**
+     * 467. 环绕字符串中唯一的子字符串
+     * @param s s
+     * @return ans
+     */
+    public int findSubstringInWraproundString(String s) {
+        // dp[i] 表示以字符 ('a' + i) 结尾的最长合法子串长度
+        int[] dp = new int[26];
+        // 当前连续递增子串的长度
+        int k = 0;
+        for (int i = 0; i < s.length(); i++) {
+            // 字符之差为 1 或 -25
+            if (i > 0 && (s.charAt(i) - s.charAt(i - 1) + 26) % 26 == 1 ) {
+                k++;
+            } else {
+                // 重新开始计算连续长度
+                k = 1;
+            }
+            // 更新以当前字符结尾的最长连续长度（自动去重）
+            int index = s.charAt(i) - 'a';
+            dp[index] = Math.max(dp[index], k);
+        }
+        // 累加所有以不同字符结尾的子串数量
+        return Arrays.stream(dp).sum();
     }
 
 

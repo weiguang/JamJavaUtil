@@ -59,8 +59,7 @@ public class ArrayString {
 //                new int[][] {new int[] {7, 0}, new int[] {4, 4}, new int[] {7, 1}, new int[] {5, 0}, new int[] {6, 1},
 //                        new int[] {5, 2}})));
 //        new ArrayString().findDuplicates(new int[]{4,3,2,7,8,2,3,1});
-        new ArrayString().frequencySort("tree");
-    }
+     }
 
 
     public void swap(int[] nums, int i, int j) {
@@ -68,6 +67,46 @@ public class ArrayString {
         nums[i] = nums[j];
         nums[j] = temp;
     }
+
+
+    /**
+     * 464. 我能赢吗
+     * @param maxChoosableInteger  maxChoosableInteger
+     * @param desiredTotal desiredTotal
+     * @return ans
+     */
+    public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
+        if ((1 + maxChoosableInteger) * (maxChoosableInteger) / 2 < desiredTotal) {
+            return false;
+        }
+        final Map<Integer, Boolean> memo = new HashMap<>();
+        return canIWinDfs(maxChoosableInteger, 0, desiredTotal, 0, memo);
+    }
+
+    private boolean canIWinDfs(int maxChoosableInteger, int usedNumbers, int desiredTotal, int currentTotal, Map<Integer, Boolean> memo) {
+        Boolean b = memo.get(usedNumbers);
+        if (b != null) return b;
+        boolean res = false;
+        for (int i = 1; i <= maxChoosableInteger; i++) {
+            if (((usedNumbers >> i) & 1) != 0) continue;
+            // 情况 A：选了 i 之后直接达到或超过 desiredTotal，当前玩家直接获胜
+            if (i + currentTotal >= desiredTotal) {
+                res = true;
+                break;
+            }
+            // 情况 B：选了 i 之后，轮到对手选。如果对手在接下来的状态中必败（返回 false），
+            // 说明当前玩家选 i 是正确决策，当前玩家稳赢！
+            if (!canIWinDfs(maxChoosableInteger, usedNumbers | (1 << i), desiredTotal, currentTotal + i, memo)) {
+                res = true;
+                break;
+            }
+        }
+        memo.put(usedNumbers, res);
+        return res;
+    }
+
+
+
 
     /**
      * 462. 最小操作次数使数组元素相等 II
@@ -105,8 +144,8 @@ public class ArrayString {
     /**
      * 457. 环形数组是否存在循环
      * 将确定无法形成合法环的节点设为 0，使得时间复杂度稳定降至 $O(n)$，空间复杂度维持在 $O(1)。
-     * @param nums
-     * @return
+     * @param nums nums
+     * @return ans
      */
     public boolean circularArrayLoop(int[] nums) {
         int n = nums.length;
