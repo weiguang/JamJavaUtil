@@ -70,6 +70,144 @@ public class ArrayString {
 
 
     /**
+     * 475. 供暖器
+     * @param houses h1
+     * @param heaters h2
+     * @return ans
+     */
+    public int findRadius(int[] houses, int[] heaters) {
+        int max = 0;
+        Arrays.sort(heaters);
+        for (int house : houses) {
+            // 利用java的函数， 在 heaters 中二分查找 house 的位置
+//            int l = Arrays.binarySearch(heaters, houses[i]);
+//            // 如果没找到，binarySearch 会返回 -(insertion point) - 1
+//            if (l < 0) {
+//                l = -l - 1; // 此时 l 是第一个大于 house 的供暖器索引
+//            }
+
+            // 手写查找
+            int l = 0, r = heaters.length - 1;
+            // 查找第一个 >= house 的 heater 索引
+            while (l < r) {
+                int mid = l + (r - l) / 2;
+                if (heaters[mid] >= house) {
+                    r = mid;
+                } else {
+                    l = mid + 1;
+                }
+            }
+            // l 就是第一个 >= house 的供暖器下标
+            int dist1 = (l < heaters.length) ? Math.abs(heaters[l] - house) : Integer.MAX_VALUE;
+            int dist2 = (l > 0) ? Math.abs(heaters[l - 1] - house) : Integer.MAX_VALUE;
+            max = Math.max(max, Math.min(dist1, dist2));
+        }
+        return max;
+    }
+
+    /**
+     * 474. 一和零
+     * 给你一个二进制字符串数组 strs 和两个整数 m 和 n 。
+     * 请你找出并返回 strs 的最大子集的长度，该子集中 最多 有 m 个 0 和 n 个 1 。
+     * 如果 x 的所有元素也是 y 的元素，集合 x 是集合 y 的 子集 。
+     *  两个解：
+     * 第一个是优化后的
+     * 第二个是官解
+     * @param strs strs
+     * @param m m
+     * @param n n
+     * @return ans
+     */
+    public int findMaxForm(String[] strs, int m, int n) {
+        // dp[i][j] 表示最多有 i 个 0 和 j 个 1 时，能拼出的最大字符串数
+        int[][] dp = new int[m + 1][n + 1];
+
+        for (String str : strs) {
+            // 统计当前字符串中 '0' 和 '1' 的个数
+            int[] zerosOnes = getZerosOnes(str);
+            int zeroes = zerosOnes[0], ones = zerosOnes[1];
+
+            // 倒序遍历背包容量，防止重复使用同一个字符串
+            for (int j = m; j >= zeroes; j--) {
+                for (int k = n; k >= ones; k--) {
+                    dp[j][k] = Math.max(dp[j][k], dp[j - zeroes][k - ones] + 1);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+
+    public int findMaxForm1(String[] strs, int m, int n) {
+        int length = strs.length;
+        int[][][] dp = new int[length + 1][m + 1][n + 1];
+        for (int i = 0; i < length; i++) {
+            int[] zerosOnes = getZerosOnes(strs[i]);
+            int zeros = zerosOnes[0], ones = zerosOnes[1];
+            for (int j = 0; j <= m; j++) {
+                for (int k = 0; k <= n; k++) {
+                    if(j >= zeros && k >= ones) {
+                        dp[i][j][k] = Math.max(dp[i-1][j][k], dp[i-1][j-zeros][k-ones]);
+                    }
+                }
+            }
+        }
+        return dp[length][m][n];
+    }
+
+
+    private int[] getZerosOnes(String str) {
+        int[] zerosOnes = new int[2];
+        int length = str.length();
+        for (int i = 0; i < length; i++) {
+            zerosOnes[str.charAt(i) - '0']++;
+        }
+        return zerosOnes;
+    }
+
+    /**
+     * 473. 火柴拼正方形
+     * 你将得到一个整数数组 matchsticks ，其中 matchsticks[i] 是第 i 个火柴棒的长度。你要用 所有的火柴棍 拼成一个正方形。
+     * 你 不能折断 任何一根火柴棒，但你可以把它们连在一起，而且每根火柴棒必须 使用一次 。
+     * 如果你能使这个正方形，则返回 true ，否则返回 false 。
+     * @param matchsticks p
+     * @return ans
+     */
+    public boolean makesquare(int[] matchsticks) {
+        if (matchsticks.length < 4) return false;
+        int sum = 0, max = 0;
+        for (int m : matchsticks) {
+            sum += m;
+            max = Math.max(max, m);
+        }
+        if (sum % 4 != 0) return false;
+        int side = sum / 4;
+        if (max > side) return false;
+        // 关键优化：排序，先放大火柴，剪枝最快
+        Arrays.sort(matchsticks);
+        // 从最长的火柴开始递归（即数组末尾）
+        return findSide(matchsticks, side, matchsticks.length - 1, new long[4]);
+    }
+
+    private boolean findSide(int[] matchsticks, long targetSide, int idx, long[] sides) {
+        // 所有火柴放置完毕
+        if (idx < 0) return true;
+        int currentMatch = matchsticks[idx];
+        for (int i = 0; i < 4; i++) {
+            // 如果放入当前边超长，跳过
+            if (sides[i] + currentMatch > targetSide) continue;
+            // 优化 2：剪枝 - 如果当前边和上一条边长度一样，放哪条都一样，直接跳过
+            if (i > 0 && sides[i] == sides[i - 1]) continue;
+            // 尝试放入
+            sides[i] += currentMatch;
+            if (findSide(matchsticks, targetSide, idx - 1, sides)) return true;
+            // 回溯
+            sides[i] -= currentMatch;
+        }
+        return false;
+    }
+
+
+    /**
      * 464. 我能赢吗
      * @param maxChoosableInteger  maxChoosableInteger
      * @param desiredTotal desiredTotal
