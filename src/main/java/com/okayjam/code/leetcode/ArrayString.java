@@ -68,6 +68,38 @@ public class ArrayString {
         nums[j] = temp;
     }
 
+    /**
+     * 477. 汉明距离总和
+     * 重点理解 若长度为 n 的数组 nums 的所有元素二进制的第 i 位共有 c 个 1，n−c 个 0，则些元素在二进制的第 i 位上的汉明距离之和为 c⋅(n−c)
+     * @param nums nums
+     * @return ans
+     */
+    public int totalHammingDistance(int[] nums) {
+        int ans = 0, n = nums.length;
+        for (int i = 0; i < 31; i++) {
+            int c = 0;
+            for (int num : nums) {
+                c += (num >> i) & 1;
+            }
+            ans += c * (n -c);
+        }
+        return ans;
+    }
+
+    /**
+     * 476. 数字的补数
+     * @param num num
+     * @return ans
+     */
+    public int findComplement(int num) {
+        boolean f = true;
+        for (int i = 31; i > 0 ; i--) {
+            if (f && (1<<i & num) == 0) continue;
+            f = false;
+            num ^= 1<<i;
+        }
+        return num ^ 1;
+    }
 
     /**
      * 475. 供暖器
