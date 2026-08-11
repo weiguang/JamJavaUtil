@@ -43,6 +43,40 @@ public class Solution {
         System.out.println(Arrays.toString(solution.shuffle()));
     }
 
+    class Solution2 {
+        final private  double radius;
+        final private double xCenter;
+        final private double yCenter;
+        final private Random random;
+        public Solution2(double radius, double x_center, double y_center) {
+            this.radius = radius;
+            this.xCenter = x_center;
+            this.yCenter = y_center;
+            random = new Random();
+        }
+
+        /**
+         * 极坐标变换
+         * 1. U₁, U₂ ← Uniform(0, 1)     // 两个独立均匀随机数
+         * 2. r     ← R × √(U₁)          // 半径（sqrt 修正）
+         * 3. θ     ← 2π × U₂            // 角度（直接均匀）
+         * 4. x     ← x_center + r·cos(θ)
+         * 5. y     ← y_center + r·sin(θ)
+         * 6. return [x, y]
+         * @return ans
+         */
+        public double[] randPoint() {
+            double[] point = new double[2];
+            double r = radius * Math.sqrt(random.nextDouble());
+            double theta = random.nextDouble() * 2 * Math.PI;
+
+            point[0] = xCenter + r * Math.cos(theta);
+            point[1] = yCenter + r * Math.sin(theta);
+
+            return point;
+        }
+    }
+
 //
 //    public NestedInteger deserialize(String s) {
 //        if (s == null || s.isEmpty()) { return null; }
