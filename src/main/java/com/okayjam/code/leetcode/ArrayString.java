@@ -59,6 +59,7 @@ public class ArrayString {
 //                new int[][] {new int[] {7, 0}, new int[] {4, 4}, new int[] {7, 1}, new int[] {5, 0}, new int[] {6, 1},
 //                        new int[] {5, 2}})));
 //        new ArrayString().findDuplicates(new int[]{4,3,2,7,8,2,3,1});
+        System.out.println(new ArrayString().findSubsequences(new int[]{4,6,7,7}));
      }
 
 
@@ -67,6 +68,51 @@ public class ArrayString {
         nums[i] = nums[j];
         nums[j] = temp;
     }
+
+    /**
+     * 491. 非递减子序列
+     * @param nums nums
+     * @return ans
+     */
+    public List<List<Integer>> findSubsequences(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        findSubsequencesDfs(0, Integer.MIN_VALUE, nums, new ArrayList<>(), ans);
+        return ans;
+    }
+
+    private void findSubsequencesDfs(int cur, int last, int[] nums, List<Integer> temp, List<List<Integer>> ans) {
+        if (cur == nums.length) {
+            if (temp.size() >= 2) ans.add(new ArrayList<>(temp));
+            return;
+        }
+        if (nums[cur] >= last) {
+            temp.add(nums[cur]);
+            findSubsequencesDfs(cur + 1, nums[cur], nums, temp, ans);
+            temp.remove(temp.size() - 1);
+        }
+        if (nums[cur] != last) {
+            findSubsequencesDfs(cur + 1, last, nums, temp, ans);
+        }
+    }
+
+    /**
+     * 486. 预测赢家
+     * @param nums nums
+     * @return ans
+     */
+    public boolean predictTheWinner(int[] nums) {
+        int length = nums.length;
+        int[] dp = new int[length];
+        System.arraycopy(nums, 0, dp, 0, length);
+        for (int i = length - 2; i >= 0; i--) {
+            for (int j = i + 1; j < length; j++) {
+                dp[j] = Math.max(nums[i] - dp[j], nums[j] - dp[j - 1]);
+            }
+        }
+        return dp[length - 1] >= 0;
+    }
+
+
 
     /**
      * 477. 汉明距离总和
