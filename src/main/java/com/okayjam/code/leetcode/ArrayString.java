@@ -59,7 +59,8 @@ public class ArrayString {
 //                new int[][] {new int[] {7, 0}, new int[] {4, 4}, new int[] {7, 1}, new int[] {5, 0}, new int[] {6, 1},
 //                        new int[] {5, 2}})));
 //        new ArrayString().findDuplicates(new int[]{4,3,2,7,8,2,3,1});
-        System.out.println(new ArrayString().findSubsequences(new int[]{4,6,7,7}));
+//        System.out.println(new ArrayString().findSubsequences(new int[]{4,6,7,7}));
+        System.out.println(Math.sqrt(Integer.MAX_VALUE));
      }
 
 
@@ -67,6 +68,100 @@ public class ArrayString {
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
+    }
+
+    /**
+     * 496. 下一个更大元素 I
+     * @param nums1 nums1
+     * @param nums2 nums2
+     * @return ans
+     */
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        Map<Integer, Integer> ngeMap = new HashMap<>();
+        Deque<Integer> stack = new ArrayDeque<>(); // 存索引
+        for (int i = 0; i < nums2.length; i++) {
+            while (!stack.isEmpty() && nums2[i] > nums2[stack.peek()]) {
+                int idx = stack.pop();
+                ngeMap.put(nums2[idx], nums2[i]);
+            }
+            stack.push(i);
+        }
+        // 栈中剩余元素没有 NGE
+//        while (!stack.isEmpty()) {
+//            ngeMap.put(nums2[stack.pop()], -1);
+//        }
+        stack = null;
+
+        int[] ans = new int[nums1.length];
+        for (int i = 0; i < nums1.length; i++) {
+            ans[i] = ngeMap.getOrDefault(nums1[i], -1);
+        }
+        return ans;
+    }
+
+    /**
+     * 495. 提莫攻击
+     * @param timeSeries t
+     * @param duration d
+     * @return ans
+     */
+    public int findPoisonedDuration(int[] timeSeries, int duration) {
+        int ans = duration, start = timeSeries[0];
+        for (int i = 1; i < timeSeries.length; i++) {
+            ans += start + duration < timeSeries[i] ? duration :timeSeries[i] - start;
+            start = timeSeries[i];
+        }
+        return ans;
+    }
+
+    /**
+     * 494. 目标和
+     * 第一种是 dp， 第二种是回溯
+     * @param nums nums
+     * @param target target
+     * @return ans
+     */
+    public int findTargetSumWays(int[] nums, int target) {
+        // 添加 - 号的元素之和为 neg，则其余添加 + 的元素之和为 sum−neg, 得到下面公式
+        // (sum−neg)−neg=sum−2⋅neg=target 这个公式可以得到 neg = (sum -taeget) / 2
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+        int diff = sum - target;
+        if (diff < 0 || diff % 2 != 0) {
+            return 0;
+        }
+        int neg = diff / 2;
+        //定义二维数组 dp，其中 dp[i][j] 表示在数组 nums 的前 i 个数中选取元素，使得这些元素之和等于 j 的方案数
+        // 如果 j≥num，则如果不选 num，方案数是 dp[i−1][j]，如果选 num，方案数是 dp[i−1][j−num]，此时有 dp[i][j]=dp[i−1][j]+dp[i−1][j−num]
+        // 由于 dp 的每一行的计算只和上一行有关，因此可以使用滚动数组的方式，去掉 dp 的第一个维度，将空间复杂度优化到 O(neg)
+        int[] dp = new int[neg + 1];
+        dp[0] = 1;
+        for (int num : nums) {
+            // 内层循环需采用倒序遍历的方式，这种方式保证转移来的是 dp[i−1][] 中的元素值
+            for (int j = neg; j >= num; j--) {
+                dp[j] += dp[j - num];
+            }
+        }
+        return dp[neg];
+    }
+
+    public int findTargetSumWays2(int[] nums, int target) {
+        return findTargetSumWaysDfs(nums, target, 0, 0);
+    }
+
+    private int findTargetSumWaysDfs(int[] nums, int target, int idx, int temp) {
+        if (idx == nums.length)  return temp == target ? 1 : 0;
+        return findTargetSumWaysDfs(nums, target, idx + 1, temp + nums[idx]) +
+                findTargetSumWaysDfs(nums, target, idx + 1, temp - nums[idx]);
+    }
+
+
+    public int[] constructRectangle(int area) {
+        int w = (int) Math.sqrt(area);
+        while (area % w != 0) w--;
+        return new int[]{area / w, w};
     }
 
     /**
