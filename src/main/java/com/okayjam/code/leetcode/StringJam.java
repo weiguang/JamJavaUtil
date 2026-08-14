@@ -55,6 +55,27 @@ public class StringJam {
     }
 
     /**
+     * 500. 键盘行
+     * @param words words
+     * @return ans
+     */
+    public String[] findWords(String[] words) {
+        // 字符mapping到的行数，方便查找判断
+        String mapString = "12210111011122000010020202";
+        List<String> ans = new ArrayList<>();
+        for (String word : words) {
+            int i;
+            char c = mapString.charAt(Character.toLowerCase(word.charAt(0)) - 'a');
+            for (i = 1; i < word.length(); i++) {
+                if (mapString.charAt(Character.toLowerCase(word.charAt(i)) - 'a') != c) { break;}
+            }
+            // 说明没有触发break，都是同一行
+            if (i == word.length()) ans.add(word);
+        }
+        return ans.toArray(new String[0]);
+    }
+
+    /**
      * 482. 密钥格式化
      * @param s s
      * @param k k

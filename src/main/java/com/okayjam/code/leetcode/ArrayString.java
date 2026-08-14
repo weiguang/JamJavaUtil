@@ -60,7 +60,8 @@ public class ArrayString {
 //                        new int[] {5, 2}})));
 //        new ArrayString().findDuplicates(new int[]{4,3,2,7,8,2,3,1});
 //        System.out.println(new ArrayString().findSubsequences(new int[]{4,6,7,7}));
-        System.out.println(Math.sqrt(Integer.MAX_VALUE));
+        System.out.println( new Random().nextInt(0, 1));
+
      }
 
 
@@ -69,6 +70,8 @@ public class ArrayString {
         nums[i] = nums[j];
         nums[j] = temp;
     }
+
+
 
     /**
      * 496. 下一个更大元素 I
@@ -4121,8 +4124,40 @@ public class ArrayString {
         return re;
     }
 
-
+    /**
+     * 一共有 m+n−1 条对角线. 设对角线从上到下的编号为 i∈[0,m+n−2]
+     * 当 i 为偶数时，则第 i 条对角线的走向是从下往上遍历:每次行索引减 1，列索引加 1
+     * 当 i<m 时，则此时对角线遍历的起点位置为 (i,0)；
+     * 当 i≥m 时，则此时对角线遍历的起点位置为 (m−1,i−m+1)；
+     * 当 i 为奇数时，则第 i 条对角线的走向是从上往下遍历:每次行索引加 1，列索引减 1
+     * 当 i<n 时，则此时对角线遍历的起点位置为 (0,i)；
+     * 当 i≥n 时，则此时对角线遍历的起点位置为 (i−n+1,n−1)；
+     * @param mat mat
+     * @return ans
+     */
     public int[] findDiagonalOrder(int[][] mat) {
+        int m = mat.length, n = mat[0].length;
+        int[] ans = new int[n * m];
+        int idx = 0;
+        for (int i = 0; i < m +n -1; i++) {
+            if ((i & 1) == 0) {
+                int x = i < m ? i : m -1;
+                int y = i < m ? 0 : i - m + 1;
+                while (x >= 0 && y < n) {
+                    ans[idx++] = mat[x--][y++];
+                }
+            } else {
+                int x = i < n ? 0 : i - n  + 1;
+                int y = i <n ? i : n - 1;
+                while (x < m && y >= 0) {
+                    ans[idx++] = mat[x++][y--];
+                }
+            }
+        }
+        return ans;
+    }
+
+    public int[] findDiagonalOrder2(int[][] mat) {
         int m = mat.length, n = mat[0].length;
         int[] re = new int[n * m];
         int index = 0;
