@@ -23,6 +23,39 @@ public class Tree {
         new Tree().isValidSerialization("9,3,4,#,#,1,#,#,2,#,6,#,#");
     }
 
+    /**
+     * 501. 二叉搜索树中的众数
+     * @param root root
+     * @return ans
+     */
+    public int[] findMode(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        // 使用content传递这几个参数，这个几参数会更新 int base = 0, count = 0, max = 0;
+        int[] content = new int[3];
+        findModeDfs(root, content, ans);
+        return ans.stream().mapToInt(Integer::intValue).toArray();
+    }
+
+    private void findModeDfs(TreeNode root, int[] content, List<Integer> ans) {
+        if (root == null) return;
+        findModeDfs(root.left, content, ans);
+        findModeUpdate(root.val, content, ans);
+        findModeDfs(root.right, content, ans);
+    }
+
+    private void findModeUpdate(int val, int[] content, List<Integer> ans) {
+        if (val == content[0]) content[1]++;
+        else {content[0] = val; content[1] = 1;}
+        if (content[1] == content[2]) ans.add(val);
+        else if (content[1] > content[2]) {
+            content[2] = content[1];
+            ans.clear();
+            ans.add(val);
+        }
+    }
+
+
+
     public TreeNode deleteNode(TreeNode root, int key) {
         if (root == null) return root;
         if (root.val == key) {

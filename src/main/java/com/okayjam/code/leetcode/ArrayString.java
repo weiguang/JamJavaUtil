@@ -60,7 +60,7 @@ public class ArrayString {
 //                        new int[] {5, 2}})));
 //        new ArrayString().findDuplicates(new int[]{4,3,2,7,8,2,3,1});
 //        System.out.println(new ArrayString().findSubsequences(new int[]{4,6,7,7}));
-        System.out.println( new Random().nextInt(0, 1));
+        System.out.println( -15 / 7);
 
      }
 
@@ -71,7 +71,90 @@ public class ArrayString {
         nums[j] = temp;
     }
 
+    /**
+     * 507. 完美数
+     * @param num num
+     * @return ans
+     */
+    public boolean checkPerfectNumber(int num) {
+        // 答案只有几个，可以直接写出来 6,28,496,8128,33550336
+        return num == 6 || num == 28 || num == 496 || num == 8128 || num == 33550336;
 
+//        if (num < 3) return false;
+//        int end = (int) Math.sqrt(num);
+//        long sum = (end * end == num ? -end : 0) + 1;
+//        for (int i = 2; i <= Math.sqrt(num) ; i++) {
+//            int j = num / i;
+//            if (i * j == num) sum += i+j;
+//            if (sum > num) break;
+//        }
+//        return sum == num;
+    }
+
+
+    /**
+     * 506. 相对名次
+     * @param score score
+     * @return ans
+     */
+    public String[] findRelativeRanks(int[] score) {
+         String[] ans = new String[score.length];
+        TreeMap<Integer, Integer> treeMap = new TreeMap<>(Comparator.reverseOrder());
+        for (int i = 0; i < score.length; i++) {
+            treeMap.put(score[i], i);
+        }
+        int i = 1;
+        for (Map.Entry<Integer, Integer> entry : treeMap.entrySet()) {
+            int idx = entry.getValue();
+            if (i == 1) ans[idx] = "Gold Medal";
+            else if (i == 2) ans[idx] = "Silver Medal";
+            else if (i == 3) ans[idx] = "Bronze Medal";
+            else ans[idx] = String.valueOf(i);
+            i++;
+        }
+        return ans;
+    }
+
+    /**
+     * 504. 七进制数
+     * @param num nums
+     * @return ans
+     */
+    public String convertToBase7(int num) {
+//        return Integer.toString(num,7);
+        if (num == 0) return "0";
+        StringBuilder sb = new StringBuilder();
+        int num1 = num > 0 ? num : -num;
+        while (num1 != 0) {
+            sb.append(num1 % 7);
+            num1 /= 7;
+        }
+        if (num < 0) {sb.append("-");}
+        return sb.reverse().toString();
+    }
+
+    /**
+     * 503. 下一个更大元素 II
+     * 这里是可以循环的，因此可以遍历的时候设置为两遍， 处理一下下表就行
+     * @param nums nums
+     * @return ans
+     */
+    public int[] nextGreaterElements(int[] nums) {
+        int[] ans = new int[nums.length];
+        // 默认找不到就是 -1
+        Arrays.fill(ans, -1);
+        Deque<Integer> stack = new LinkedList<>(); // 存索引
+        for (int i = 0; i < nums.length * 2; i++) {
+            int i1 = i % nums.length;
+            // 单调栈查找下一个更大元素
+            while (!stack.isEmpty() && nums[i1] > nums[stack.peek()]) {
+                int idx = stack.pop();
+                ans[idx] = nums[i1];
+            }
+            stack.push(i1);
+        }
+        return ans;
+    }
 
     /**
      * 496. 下一个更大元素 I
