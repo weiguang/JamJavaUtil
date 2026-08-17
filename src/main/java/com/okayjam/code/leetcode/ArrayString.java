@@ -72,6 +72,69 @@ public class ArrayString {
     }
 
     /**
+     *   518. 零钱兑换 II
+     * @param amount amount
+     * @param coins coins
+     * @return ans
+     */
+    public int change(int amount, int[] coins) {
+        // dp[i] 的定义：表示凑成金额 i 的硬币组合数
+        int[] dp = new int[amount + 1];
+        // 金额为 0 的组合数为 1
+        dp[0] = 1;
+        for (int coin : coins) {
+            for (int j = coin; j <= amount; j++) {
+                dp[j]  += dp[j - coin];
+            }
+        }
+        return dp[amount];
+    }
+
+
+    /**
+     * 516. 最长回文子序列
+     * 用 dp[i][j] 表示字符串 s 的下标范围 [i,j] 内的最长回文子序列的长度。
+     * 假设字符串 s 的长度为 n，则只有当 0≤i≤j<n 时，才会有 dp[i][j]>0，否则 dp[i][j]=0, 并且dp[i][i]=1 。
+     * @param s s
+     * @return ans
+     */
+    public int longestPalindromeSubseq(String s) {
+        int n = s.length();
+        int[][] dp = new int[n][n];
+        for (int i = n -1; i >= 0 ; i--) {
+            dp[i][i] = 1;
+            for (int j = i+1; j < n; j++) {
+                if (s.charAt(i) == s.charAt(j)) dp[i][j] = dp[i+1][j-1] + 2;
+                else dp[i][j] = Math.max(dp[i+1][j], dp[i][j-1]);
+            }
+        }
+        return dp[0][n -1];
+    }
+
+    /**
+     * 509. 斐波那契数
+     * <a href="https://leetcode.cn/problems/fibonacci-number">509. Fibonacci Number</a>
+     * @param n n
+     * @return ans
+     */
+    public int fib(int n) {
+        double sqrt5 = Math.sqrt(5);
+        double fibN = Math.pow((1 + sqrt5) / 2, n) - Math.pow((1 - sqrt5) / 2, n);
+        return (int) Math.round(fibN / sqrt5);
+    }
+
+    public int fib2(int n) {
+        if (n < 2) return n;
+        int a = 0, b = 1 ;
+        while (n-- > 1) {
+            int t = a + b;
+            a = b;
+            b = t;
+        }
+        return b;
+    }
+
+    /**
      * 507. 完美数
      * @param num num
      * @return ans

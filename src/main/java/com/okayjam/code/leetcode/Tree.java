@@ -1,8 +1,6 @@
 package com.okayjam.code.leetcode;
 
-import java.text.NumberFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import com.okayjam.code.leetcode.LinkedListJam.ListNode;
 
@@ -21,6 +19,90 @@ public class Tree {
 //            System.out.println(iterator.next());
 //        }
         new Tree().isValidSerialization("9,3,4,#,#,1,#,#,2,#,6,#,#");
+    }
+
+
+    public List<Integer> largestValues(TreeNode root) {
+        if(root == null) return Collections.emptyList();
+        List<Integer> ans = new LinkedList<>();
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            int max = Integer.MIN_VALUE;
+            for (int i = 0; i < size; i++) {
+                TreeNode p = queue.poll();
+                max = Math.max(max, p.val);
+                if (p.left != null) queue.add(p.left);
+                if (p.right != null) queue.add(p.right);
+            }
+            ans.add(max);
+        }
+        return ans;
+    }
+
+    /**
+     * 513. 找树左下角的值 Find Bottom Left Tree Value
+     * 使用广度优先搜索遍历每一层的节点。在遍历一个节点时，需要先把它的非空右子节点放入队列，然后再把它的非空左子节点放入队列，这样才能保证从右到左遍历每一层的节点
+     * 。广度优先搜索所遍历的最后一个节点的值就是最底层最左边节点的值。
+     * @param root root
+     * @return ans
+     */
+    public int findBottomLeftValue(TreeNode root) {
+        int ret = 0;
+        Queue<TreeNode> queue = new ArrayDeque<TreeNode>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            TreeNode p = queue.poll();
+            if (p.right != null) {
+                queue.offer(p.right);
+            }
+            if (p.left != null) {
+                queue.offer(p.left);
+            }
+            ret = p.val;
+        }
+        return ret;
+    }
+
+
+    public int findBottomLeftValue2(TreeNode root) {
+        findFrequentTreeSum(root, 1);
+        return findBottomLeftValue;
+    }
+
+    int findBottomLeftValue;
+    int findBottomLeftValueDeep = 0;
+    public void findFrequentTreeSum(TreeNode root, int deep) {
+        if (root == null) return;
+        if ((root.left == null && root.right == null) && deep > findBottomLeftValueDeep) {
+            findBottomLeftValueDeep = deep;
+            findBottomLeftValue = root.val;
+        }
+        findFrequentTreeSum(root.left, deep + 1);
+        findFrequentTreeSum(root.right, deep + 1);
+    }
+
+    /**
+     * 508. 出现次数最多的子树元素和
+     * @param root root
+     * @return ans
+     */
+    public int[] findFrequentTreeSum(TreeNode root) {
+        if (root == null) return null;
+        Map<Integer, Integer> map = new HashMap<>();
+        findFrequentTreeSum(root, map);
+        return map.entrySet().stream().filter(v -> v.getValue() == findFrequentTreeSumMaxCnt).mapToInt(Map.Entry::getKey).toArray();
+    }
+
+    int findFrequentTreeSumMaxCnt = 0;
+    public int findFrequentTreeSum(TreeNode root, Map<Integer, Integer> map) {
+        if (root == null) return 0 ;
+        int sum =root.val + findFrequentTreeSum(root.left, map) +  findFrequentTreeSum(root.right, map);
+        int cnt = map.merge(sum, 1, Integer::sum);
+        // 更新最大值
+        findFrequentTreeSumMaxCnt = Math.max(findFrequentTreeSumMaxCnt, cnt);
+        return sum;
     }
 
     /**
@@ -910,7 +992,7 @@ public class Tree {
     }
 
 
-    TreeNode p = null;
+    TreeNode tp = null;
 
     public void flatten(TreeNode root) {
         if (root == null) {
@@ -920,11 +1002,11 @@ public class Tree {
         TreeNode left = root.left;
         root.left = null;
         root.right = null;
-        if (p == null) {
-            p = root;
+        if (tp == null) {
+            tp = root;
         } else {
-            p.right = root;
-            p = p.right;
+            tp.right = root;
+            tp = tp.right;
         }
         flatten(left);
         flatten(right);
@@ -938,8 +1020,8 @@ public class Tree {
         TreeNode left = root.left;
         root.left = null;
         root.right = null;
-        p.right = root;
-        p = p.right;
+        tp.right = root;
+        tp = tp.right;
         flatten1(left);
         flatten1(right);
     }
