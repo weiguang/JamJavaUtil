@@ -72,6 +72,72 @@ public class ArrayString {
     }
 
     /**
+     * 525. 连续数组
+     * 使用map存前缀和，我们把0看作-1累加， 如果preSum[i]=preSum[j], 那么（i,j]之前的和为0，说明有相同的-1和相同的1累加
+     * @param nums nums
+     * @return ans
+     */
+    public int findMaxLength(int[] nums) {
+        int ans = 1;
+        Map<Integer, Integer> map = new HashMap<>();
+        int counter = 0;
+        map.put(counter, -1);
+        for (int i = 0; i < nums.length; i++) {
+            counter += nums[i] == 0 ? -1:1;
+            Integer preIdx = map.get(counter);
+            if (preIdx != null) {
+                ans = Math.max(ans, i - preIdx);
+            } else {
+                map.put(counter, i);
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 523. 连续的子数组和
+     * 第一个是官方解，比较难理解， 第二个是网友的解，更好理解
+     * @param nums nums
+     * @param k k
+     * @return ans
+     */
+    public boolean checkSubarraySum(int[] nums, int k) {
+        int m = nums.length;
+        if (m < 2) {
+            return false;
+        }
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1);
+        int remainder = 0;
+        for (int i = 0; i < m; i++) {
+            // 使用了前缀和思想， 最终我们只需要求余数，使用了记录余数替代sum
+            // 例如 10 % 7 = 3，  (10 + n) % 7 = (3 + n) % 7 。 10和3都是一样
+            remainder = (remainder + nums[i]) % k;
+            Integer pre = map.get(remainder);
+            if (pre != null) {
+                if (i - pre >1) return true;
+            } else {
+                map.put(remainder, i);
+            }
+        }
+        return false;
+    }
+
+    public boolean checkSubarraySum2(int[] nums, int k) {
+        int n = nums.length;
+        int[] sum = new int[n + 1];
+        // 前缀和
+        for (int i = 1; i <= n; i++) sum[i] = sum[i - 1] + nums[i - 1];
+        Set<Integer> set = new HashSet<>();
+        for (int i = 2; i <= n; i++) {
+            // 这里只把n-2 的加入 ，保证查出来的都是大于1的区间
+            set.add(sum[i - 2] % k);
+            if (set.contains(sum[i] % k)) return true;
+        }
+        return false;
+    }
+
+    /**
      *   518. 零钱兑换 II
      * @param amount amount
      * @param coins coins

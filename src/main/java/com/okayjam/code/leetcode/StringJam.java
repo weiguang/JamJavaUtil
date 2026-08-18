@@ -56,6 +56,40 @@ public class StringJam {
 
 
     /**
+     * 524. 通过删除字母匹配到字典里最长单词
+     * @param s s
+     * @param dictionary dict
+     * @return ans
+     */
+    public String findLongestWord(String s, List<String> dictionary) {
+        String ans = "";
+        for (String dic : dictionary) {
+            if (!isSubseq(dic, s)) continue;
+            // 返回长度最长且字母序最小的字符串
+            if (dic.length() > ans.length() || (dic.length() == ans.length() && dic.compareTo(ans) < 0 ) ) {ans = dic;}
+        }
+        return ans;
+    }
+
+    /**
+     * 用来判断s 是否为t的子序列，
+     * @param s s
+     * @param t t
+     * @return ans
+     */
+    public boolean isSubseq(String s, String t) {
+        int ptS = 0, ptT = 0;
+        while (ptS < s.length() && ptT < t.length()) {
+            if (s.charAt(ptS) == t.charAt(ptT)) {
+                ++ptS;
+            }
+            ++ptT;
+        }
+        return ptS == s.length();
+    }
+
+
+    /**
      * 522. 最长特殊序列 II
      * @param strs strs
      * @return ans
@@ -76,16 +110,6 @@ public class StringJam {
         return ans;
     }
 
-    public boolean isSubseq(String s, String t) {
-        int ptS = 0, ptT = 0;
-        while (ptS < s.length() && ptT < t.length()) {
-            if (s.charAt(ptS) == t.charAt(ptT)) {
-                ++ptS;
-            }
-            ++ptT;
-        }
-        return ptS == s.length();
-    }
 
 
     /**
