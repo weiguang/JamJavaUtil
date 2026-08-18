@@ -56,6 +56,66 @@ public class StringJam {
 
 
     /**
+     * 522. 最长特殊序列 II
+     * @param strs strs
+     * @return ans
+     */
+    public int findLUSlength(String[] strs) {
+        int ans = -1;
+        for (int i = 0; i < strs.length; i++) {
+            boolean check = true;
+            for (int j = 0; j < strs.length; j++) {
+                if (i == j) continue;
+                check = !isSubseq(strs[i], strs[j]);
+                if (!check) break;
+            }
+            if (check) {
+                ans = Math.max(ans, strs[i].length());
+            }
+        }
+        return ans;
+    }
+
+    public boolean isSubseq(String s, String t) {
+        int ptS = 0, ptT = 0;
+        while (ptS < s.length() && ptT < t.length()) {
+            if (s.charAt(ptS) == t.charAt(ptT)) {
+                ++ptS;
+            }
+            ++ptT;
+        }
+        return ptS == s.length();
+    }
+
+
+    /**
+     * 521. 最长特殊序列 Ⅰ
+     * @param a a
+     * @param b b
+     * @return ans
+     */
+    public int findLUSlength(String a, String b) {
+        return !a.equals(b) ? Math.max(a.length(), b.length()) : -1;
+    }
+
+    /**
+     * 520. 检测大写字母
+     * @param word word
+     * @return ans
+     */
+    public boolean detectCapitalUse(String word) {
+        if (word.length() <= 1) return true;
+        boolean isUpper = Character.isUpperCase(word.charAt(1));
+        if (isUpper && Character.isLowerCase(word.charAt(0))) return false;
+        for (int i = 2; i < word.length(); i++) {
+            if (isUpper) {
+                 if (Character.isLowerCase(word.charAt(i))) return false;
+             } else if (Character.isUpperCase(word.charAt(i))) return false;
+        }
+        return true;
+    }
+
+    /**
      * 500. 键盘行
      * @param words words
      * @return ans
