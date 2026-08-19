@@ -71,6 +71,47 @@ public class ArrayString {
         nums[j] = temp;
     }
 
+
+    /**
+     * 526. 优美的排列
+     * 从左向右依次向目标排列中放入数
+     * 用 vis 数组标记哪些数被使用过;用二维数组 match 保存每个位置的符合条件的数,当我们尝试向位置 index 放入数时，我们只需要遍历 match[index] 即可。
+     * @param n n
+     * @return ans
+     */
+    public int countArrangement(int n) {
+        List<Integer>[] match = new List[n + 1];
+        boolean[] vis = new boolean[n + 1];
+        for (int i = 0; i <= n; i++) {
+            match[i] = new ArrayList<>();
+        }
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (i % j == 0 || j % i == 0) {
+                    match[i].add(j);
+                }
+            }
+        }
+        countArrangementDfs(1, n, match, vis);
+        return countArrangementAns;
+    }
+    int countArrangementAns = 0;
+
+    public void countArrangementDfs(int index, int n, List<Integer>[] match, boolean[] vis) {
+        if (index == n + 1) {
+            countArrangementAns++;
+            return;
+        }
+        for (int x : match[index]) {
+            if (!vis[x]) {
+                vis[x] = true;
+                countArrangementDfs(index + 1, n, match, vis);
+                vis[x] = false;
+            }
+        }
+    }
+
+
     /**
      * 525. 连续数组
      * 使用map存前缀和，我们把0看作-1累加， 如果preSum[i]=preSum[j], 那么（i,j]之前的和为0，说明有相同的-1和相同的1累加
