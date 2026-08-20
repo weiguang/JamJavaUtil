@@ -22,7 +22,38 @@ public class Tree {
     }
 
 
-    public List<Integer> largestValues(TreeNode root) {
+    /**
+     * 530. 二叉搜索树的最小绝对差
+     * 中序遍历可以得到有序序列
+     * @param root root
+     * @return ans
+     */
+    public int getMinimumDifference(TreeNode root) {
+        getMinimumDifferenceDfs(root);
+        return minimumDifferenceAns;
+    }
+
+    int minimumDifferenceAns = Integer.MAX_VALUE;
+    int minimumDifferencePre = -1;
+    private void getMinimumDifferenceDfs(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        getMinimumDifferenceDfs(root.left);
+        // 中序遍历， 不过需要记住 前一个节点的信息，所以加了个pre全局参数
+        if (minimumDifferencePre == -1) {
+            minimumDifferencePre = root.val;
+        } else {
+            minimumDifferenceAns = Math.min(minimumDifferenceAns, root.val - minimumDifferencePre);
+            minimumDifferencePre = root.val;
+        }
+        getMinimumDifferenceDfs(root.right);
+    }
+    
+
+
+
+        public List<Integer> largestValues(TreeNode root) {
         if(root == null) return Collections.emptyList();
         List<Integer> ans = new LinkedList<>();
         Queue<TreeNode> queue = new ArrayDeque<>();

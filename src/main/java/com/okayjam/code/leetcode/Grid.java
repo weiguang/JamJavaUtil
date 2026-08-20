@@ -13,8 +13,51 @@ public class Grid {
     }
 
     private final static int[][] DIRECTIONS4 = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
-    int[][] direction = new int[][] {{-1,-1},{-1,0},{-1,1}, {0,-1},{0,1}, {1,-1},{1,0},{1,1}};
+    private final int[][] direction = new int[][] {{-1,-1},{-1,0},{-1,1}, {0,-1},{0,1}, {1,-1},{1,0},{1,1}};
 
+    /**
+     * 529. 扫雷游戏 529. Minesweeper
+     * @param board board
+     * @param click click
+     * @return ans
+     */
+    public char[][] updateBoard(char[][] board, int[] click) {
+       if(board[click[0]][click[1]] == 'M') {
+           board[click[0]][click[1]] = 'X';
+           return board;
+       }
+        updateBoard(board, click[0],click[1]);
+       return board;
+    }
+
+    public void updateBoard(char[][] board, int i, int j) {
+        if (board[i][j] != 'E' ) return;
+        // 设置为 空格 避免被重复查找
+        board[i][j] = ' ';
+        // 8个方向雷的数量
+        int cnt = 0;
+        for (int[] ints : direction) {
+          int i1 = i + ints[0];
+          int j1 = j + ints[1];
+          if (i1 < 0 || i1 == board.length || j1 < 0 || j1 == board[0].length ) continue;
+          if ( board[i1][j1] =='M') cnt++;
+        }
+        // 如果周边没有雷，需要递归查找E的空格
+        if (cnt == 0) {
+            for (int[] ints : direction) {
+                int i1 = i + ints[0];
+                int j1 = j + ints[1];
+                if (i1 < 0 || i1 == board.length || j1 < 0 || j1 == board[0].length ) continue;
+                updateBoard(board, i1, j1);
+            }
+        }
+        // 如果8 个方向都没有雷，可以设置为B，否则显示数量
+        if (cnt == 0) {
+            board[i][j] = 'B';
+        } else {
+            board[i][j] = (char)(cnt + '0');
+        }
+    }
 
 
     /**
