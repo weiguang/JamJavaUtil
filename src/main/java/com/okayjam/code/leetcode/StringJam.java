@@ -54,6 +54,27 @@ public class StringJam {
         s[j] = temp;
     }
 
+    /**
+     * 537. 复数乘法
+     * 公式为：\((a+bi)(c+di) = (ac-bd) + (ad+bc)i\)。
+     * 展开括号：像普通多项式一样做乘法，得到 \(ac + adi + bci + bdi^2\)
+     * 替换 \(i^{2}\)：因为 \(i^2 = -1\)，所以最后一项 \(bdi^{2}\) 变成 \(-bd\)
+     * @param num1 num1
+     * @param num2 num2
+     * @return ans
+     */
+    public String complexNumberMultiply(String num1, String num2) {
+        int p1 = num1.indexOf("+");
+        int p2 = num2.indexOf("+");
+        int a = Integer.parseInt(num1.substring(0, p1));
+        int b = Integer.parseInt(num1.substring(p1 + 1, num1.length() -1));
+        int c = Integer.parseInt(num2.substring(0, p2));
+        int d = Integer.parseInt(num2.substring(p2 + 1, num2.length() -1));
+        int n1 = a *c -b *d;
+        int n2 = a *d + b*c;
+        return  n1 +  "+" + n2 + "i";
+    }
+
 
     /**
      * 524. 通过删除字母匹配到字典里最长单词

@@ -72,6 +72,21 @@ public class ArrayString {
     }
 
 
+    public int findPairs(int[] nums, int k) {
+        Arrays.sort(nums);
+        int ans = 0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            // 跳过重复
+            if(i != 0 && nums[i] == nums[i-1]) continue;
+            int target = nums[i] + k;
+            // 如果+k 已经超出最大值，就没有符合的数据了，可以跳过
+            if (target > nums[nums.length - 1]) break;
+            int search = Arrays.binarySearch(nums, i + 1, nums.length, target);
+            if (search > 0) ans++;
+        }
+        return ans;
+    }
+    
     /**
      * 526. 优美的排列
      * 从左向右依次向目标排列中放入数
