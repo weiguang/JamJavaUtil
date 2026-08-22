@@ -71,6 +71,33 @@ public class ArrayString {
         nums[j] = temp;
     }
 
+    /**
+     * 540. 有序数组中的单一元素
+     * 二分判断， 因为其中有一段可能包含了单个数，根据规律可以判断单数在哪一段
+     * 如果 mid 是偶数，则比较 nums[mid] 和 nums[mid+1] 是否相等；
+     * 如果 mid 是奇数，则比较 nums[mid−1] 和 nums[mid] 是否相等。
+     * * 利用按位异或的性质，可以得到 mid 和相邻的数之间的如下关系，其中 ⊕ 是按位异或运算符：
+     * 当 mid 是偶数时，mid+1=mid⊕1； eg: 1010 ^ 1 = 1011
+     * 当 mid 是奇数时，mid−1=mid⊕1。 eg: 1011 ^ 1 = 1010
+     * 其实就是翻转最后最后一位
+     * 因此在二分查找的过程中，不需要判断 mid 的奇偶性，mid 和 mid⊕1 即为每次需要比较元素的两个下标。
+     * @param nums nums
+     * @return ans
+     */
+    public int singleNonDuplicate(int[] nums) {
+        int n = nums.length;
+        int left = 0;
+        int right = n - 1;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == nums[mid ^ 1]) {
+                left = mid + 1;
+            } else  {
+                right = mid;
+            }
+        }
+        return nums[left];
+    }
 
     public int findPairs(int[] nums, int k) {
         Arrays.sort(nums);

@@ -21,6 +21,22 @@ public class Tree {
         new Tree().isValidSerialization("9,3,4,#,#,1,#,#,2,#,6,#,#");
     }
 
+    /**
+     * 538. 把二叉搜索树转换为累加树
+     * @param root root
+     * @return ans
+     */
+    public TreeNode convertBST(TreeNode root) {
+        if (root == null) { return null; }
+        convertBST(root.right);
+        convertBSTSum += root.val;
+        root.val = convertBSTSum;
+        convertBST(root.left);
+        return root;
+    }
+    int convertBSTSum = 0;
+
+
 
     /**
      * 530. 二叉搜索树的最小绝对差

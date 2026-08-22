@@ -55,6 +55,34 @@ public class StringJam {
     }
 
     /**
+     * 539. 最小时间差
+     * @param timePoints list
+     * @return ans
+     */
+    public int findMinDifference(List<String> timePoints) {
+        // 最多只有1440分钟，多了就说明一定有重复
+        if (timePoints.size() > 1440) {
+            return 0;
+        }
+        timePoints.sort(Comparator.naturalOrder());
+        int ans =  strToTime(timePoints.get(0)) + 1440 - strToTime(timePoints.get(timePoints.size() -1));
+        for (int i = 0; i < timePoints.size() -1; i++) {
+           int diff =  strToTime(timePoints.get(i+1)) - strToTime(timePoints.get(i));
+           ans = Math.min(ans, diff);
+           // 0是最小值了，可以直接返回
+           if (ans == 0) { return 0; }
+        }
+        return ans;
+    }
+    private int strToTime(String s) {
+        String[] split = s.split(":");
+        int hour = Integer.parseInt(split[0]);
+        int minute = Integer.parseInt(split[1]);
+        return hour * 60 + minute;
+    }
+
+
+    /**
      * 537. 复数乘法
      * 公式为：\((a+bi)(c+di) = (ac-bd) + (ad+bc)i\)。
      * 展开括号：像普通多项式一样做乘法，得到 \(ac + adi + bci + bdi^2\)
