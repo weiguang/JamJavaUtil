@@ -55,6 +55,23 @@ public class StringJam {
     }
 
     /**
+     * 541. 反转字符串 II
+     * @param s s
+     * @param k k
+     * @return ans
+     */
+    public String reverseStr(String s, int k) {
+        StringBuilder sb = new StringBuilder(s.length());
+        for (int i = 0; i < s.length(); i = i+2*k) {
+            for (int j = Math.min(i+k-1, s.length() -1); j >= i ; j--) {
+                sb.append(s.charAt(j));
+            }
+            if (i+k < s.length()) sb.append(s, i+k, Math.min(i+2*k, s.length()));
+        }
+        return sb.toString();
+    }
+
+    /**
      * 539. 最小时间差
      * @param timePoints list
      * @return ans

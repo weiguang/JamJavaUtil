@@ -22,6 +22,26 @@ public class Tree {
     }
 
     /**
+     * 543. 二叉树的直径
+     * @param root root
+     * @return ans
+     */
+    public int diameterOfBinaryTree(TreeNode root) {
+        diameterOfBinaryTreeDeep(root);
+        return diameterOfBinaryTreeAns;
+    }
+
+    int diameterOfBinaryTreeAns = 0;
+    public int diameterOfBinaryTreeDeep(TreeNode root) {
+        if (root == null) return 0;
+        int left = diameterOfBinaryTreeDeep(root.left);
+        int right = diameterOfBinaryTreeDeep(root.right);
+        diameterOfBinaryTreeAns = Math.max(diameterOfBinaryTreeAns, left + right);
+        return Math.max(left, right) + 1;
+    }
+
+
+    /**
      * 538. 把二叉搜索树转换为累加树
      * @param root root
      * @return ans

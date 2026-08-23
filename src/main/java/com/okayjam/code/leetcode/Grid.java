@@ -15,12 +15,84 @@ public class Grid {
     private final static int[][] DIRECTIONS4 = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
     private final int[][] direction = new int[][] {{-1,-1},{-1,0},{-1,1}, {0,-1},{0,1}, {1,-1},{1,0},{1,1}};
 
+
     /**
-     * 529. 扫雷游戏 529. Minesweeper
-     * @param board board
-     * @param click click
+     * 542. 01 矩阵
+     * @param mat mat
      * @return ans
      */
+    public int[][] updateMatrix(int[][] mat) {
+        int m = mat.length;
+        int n = mat[0].length;
+        int[][] ans = new int[m][n];
+        Queue<int[]> queue = new LinkedList<>();
+        for (int i = 0; i < mat.length; i++) {
+            for (int j = 0; j < mat[0].length; j++) {
+                if (mat[i][j] == 0) {
+                    queue.offer(new int[]{i, j});
+                } else {
+                    ans[i][j] = -1;
+                }
+            }
+        }
+        while (!queue.isEmpty()) {
+            int[] cur = queue.poll();
+            int x = cur[0];
+            int y = cur[1];
+            for (int k = 0; k < 4; k++) {
+                int nx = x + DIRECTIONS4[k][0];
+                int ny = y + DIRECTIONS4[k][1];
+                if (nx >= 0 && nx < m && ny >= 0 && ny < n && ans[nx][ny] == -1) {
+                    ans[nx][ny] = ans[x][y] + 1;
+                    // 新增之后，继续遍历
+                    queue.offer(new int[]{nx, ny});
+                }
+            }
+        }
+        return ans;
+    }
+
+    public int[][] updateMatrixDP(int[][] mat) {
+        int m = mat.length;
+        int n = mat[0].length;
+        int[][] ans = new int[m][n];
+        int INF = m + n; // 安全上限，避免 Integer.MAX_VALUE + 1 溢出
+
+        // 初始化：0 保持 0，1 先置为 INF
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++)
+                ans[i][j] = mat[i][j] == 0 ? 0 : INF;
+
+        // 第一遍：上、左
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (mat[i][j] == 1) {
+                    if (i > 0)     ans[i][j] = Math.min(ans[i][j], ans[i - 1][j] + 1);
+                    if (j > 0)     ans[i][j] = Math.min(ans[i][j], ans[i][j - 1] + 1);
+                }
+            }
+        }
+
+        // 第二遍：下、右
+        for (int i = m - 1; i >= 0; i--) {
+            for (int j = n - 1; j >= 0; j--) {
+                if (mat[i][j] == 1) {
+                    if (i < m - 1) ans[i][j] = Math.min(ans[i][j], ans[i + 1][j] + 1);
+                    if (j < n - 1) ans[i][j] = Math.min(ans[i][j], ans[i][j + 1] + 1);
+                }
+            }
+        }
+        return ans;
+    }
+
+
+
+    /**
+         * 529. 扫雷游戏 529. Minesweeper
+         * @param board board
+         * @param click click
+         * @return ans
+         */
     public char[][] updateBoard(char[][] board, int[] click) {
        if(board[click[0]][click[1]] == 'M') {
            board[click[0]][click[1]] = 'X';
