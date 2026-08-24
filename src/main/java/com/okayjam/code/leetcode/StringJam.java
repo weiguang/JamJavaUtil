@@ -55,6 +55,29 @@ public class StringJam {
     }
 
     /**
+     * 551. 学生出勤记录 I
+     * @param s s
+     * @return ans
+     */
+    public boolean checkRecord(String s) {
+        int a = 0;
+        int l = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == 'A')  {
+                if (++a == 2) return false;
+            }
+            else if (c == 'L') {
+                 if (++l >= 3) return false;
+                continue;
+            }
+            l = 0;
+        }
+        return true;
+    }
+
+
+    /**
      * 541. 反转字符串 II
      * @param s s
      * @param k k
