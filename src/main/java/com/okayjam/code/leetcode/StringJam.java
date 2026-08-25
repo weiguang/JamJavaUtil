@@ -48,10 +48,53 @@ public class StringJam {
 
     }
 
+    public void reverse(char[] nums, int s, int e) {
+        while (s < e) {
+            swap(nums, s, e);
+            s++;
+            e--;
+        }
+    }
+
     public void swap(char[] s, int i, int j) {
         char temp = s[i];
         s[i] = s[j];
         s[j] = temp;
+    }
+
+    /**
+     * 557. 反转字符串中的单词 III
+     * @param s s
+     * @return ans
+     */
+    public String reverseWords3(String s) {
+       return Arrays.stream(s.split(" ")).map(v -> new StringBuilder(v).reverse().toString())
+                .collect(Collectors.joining(" "));
+    }
+
+
+    /**
+     * 556. 下一个更大元素 III
+     * @param n n
+     * @return ans
+     */
+    public int nextGreaterElement(int n) {
+        char[] nums = Integer.toString(n).toCharArray();
+        int i = nums.length - 2;
+        while (i >= 0 && nums[i] >= nums[i + 1]) {
+            i--;
+        }
+        if (i < 0) {
+            return -1;
+        }
+        int j = nums.length - 1;
+        while (j >= 0 && nums[i] >= nums[j]) {
+            j--;
+        }
+        swap(nums, i, j);
+        reverse(nums, i + 1 , nums.length -1);
+        long ans = Long.parseLong(new String(nums));
+        return ans > Integer.MAX_VALUE ? -1 : (int) ans;
     }
 
     /**

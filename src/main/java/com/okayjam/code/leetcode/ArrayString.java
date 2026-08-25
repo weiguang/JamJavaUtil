@@ -65,10 +65,55 @@ public class ArrayString {
      }
 
 
+    public void reverse(int[] nums, int s, int e) {
+        while (s < e) {
+            swap(nums, s, e);
+            s++;
+            e--;
+        }
+    }
+
     public void swap(int[] nums, int i, int j) {
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
+    }
+
+
+
+    /**
+     * 554. 砖墙
+     * @param wall wall
+     * @return ans
+     */
+    public int leastBricks(List<List<Integer>> wall) {
+        // 前缀和，如果两行的前缀和相同就说明垂直线在一起，求最多重复的前缀和就行
+        Map<Integer, Integer> map = new HashMap<>();
+        int max = 0;
+        for (List<Integer> walli : wall) {
+            int sum = 0;
+            // 因为最后的垂直边不算，所以最后的值不能算
+            for (int i = 0; i < walli.size() - 1; i++) {
+                sum += walli.get(i);
+                // 这个语句意义是 oldVale = map.get(key); map.put(key, oldValue + 1); 可以减少一次key查询
+                Integer newValue = map.merge(sum, 1, Integer::sum);
+                max = Math.max(max, newValue);
+            }
+        }
+        return wall.size() - max;
+    }
+
+
+    /**
+     * 553. 最优除法
+     * 数学 ans = nums[0] / (nums[1]/nums[2]/.../nums[n-1])
+     * @param nums nums
+     * @return ans
+     */
+    public String optimalDivision(int[] nums) {
+        if (nums.length == 1) return String.format("%d", nums[0]);
+        if (nums.length == 2) return String.format("%d/%d", nums[0], nums[1]);
+        return String.format("%d/(%s)", nums[0], Arrays.stream(nums).skip(1).mapToObj(String::valueOf).collect(Collectors.joining("/")));
     }
 
     /**
@@ -2987,13 +3032,7 @@ public class ArrayString {
         reverse(nums, k, nums.length - 1);
     }
 
-    public void reverse(int[] nums, int s, int e) {
-        while (s < e) {
-            swap(nums, s, e);
-            s++;
-            e--;
-        }
-    }
+
 
 
     /**
