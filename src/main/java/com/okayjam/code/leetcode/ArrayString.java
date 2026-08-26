@@ -79,6 +79,39 @@ public class ArrayString {
         nums[j] = temp;
     }
 
+    /**
+     * 561. Array Partition
+     * @param nums nums
+     * @return ans
+     */
+    public int arrayPairSum(int[] nums) {
+        Arrays.sort(nums);
+        int ans = 0;
+        for (int i = 0; i < nums.length; i+=2) {
+          ans += nums[i];
+        }
+        return ans;
+    }
+
+    /**
+     * 560. 和为 K 的子数组
+     * @param nums nums
+     * @param k k
+     * @return ans
+     */
+    public int subarraySum(int[] nums, int k) {
+        // pre[i]=pre[i−1]+nums[i]， 代表i的前缀和，因为只需要前一个前缀和，所以使用pre就能表示，不需要使用数组
+        int ans = 0, pre = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        // 因果nums[i] == k, pre - k = 0也是符合，所以前缀0需要设置为1
+        map.put(0,1);
+        for (int num : nums) {
+            // 找到前缀和为 pre - k 的下标数量
+            ans += map.getOrDefault( (pre += num) - k, 0);
+            map.merge(pre, 1, Integer::sum);
+        }
+        return ans;
+    }
 
 
     /**

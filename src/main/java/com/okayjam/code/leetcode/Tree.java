@@ -22,10 +22,30 @@ public class Tree {
     }
 
     /**
-     * 543. 二叉树的直径
+     * 563. Binary Tree Tilt
      * @param root root
      * @return ans
      */
+    public int findTilt(TreeNode root) {
+        findTiltDfs(root);
+        return findTiltAns;
+    }
+
+    int findTiltAns = 0;
+    public int findTiltDfs(TreeNode root) {
+        if (root == null) return 0;
+        int left = findTiltDfs(root.left);
+        int right = findTiltDfs(root.right);
+        findTiltAns += Math.abs(left - right);
+        return root.val + left + right;
+    }
+
+
+        /**
+         * 543. 二叉树的直径
+         * @param root root
+         * @return ans
+         */
     public int diameterOfBinaryTree(TreeNode root) {
         diameterOfBinaryTreeDeep(root);
         return diameterOfBinaryTreeAns;

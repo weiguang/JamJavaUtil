@@ -12,6 +12,22 @@ import java.util.List;
  * @date 2026/07/31 09:03
  **/
 public class NTree {
+
+    /**
+     * 559. N 叉树的最大深度
+     * @param root root
+     * @return ans
+     */
+    public int maxDepth(Node root) {
+        if (root == null) return 0;
+        int max = 0;
+        for (Node child : root.children) {
+           max = Math.max(max, maxDepth(child));
+        }
+        return max + 1;
+    }
+
+
     public List<List<Integer>> levelOrder(Node root) {
         if (root == null) {return Collections.emptyList();}
         List<List<Integer>> res = new ArrayList<>();
