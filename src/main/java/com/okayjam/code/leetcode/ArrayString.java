@@ -80,6 +80,49 @@ public class ArrayString {
     }
 
     /**
+     * 565. Array Nesting
+     * @param nums nums
+     * @return ans
+     */
+    public int arrayNesting(int[] nums) {
+        int ans = 0;
+        int n = nums.length;
+        for (int i = 0; i < nums.length; i++) {
+            int cnt = 0;
+            int cur = 0;
+            // 直接使用nums[i] 设置为n，表明已经访问过了，可以减少额外的vis数组开销。 使用i复制可以看下面的arrayNesting2 注释
+            while (nums[i] != n) {
+                int num = nums[i];
+                nums[i] = n;
+                i = num;
+                cnt++;
+            }
+            ans = Math.max(ans, cnt);
+        }
+        return ans;
+    }
+
+    public int arrayNesting2(int[] nums) {
+        int ans = 0;
+        boolean[] vis = new boolean[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            int cur = i;
+            int cnt = 0;
+            while (!vis[cur]) {
+                vis[cur] = true;
+                // 题解里面没有使用cur，而是使用i赋值， 原因是：所有的节点都只属于某一个独立的环，while循环后退出都会是原来的值
+                // 每一个数字的入度和出度都严格为 1，这意味着整个数组会被完美分割成若干个互不相交的闭环。
+                // 如果进入全新的环，那么退出 while 循环的时候 i 会回来到原来的值。
+                // 例如 当 i = 0 时 0 -> 5 -> 6 -> 2 -> 0 ； i=1 时 1 -> 4 -> 1 ；i=2时， 已经访问跳过
+                cur = nums[cur];
+                ++cnt;
+            }
+            ans = Math.max(ans, cnt);
+        }
+        return ans;
+    }
+
+    /**
      * 561. Array Partition
      * @param nums nums
      * @return ans

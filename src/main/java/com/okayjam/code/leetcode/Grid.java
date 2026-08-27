@@ -17,6 +17,24 @@ public class Grid {
 
 
     /**
+     * 566. Reshape the Matrix
+     * @param mat mat
+     * @param r r
+     * @param c c
+     * @return ans
+     */
+    public int[][] matrixReshape(int[][] mat, int r, int c) {
+        int m = mat.length, n = mat[0].length;
+        int total = m * n;
+        if (total  != r * c) return mat;
+        int[][] ans = new int[r][c];
+        for (int i = 0; i < total; i++) {
+            ans[i/c][i % c] = mat[i/n][i %n];
+        }
+        return ans;
+    }
+
+    /**
      * 542. 01 矩阵
      * @param mat mat
      * @return ans

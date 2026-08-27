@@ -63,6 +63,46 @@ public class StringJam {
     }
 
     /**
+     * 567. Permutation in String
+     * 初始化约束：先把 s1 中出现的字符频次在 cnt 数组中记为负数（即 cnt[c]--）。
+     * 初始时，所有字符的 cnt 都不超过 0，且总计数为 -n。
+     * 维持规则：移动右指针 right 扩展窗口，将进入窗口的字符频次加 1（cnt[x]++）。只要 cnt 中任意字符的值大于 0，就代表这个字符在当前窗口里超量了。
+     * 收缩窗口：一旦某个字符频次超过 0，就必须右移左指针 left 缩小窗口，把离开窗口的字符频次减 1（--cnt），直到 cnt 中不再有大于 0 的字符。
+     * @param s1 s1
+     * @param s2 s2
+     * @return ans
+     */
+    public boolean checkInclusion(String s1, String s2) {
+        int n = s1.length(), m = s2.length();
+        if (n > m) return false;
+
+        // 1. 预处理 s1 的字符频次，全部记为负数（欠账状态）
+        int[] cnt = new int[26];
+        for (int i = 0; i < n; ++i) {
+            --cnt[s1.charAt(i) - 'a'];
+        }
+
+        int left = 0;
+        // 2. 移动右指针，不断把字符纳入窗口
+        for (int right = 0; right < m; ++right) {
+            int x = s2.charAt(right) - 'a';
+            // 加入字符，频次加 1
+            ++cnt[x];
+            // 3. 如果加入 x 后导致该字符超量（>0），收缩左指针，直到 x 不再超量
+            while (cnt[x] > 0) {
+                --cnt[s2.charAt(left) - 'a'];
+                ++left;
+            }
+
+            // 4. 在没有字符超量的前提下，窗口长度达到 n 即可判定成功
+            if (right - left + 1 == n) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * 557. 反转字符串中的单词 III
      * @param s s
      * @return ans
