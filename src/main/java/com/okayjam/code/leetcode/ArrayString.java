@@ -80,6 +80,16 @@ public class ArrayString {
     }
 
     /**
+     * 575. Distribute Candies
+     * @param candyType type
+     * @return ans
+     */
+    public int distributeCandies(int[] candyType) {
+        return Math.min(candyType.length/2, Arrays.stream(candyType).boxed().collect(Collectors.toSet()).size());
+    }
+
+
+    /**
      * 565. Array Nesting
      * @param nums nums
      * @return ans
