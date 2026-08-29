@@ -17,6 +17,47 @@ public class Grid {
 
 
     /**
+     * 576. Out of Boundary Paths
+     * 定义 dp[i][j][k] 表示球移动 i 次之后位于坐标 (j,k) 的路径数量。当 i=0 时，球一定位于起始坐标 (startRow,startColumn)
+     * 因此动态规划的边界情况是：dp[0][startRow][startColumn]=1，当 (j,k) != (startRow,startColumn) 时有 dp[0][j][k]=0
+     * 当 0≤j′<m 且 0≤k′<n 时，球在移动 i+1 次之后没有出界，将 dp[i][j][k] 的值加到 dp[i+1][j′][k′]；
+     * 否则，球在第 i+1 次移动之后出界，将 dp[i][j][k] 的值加到出界的路径数。
+     * 注意到 dp[i][][] 只在计算 dp[i+1][][] 时会用到，因此可以将 dp 中的移动次数的维度省略，将空间复杂度优化到 O(m×n)
+     * @param m m
+     * @param n n
+     * @param maxMove maxMove
+     * @param startRow startRow
+     * @param startColumn startColumn
+     * @return ans
+     */
+    public int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
+        final int MOD = 1000000007;
+        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        int outCounts = 0;
+        int[][] dp = new int[m][n];
+        dp[startRow][startColumn] = 1;
+        for (int i = 0; i < maxMove; i++) {
+            int[][] dpNew = new int[m][n];
+            for (int j = 0; j < m; j++) {
+                for (int k = 0; k < n; k++) {
+                    int count = dp[j][k];
+                    if (count <= 0) continue;
+                    for (int[] direction : directions) {
+                        int j1 = j + direction[0], k1 = k + direction[1];
+                        if (j1 >= 0 && j1 < m && k1 >= 0 && k1 < n) {
+                            dpNew[j1][k1] = (dpNew[j1][k1] + count) % MOD;
+                        } else {
+                            outCounts = (outCounts + count) % MOD;
+                        }
+                    }
+                }
+            }
+            dp = dpNew;
+        }
+        return outCounts;
+    }
+
+    /**
      * 566. Reshape the Matrix
      * @param mat mat
      * @param r r
