@@ -62,6 +62,61 @@ public class StringJam {
         s[j] = temp;
     }
 
+
+    /**
+     * 583. Delete Operation for Two Strings
+     * @param word1 1
+     * @param word2 2
+     * @return  ans
+     */
+    public int minDistance2(String word1, String word2) {
+        int lcs = longestCommonSubsequence(word1, word2);
+        return word1.length() + word2.length() - 2 *lcs;
+    }
+
+
+    /**
+     * 1143. 最长公共子序列（Longest Common Subsequence, LCS）
+     * @param text1 1
+     * @param text2 2
+     * @return ans
+     */
+    public int longestCommonSubsequence(String text1, String text2) {
+        int m = text1.length();
+        int n = text2.length();
+
+        // 创建 dp 矩阵：尺寸为 (m + 1) x (n + 1)
+        // dp[i][j] 表示 text1 前 i 个字符与 text2 前 j 个字符的最长公共子序列长度
+        // 增加 1 行 1 列是为了表示“空字符串”的 base case，防止边界溢出，i = 0 或者j=0 是，LCS = 0
+        int[][] dp = new int[m + 1][n + 1];
+
+        // 双重循环遍历字符串的所有组合
+        // 注意：i 和 j 对应的是长度，对应字符串的索引是 i - 1 和 j - 1
+        for (int i = 1; i <= m; i++) {
+            char c1 = text1.charAt(i - 1); // text1 的第 i 个字符
+
+            for (int j = 1; j <= n; j++) {
+                char c2 = text2.charAt(j - 1); // text2 的第 j 个字符
+                // 情况 1：当前字符相同
+                if (c1 == c2) {
+                    // 当前字符可以纳入 LCS，长度在去掉这两个字符后的 LCS 基础上 +1
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                }
+                // 情况 2：当前字符不同
+                else {
+                    // 当前字符无法同时选中，取“舍弃 c1”或“舍弃 c2”这两种情况中的最大值
+                    // dp[i-1][j] : 不考虑 text1 的当前字符 c1
+                    // dp[i][j-1] : 不考虑 text2 的当前字符 c2
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        // 最终答案存放在右下角，即完整 text1 和完整 text2 的 LCS 长度
+        return dp[m][n];
+    }
+
+
     /**
      * 567. Permutation in String
      * 初始化约束：先把 s1 中出现的字符频次在 cnt 数组中记为负数（即 cnt[c]--）。
