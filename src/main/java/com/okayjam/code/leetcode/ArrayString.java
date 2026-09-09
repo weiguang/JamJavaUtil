@@ -80,6 +80,29 @@ public class ArrayString {
     }
 
     /**
+     * 593. 有效的正方形
+     * 通过排序可以得到1，4对角，2，3也也是对角。正方形各边相等，对角线相等（菱形4边也相等）
+     * @param p1 p1
+     * @param p2 p2
+     * @param p3 p3
+     * @param p4 p4
+     * @return ans
+     */
+    public boolean validSquare(int[] p1, int[] p2, int[] p3, int[] p4) {
+        List<int[]> list = Arrays.asList(p1, p2,p3,p4);
+        list.sort(Comparator.<int[]>comparingInt(v -> v[0]).thenComparing(v1->v1[1]));
+        int[] a1= list.get(0), a2= list.get(1), a3= list.get(2), a4= list.get(3);
+        int l1 = (a1[0] - a2[0]) * (a1[0] - a2[0]) + (a1[1] - a2[1]) * (a1[1] - a2[1]);
+        int l2 = (a1[0] - a3[0]) * (a1[0] - a3[0]) + (a1[1] - a3[1]) * (a1[1] - a3[1]);
+        int l3 = (a4[0] - a3[0]) * (a4[0] - a3[0]) + (a4[1] - a3[1]) * (a4[1] - a3[1]);
+        int l4 = (a4[0] - a3[0]) * (a4[0] - a3[0]) + (a4[1] - a3[1]) * (a4[1] - a3[1]);
+        if (l1 == 0 || l1 != l2 || l1 != l3 || l1 != l4) return false;
+        int l5 = (a2[0] - a3[0]) * (a2[0] - a3[0]) + (a2[1] - a3[1]) * (a2[1] - a3[1]);
+        int l6 = (a4[0] - a1[0]) * (a4[0] - a1[0]) + (a4[1] - a1[1]) * (a4[1] - a1[1]);
+        return 2 * l1 == l5 && l5 == l6;
+    }
+
+    /**
      * 581. Shortest Unsorted Continuous Subarray
      * @param nums nums
      * @return ans
