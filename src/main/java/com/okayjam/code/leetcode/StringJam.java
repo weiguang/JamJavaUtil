@@ -63,6 +63,38 @@ public class StringJam {
     }
 
     /**
+     * 599. 两个列表的最小索引总和
+     * @param list1 list1
+     * @param list2 list2
+     * @return ans
+     */
+    public String[] findRestaurant(String[] list1, String[] list2) {
+        // 使用小的list构建map，降低空间
+        if (list1.length > list2.length) return findRestaurant(list2, list1);
+        Map<String, Integer> map1 = new HashMap<>();
+        for (int i = 0; i < list1.length; i++) {
+            map1.put(list1[i], i);
+        }
+        List<String> ans = new ArrayList<>();
+        int min = Integer.MAX_VALUE;
+        // 如果i超过了现有答案的最小min，后续就不需要计算了，可以直接返回
+        for (int i = 0; i < list2.length && i <= min; i++) {
+            Integer i1 = map1.get(list2[i]);
+            if (i1 == null) continue;
+            int dist = i1 + i;
+            if (dist > min) continue;
+            // 有更好的答案，旧的答案清理，更新最少值，然后把当前的字符串添加到列表
+            if (dist < min) {
+                ans.clear();
+                min = dist;
+            }
+            ans.add(list2[i]);
+        }
+        return ans.toArray(new String[0]);
+    }
+
+
+    /**
      * 592. 分数加减运算
      * @param expression expression
      * @return ans

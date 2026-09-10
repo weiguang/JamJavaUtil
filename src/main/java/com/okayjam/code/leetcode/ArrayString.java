@@ -80,6 +80,43 @@ public class ArrayString {
     }
 
     /**
+     * 598. 区间加法 II
+     * @param m m
+     * @param n n
+     * @param ops ops
+     * @return ans
+     */
+    public int maxCount(int m, int n, int[][] ops) {
+        if (ops.length == 0) return m *n;
+        for (int[] op : ops) {
+            ops[0][0] = Math.min( ops[0][0], op[0]);
+            ops[0][1] = Math.min( ops[0][1], op[1]);
+        }
+        return  ops[0][0]* ops[0][1];
+    }
+
+
+    /**
+     * 594. 最长和谐子序列
+     * @param nums nums
+     * @return ans
+     */
+    public int findLHS(int[] nums) {
+        if (nums.length < 2) return 0;
+        Arrays.sort(nums);
+        int ans = 0, left = 0, right = 1;
+        while (right < nums.length) {
+            if (nums[right] - nums[left] > 1) {left++; continue;}
+            if (nums[right] - nums[left] == 1) {
+                ans = Math.max(ans, right - left + 1);
+            }
+            right++;
+        }
+        return ans;
+    }
+
+
+    /**
      * 593. 有效的正方形
      * 通过排序可以得到1，4对角，2，3也也是对角。正方形各边相等，对角线相等（菱形4边也相等）
      * @param p1 p1
