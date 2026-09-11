@@ -40,7 +40,20 @@ public class StringJam {
 //        System.out.println(new StringJam().getFactors(12));
 //        System.out.println(new StringJam().wordPatternMatch("abab", "redblueredblue"));
 //          System.out.println(new StringJam().isAdditiveNumber("011112"));
-          System.out.println(new StringJam().isAdditiveNumber("12012122436"));
+//          System.out.println(new StringJam().isAdditiveNumber("12012122436"));
+//          System.out.println(new StringJam().lengthLongestPath("a.txt"));
+//          System.out.println(new StringJam().decodeString("3[a2[c]]"));
+//          System.out.println(new StringJam().repeatedSubstringPattern("babbabbabbabbab"));
+          System.out.println(new StringJam().validIPAddress("2001:0db8:85a3:0:0:8A2E:0370:7334:"));
+
+    }
+
+    public void reverse(char[] nums, int s, int e) {
+        while (s < e) {
+            swap(nums, s, e);
+            s++;
+            e--;
+        }
     }
 
     public void swap(char[] s, int i, int j) {
@@ -48,6 +61,844 @@ public class StringJam {
         s[i] = s[j];
         s[j] = temp;
     }
+
+    /**
+     * 599. 两个列表的最小索引总和
+     * @param list1 list1
+     * @param list2 list2
+     * @return ans
+     */
+    public String[] findRestaurant(String[] list1, String[] list2) {
+        // 使用小的list构建map，降低空间
+        if (list1.length > list2.length) return findRestaurant(list2, list1);
+        Map<String, Integer> map1 = new HashMap<>();
+        for (int i = 0; i < list1.length; i++) {
+            map1.put(list1[i], i);
+        }
+        List<String> ans = new ArrayList<>();
+        int min = Integer.MAX_VALUE;
+        // 如果i超过了现有答案的最小min，后续就不需要计算了，可以直接返回
+        for (int i = 0; i < list2.length && i <= min; i++) {
+            Integer i1 = map1.get(list2[i]);
+            if (i1 == null) continue;
+            int dist = i1 + i;
+            if (dist > min) continue;
+            // 有更好的答案，旧的答案清理，更新最少值，然后把当前的字符串添加到列表
+            if (dist < min) {
+                ans.clear();
+                min = dist;
+            }
+            ans.add(list2[i]);
+        }
+        return ans.toArray(new String[0]);
+    }
+
+
+    /**
+     * 592. 分数加减运算
+     * @param expression expression
+     * @return ans
+     */
+    public String fractionAddition(String expression) {
+        // 分子，分母
+        long x = 0, y = 1;
+        int index = 0, n = expression.length();
+        while (index < n) {
+            // 读取分子
+            long x1 = 0, sign = 1;
+            if (expression.charAt(index) == '-' || expression.charAt(index) == '+') {
+                sign = expression.charAt(index) == '-' ? -1 : 1;
+                index++;
+            }
+            while (index < n && Character.isDigit(expression.charAt(index))) {
+                x1 = x1 * 10 + expression.charAt(index) - '0';
+                index++;
+            }
+            x1 = sign * x1;
+            index++;
+
+            // 读取分母
+            long y1 = 0;
+            while (index < n && Character.isDigit(expression.charAt(index))) {
+                y1 = y1 * 10 + expression.charAt(index) - '0';
+                index++;
+            }
+            // 直接转为同分母计算
+            x = x * y1 + x1 * y;
+            y *= y1;
+        }
+        if (x == 0) {
+            return "0/1";
+        }
+        // 获取最大公约数
+        long g = gcd(Math.abs(x), y);
+        return x / g + "/" + y / g;
+    }
+
+    public long gcd(long a, long b) {
+        long remainder = a % b;
+        while (remainder != 0) {
+            a = b;
+            b = remainder;
+            remainder = a % b;
+        }
+        return b;
+    }
+
+
+
+    /**
+     * 583. Delete Operation for Two Strings
+     * @param word1 1
+     * @param word2 2
+     * @return  ans
+     */
+    public int minDistance2(String word1, String word2) {
+        int lcs = longestCommonSubsequence(word1, word2);
+        return word1.length() + word2.length() - 2 *lcs;
+    }
+
+
+    /**
+     * 1143. 最长公共子序列（Longest Common Subsequence, LCS）
+     * @param text1 1
+     * @param text2 2
+     * @return ans
+     */
+    public int longestCommonSubsequence(String text1, String text2) {
+        int m = text1.length();
+        int n = text2.length();
+
+        // 创建 dp 矩阵：尺寸为 (m + 1) x (n + 1)
+        // dp[i][j] 表示 text1 前 i 个字符与 text2 前 j 个字符的最长公共子序列长度
+        // 增加 1 行 1 列是为了表示“空字符串”的 base case，防止边界溢出，i = 0 或者j=0 是，LCS = 0
+        int[][] dp = new int[m + 1][n + 1];
+
+        // 双重循环遍历字符串的所有组合
+        // 注意：i 和 j 对应的是长度，对应字符串的索引是 i - 1 和 j - 1
+        for (int i = 1; i <= m; i++) {
+            char c1 = text1.charAt(i - 1); // text1 的第 i 个字符
+
+            for (int j = 1; j <= n; j++) {
+                char c2 = text2.charAt(j - 1); // text2 的第 j 个字符
+                // 情况 1：当前字符相同
+                if (c1 == c2) {
+                    // 当前字符可以纳入 LCS，长度在去掉这两个字符后的 LCS 基础上 +1
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                }
+                // 情况 2：当前字符不同
+                else {
+                    // 当前字符无法同时选中，取“舍弃 c1”或“舍弃 c2”这两种情况中的最大值
+                    // dp[i-1][j] : 不考虑 text1 的当前字符 c1
+                    // dp[i][j-1] : 不考虑 text2 的当前字符 c2
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        // 最终答案存放在右下角，即完整 text1 和完整 text2 的 LCS 长度
+        return dp[m][n];
+    }
+
+
+    /**
+     * 567. Permutation in String
+     * 初始化约束：先把 s1 中出现的字符频次在 cnt 数组中记为负数（即 cnt[c]--）。
+     * 初始时，所有字符的 cnt 都不超过 0，且总计数为 -n。
+     * 维持规则：移动右指针 right 扩展窗口，将进入窗口的字符频次加 1（cnt[x]++）。只要 cnt 中任意字符的值大于 0，就代表这个字符在当前窗口里超量了。
+     * 收缩窗口：一旦某个字符频次超过 0，就必须右移左指针 left 缩小窗口，把离开窗口的字符频次减 1（--cnt），直到 cnt 中不再有大于 0 的字符。
+     * @param s1 s1
+     * @param s2 s2
+     * @return ans
+     */
+    public boolean checkInclusion(String s1, String s2) {
+        int n = s1.length(), m = s2.length();
+        if (n > m) return false;
+
+        // 1. 预处理 s1 的字符频次，全部记为负数（欠账状态）
+        int[] cnt = new int[26];
+        for (int i = 0; i < n; ++i) {
+            --cnt[s1.charAt(i) - 'a'];
+        }
+
+        int left = 0;
+        // 2. 移动右指针，不断把字符纳入窗口
+        for (int right = 0; right < m; ++right) {
+            int x = s2.charAt(right) - 'a';
+            // 加入字符，频次加 1
+            ++cnt[x];
+            // 3. 如果加入 x 后导致该字符超量（>0），收缩左指针，直到 x 不再超量
+            while (cnt[x] > 0) {
+                --cnt[s2.charAt(left) - 'a'];
+                ++left;
+            }
+
+            // 4. 在没有字符超量的前提下，窗口长度达到 n 即可判定成功
+            if (right - left + 1 == n) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 557. 反转字符串中的单词 III
+     * @param s s
+     * @return ans
+     */
+    public String reverseWords3(String s) {
+       return Arrays.stream(s.split(" ")).map(v -> new StringBuilder(v).reverse().toString())
+                .collect(Collectors.joining(" "));
+    }
+
+
+    /**
+     * 556. 下一个更大元素 III
+     * @param n n
+     * @return ans
+     */
+    public int nextGreaterElement(int n) {
+        char[] nums = Integer.toString(n).toCharArray();
+        int i = nums.length - 2;
+        while (i >= 0 && nums[i] >= nums[i + 1]) {
+            i--;
+        }
+        if (i < 0) {
+            return -1;
+        }
+        int j = nums.length - 1;
+        while (j >= 0 && nums[i] >= nums[j]) {
+            j--;
+        }
+        swap(nums, i, j);
+        reverse(nums, i + 1 , nums.length -1);
+        long ans = Long.parseLong(new String(nums));
+        return ans > Integer.MAX_VALUE ? -1 : (int) ans;
+    }
+
+    /**
+     * 551. 学生出勤记录 I
+     * @param s s
+     * @return ans
+     */
+    public boolean checkRecord(String s) {
+        int a = 0;
+        int l = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == 'A')  {
+                if (++a == 2) return false;
+            }
+            else if (c == 'L') {
+                 if (++l >= 3) return false;
+                continue;
+            }
+            l = 0;
+        }
+        return true;
+    }
+
+
+    /**
+     * 541. 反转字符串 II
+     * @param s s
+     * @param k k
+     * @return ans
+     */
+    public String reverseStr(String s, int k) {
+        StringBuilder sb = new StringBuilder(s.length());
+        for (int i = 0; i < s.length(); i = i+2*k) {
+            for (int j = Math.min(i+k-1, s.length() -1); j >= i ; j--) {
+                sb.append(s.charAt(j));
+            }
+            if (i+k < s.length()) sb.append(s, i+k, Math.min(i+2*k, s.length()));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 539. 最小时间差
+     * @param timePoints list
+     * @return ans
+     */
+    public int findMinDifference(List<String> timePoints) {
+        // 最多只有1440分钟，多了就说明一定有重复
+        if (timePoints.size() > 1440) {
+            return 0;
+        }
+        timePoints.sort(Comparator.naturalOrder());
+        int ans =  strToTime(timePoints.get(0)) + 1440 - strToTime(timePoints.get(timePoints.size() -1));
+        for (int i = 0; i < timePoints.size() -1; i++) {
+           int diff =  strToTime(timePoints.get(i+1)) - strToTime(timePoints.get(i));
+           ans = Math.min(ans, diff);
+           // 0是最小值了，可以直接返回
+           if (ans == 0) { return 0; }
+        }
+        return ans;
+    }
+    private int strToTime(String s) {
+        String[] split = s.split(":");
+        int hour = Integer.parseInt(split[0]);
+        int minute = Integer.parseInt(split[1]);
+        return hour * 60 + minute;
+    }
+
+
+    /**
+     * 537. 复数乘法
+     * 公式为：\((a+bi)(c+di) = (ac-bd) + (ad+bc)i\)。
+     * 展开括号：像普通多项式一样做乘法，得到 \(ac + adi + bci + bdi^2\)
+     * 替换 \(i^{2}\)：因为 \(i^2 = -1\)，所以最后一项 \(bdi^{2}\) 变成 \(-bd\)
+     * @param num1 num1
+     * @param num2 num2
+     * @return ans
+     */
+    public String complexNumberMultiply(String num1, String num2) {
+        int p1 = num1.indexOf("+");
+        int p2 = num2.indexOf("+");
+        int a = Integer.parseInt(num1.substring(0, p1));
+        int b = Integer.parseInt(num1.substring(p1 + 1, num1.length() -1));
+        int c = Integer.parseInt(num2.substring(0, p2));
+        int d = Integer.parseInt(num2.substring(p2 + 1, num2.length() -1));
+        int n1 = a *c -b *d;
+        int n2 = a *d + b*c;
+        return  n1 +  "+" + n2 + "i";
+    }
+
+
+    /**
+     * 524. 通过删除字母匹配到字典里最长单词
+     * @param s s
+     * @param dictionary dict
+     * @return ans
+     */
+    public String findLongestWord(String s, List<String> dictionary) {
+        String ans = "";
+        for (String dic : dictionary) {
+            if (!isSubseq(dic, s)) continue;
+            // 返回长度最长且字母序最小的字符串
+            if (dic.length() > ans.length() || (dic.length() == ans.length() && dic.compareTo(ans) < 0 ) ) {ans = dic;}
+        }
+        return ans;
+    }
+
+    /**
+     * 用来判断s 是否为t的子序列，
+     * @param s s
+     * @param t t
+     * @return ans
+     */
+    public boolean isSubseq(String s, String t) {
+        int ptS = 0, ptT = 0;
+        while (ptS < s.length() && ptT < t.length()) {
+            if (s.charAt(ptS) == t.charAt(ptT)) {
+                ++ptS;
+            }
+            ++ptT;
+        }
+        return ptS == s.length();
+    }
+
+
+    /**
+     * 522. 最长特殊序列 II
+     * @param strs strs
+     * @return ans
+     */
+    public int findLUSlength(String[] strs) {
+        int ans = -1;
+        for (int i = 0; i < strs.length; i++) {
+            boolean check = true;
+            for (int j = 0; j < strs.length; j++) {
+                if (i == j) continue;
+                check = !isSubseq(strs[i], strs[j]);
+                if (!check) break;
+            }
+            if (check) {
+                ans = Math.max(ans, strs[i].length());
+            }
+        }
+        return ans;
+    }
+
+
+
+    /**
+     * 521. 最长特殊序列 Ⅰ
+     * @param a a
+     * @param b b
+     * @return ans
+     */
+    public int findLUSlength(String a, String b) {
+        return !a.equals(b) ? Math.max(a.length(), b.length()) : -1;
+    }
+
+    /**
+     * 520. 检测大写字母
+     * @param word word
+     * @return ans
+     */
+    public boolean detectCapitalUse(String word) {
+        if (word.length() <= 1) return true;
+        boolean isUpper = Character.isUpperCase(word.charAt(1));
+        if (isUpper && Character.isLowerCase(word.charAt(0))) return false;
+        for (int i = 2; i < word.length(); i++) {
+            if (isUpper) {
+                 if (Character.isLowerCase(word.charAt(i))) return false;
+             } else if (Character.isUpperCase(word.charAt(i))) return false;
+        }
+        return true;
+    }
+
+    /**
+     * 500. 键盘行
+     * @param words words
+     * @return ans
+     */
+    public String[] findWords(String[] words) {
+        // 字符mapping到的行数，方便查找判断
+        String mapString = "12210111011122000010020202";
+        List<String> ans = new ArrayList<>();
+        for (String word : words) {
+            int i;
+            char c = mapString.charAt(Character.toLowerCase(word.charAt(0)) - 'a');
+            for (i = 1; i < word.length(); i++) {
+                if (mapString.charAt(Character.toLowerCase(word.charAt(i)) - 'a') != c) { break;}
+            }
+            // 说明没有触发break，都是同一行
+            if (i == word.length()) ans.add(word);
+        }
+        return ans.toArray(new String[0]);
+    }
+
+    /**
+     * 482. 密钥格式化
+     * @param s s
+     * @param k k
+     * @return ans
+     */
+    public String licenseKeyFormatting(String s, int k) {
+        StringBuilder ans = new StringBuilder();
+        int cnt = 0;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            if (s.charAt(i) == '-') continue;
+            cnt++;
+            ans.append(Character.toUpperCase(s.charAt(i)));
+            if (cnt % k == 0) ans.append("-");
+        }
+        if (ans.length() > 0 && ans.charAt(ans.length() - 1) == '-') ans.deleteCharAt(ans.length() - 1);
+        return ans.reverse().toString();
+    }
+
+
+    public String validIPAddress(String queryIP) {
+        if (queryIP.length() < 7 || queryIP.length() >= 40) return "Neither";
+        if (queryIP.contains(".")) {
+            if (queryIP.startsWith(".") || queryIP.endsWith(".")) return "Neither";
+            if (queryIP.length() > 15) return "Neither";
+            String[] split = queryIP.split("\\.");
+            if (split.length != 4) return "Neither";
+            for (String s : split) {
+                if (s.isEmpty() || (s.length() > 1 &&s.charAt(0) == '0') || s.length() > 3 || s.compareTo("255") > 0) return "Neither";
+                for (int i = 0; i < s.length(); i++) {
+                   if (!Character.isDigit(s.charAt(i))  ) return "Neither";
+                }
+            }
+            return "IPv4";
+        } else if (queryIP.contains(":")) {
+            if (queryIP.startsWith(":") || queryIP.endsWith(":")) return "Neither";
+            String[] split = queryIP.split(":");
+            if (split.length != 8) return "Neither";
+            for (String s : split) {
+                if (s.isEmpty() || s.length() > 4 || s.compareTo("ffff") > 0) return "Neither";
+                for (int i = 0; i < s.length(); i++) {
+                    if (!Character.isLetterOrDigit(s.charAt(i)) || Character.toLowerCase(s.charAt(i)) > 'f') return "Neither";
+                }
+            }
+            return "IPv6";
+        }
+        return "Neither";
+    }
+
+
+    /**
+     * 467. 环绕字符串中唯一的子字符串
+     * @param s s
+     * @return ans
+     */
+    public int findSubstringInWraproundString(String s) {
+        // dp[i] 表示以字符 ('a' + i) 结尾的最长合法子串长度
+        int[] dp = new int[26];
+        // 当前连续递增子串的长度
+        int k = 0;
+        for (int i = 0; i < s.length(); i++) {
+            // 字符之差为 1 或 -25
+            if (i > 0 && (s.charAt(i) - s.charAt(i - 1) + 26) % 26 == 1 ) {
+                k++;
+            } else {
+                // 重新开始计算连续长度
+                k = 1;
+            }
+            // 更新以当前字符结尾的最长连续长度（自动去重）
+            int index = s.charAt(i) - 'a';
+            dp[index] = Math.max(dp[index], k);
+        }
+        // 累加所有以不同字符结尾的子串数量
+        return Arrays.stream(dp).sum();
+    }
+
+
+    /**
+     * 459. 重复的子字符串
+     * @param s s
+     * @return ans
+     */
+    public boolean repeatedSubstringPattern(String s) {
+//        return (s + s).indexOf(s, 1) != s.length();
+        int n = s.length();
+        for (int i = 0; i < n/2; i++) {
+            if (s.charAt(0) != s.charAt(i+1) || s.charAt(i) != s.charAt(n -1)) continue;
+            int t = n/(i +1);
+            if (t * (i +1) != n) continue;
+            if (s.equals(s.substring(0, i + 1).repeat(t))) return true;
+        }
+        return false;
+    }
+
+    public int compress(char[] chars) {
+        int l = 1, r = 1;
+        int num = 1;
+        char before = chars[0];
+        while (r < chars.length) {
+            if (chars[r] == before) {
+                num++;
+                if (num == 1) l++;
+                before = chars[r];
+            } else {
+                before = chars[r];
+                if (num > 1) {
+                    String numStr = Integer.toString(num);
+                    for (int i = 0; i < numStr.length(); i++) {
+                        chars[l++] = numStr.charAt(i);
+                    }
+                    num = 1;
+                }
+                chars[l++] = before;
+            }
+            r++;
+        }
+        if (num > 1) {
+            String numStr = Integer.toString(num);
+            for (int i = 0; i < numStr.length(); i++) {
+                chars[l++] = numStr.charAt(i);
+            }
+        }
+        return l;
+    }
+
+
+    public List<Integer> findAnagrams(String s, String p) {
+        if (p.length() > s.length()) return Collections.emptyList();
+        int[] map = new int[128];
+        for (int i = 0; i < p.length(); i++) {
+            map[p.charAt(i)]++;
+        }
+        List<Integer> ans = new ArrayList<>();
+        int start = 0;
+        int end = 0;
+        int cur = 0;
+        while(end < s.length()) {
+            if (map[s.charAt(end)] == 0 ) {
+              if (start < end) {map[s.charAt(start)]++; start++; cur--;}
+              else { end++; start = end;}
+              continue;
+            }
+            map[s.charAt(end)]--;
+            cur++;
+            if (cur == p.length()) {ans.add(start); map[s.charAt(start)]++; start++;cur--; }
+            end++;
+        }
+        return ans;
+    }
+
+
+    public List<String> fizzBuzz(int n) {
+        List<String> ans = new ArrayList<>(n);
+        for (int i = 0; i < n; i++) {
+            if (i % 3 == 0 && i % 5 == 0) {
+                ans.add("FizzBuzz");
+            } else if (i % 3 == 0) {
+                ans.add("Fizz");
+            }  else if (i % 5 == 0) {
+                ans.add("Buzz");
+            }else  {
+                ans.add(String.valueOf(i));
+            }
+        }
+        return ans;
+    }
+
+    public int longestPalindrome(String s) {
+        int[] chars = new int[128];
+        for (int i = 0; i < s.length(); i++) chars[s.charAt(i)]++;
+        int max = 0;
+        for (int i = 0; i < 128; i++) {
+            // 如果是偶数全部取，奇数还要减一，&1如果是奇数刚好是1
+            max += chars[i] - (chars[i] & 1);
+        }
+        // 因为中间还可以有1位，如果有多余的字符，可以放到中间
+        return max == s.length() ? max : max + 1;
+    }
+
+
+    public int longestSubstring(String s, int k) {
+        int n = s.length();
+        return longestSubstringDfs(s, 0, n - 1, k);
+    }
+
+    public int longestSubstringDfs(String s, int l, int r, int k) {
+        int[] cnt = new int[26];
+        for (int i = l; i <= r; i++) {
+            cnt[s.charAt(i) - 'a']++;
+        }
+
+        char split = 0;
+        for (int i = 0; i < 26; i++) {
+            if (cnt[i] > 0 && cnt[i] < k) {
+                split = (char) (i + 'a');
+                break;
+            }
+        }
+        if (split == 0) {
+            return r - l + 1;
+        }
+
+        int i = l;
+        int ret = 0;
+        while (i <= r) {
+            while (i <= r && s.charAt(i) == split) {
+                i++;
+            }
+            if (i > r) {
+                break;
+            }
+            int start = i;
+            while (i <= r && s.charAt(i) != split) {
+                i++;
+            }
+
+            int length = longestSubstringDfs(s, start, i - 1, k);
+            ret = Math.max(ret, length);
+        }
+        return ret;
+    }
+
+
+
+    // a1[2[b]c]d
+    public String decodeString(String s) {
+        if  (s == null || s.isEmpty()) {
+            return s;
+        }
+        LinkedList<StringBuilder> strStack = new LinkedList<>();
+        LinkedList<Integer> numStack = new LinkedList<>();
+        strStack.push(new StringBuilder());
+        int i = 0;
+        while (i < s.length()) {
+            char c = s.charAt(i);
+            if (Character.isDigit(c)) {
+                int j = i + 1;
+                while (j < s.length() && Character.isDigit(s.charAt(j))) {j++;}
+                int num = Integer.parseInt(s.substring(i, j));
+                numStack.push(num);
+                i = j - 1;
+            }
+            else if (c == '[') {
+                strStack.push(new StringBuilder());
+            } else if( c == ']') {
+                if (!numStack.isEmpty() && strStack.size() > 1) {
+                    StringBuilder pop1 = strStack.pop();
+                    int num = numStack.pop();
+                    while (--num >= 0) {
+                        strStack.peek().append(pop1);
+                    }
+                }
+            } else {
+                strStack.peek().append(c);
+            }
+            i++;
+        }
+        return strStack.peek().toString();
+    }
+
+    public boolean validUtf8(int[] data) {
+        if (data == null || data.length == 0) {return true;}
+        int sub = 0;
+        for (int datum : data) {
+            if (sub == 0) {
+                if ((datum & 0xc0) == 0x80) {
+                    return false;
+                } else if ((datum & 0x80) == 0) {
+                    continue;
+                } else if ((datum & 0xe0) == 0xc0) {
+                    sub = 1;
+                } else if ((datum & 0xf0) == 0xe0) {
+                    sub = 2;
+                } else  if ((datum & 0xf8) == 0xf0) {
+                    sub = 3;
+                }else {
+                    return false ;
+                }
+            } else {
+                if ((datum & 0xc0) == 0x80 && sub > 0) {
+                    sub--;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return sub == 0;
+    }
+
+
+    public int countSegments(String s) {
+        if (s == null || s.isEmpty()) return 0;
+        int ans = 0;
+        int i = 0;
+        boolean found = false;
+        while(i < s.length()) {
+            if (s.charAt(i) != ' ') {
+               if (!found) {ans++; found = true;}
+            }  else {
+                found = false;
+            }
+            i++;
+        }
+        return ans;
+    }
+
+
+
+    public String originalDigits(String s) {
+        int [] c = new int[128];
+        for (int i = 0; i < s.length(); i++) {
+            c[s.charAt(i) ]++;
+        }
+
+        int[] cnt = new int[10];
+        cnt[0] = c['z' ];
+        cnt[2] = c['w'];
+        cnt[4] = c['u'];
+        cnt[6] = c['x'];
+        cnt[8] = c['g'];
+
+        cnt[3] = c['h'] - cnt[8];
+        cnt[5] = c['f'] - cnt[4];
+        cnt[7] = c['s'] - cnt[6];
+
+        cnt[1] = c['o'] - cnt[0] - cnt[2] - cnt[4];
+
+        cnt[9] = c['i'] - cnt[5] - cnt[6] - cnt[8];
+
+        StringBuilder ans = new StringBuilder();
+        for (int i = 0; i < 10; ++i) {
+            for (int j = 0; j < cnt[i]; ++j) {
+                ans.append(i);
+            }
+        }
+        return ans.toString();
+    }
+
+    public boolean isSubsequence(String s, String t) {
+        if (s == null || s.isEmpty()) {return true;}
+        int s1 = 0, t1 = 0;
+        while (s1 < s.length() && t1 < t.length() ) {
+            if (s.charAt(s1) == t.charAt(t1++)) {s1++;}
+        }
+        return s1 == s.length();
+    }
+
+    public char findTheDifference(String s, String t) {
+        if (s == null || s.isEmpty()) {return t.charAt(0);}
+        char res = 0;
+        for (int i = 0; i < s.length(); i++) {
+            res ^= s.charAt(i);
+        }
+        for (int i = 0; i < t.length(); i++) {
+            res ^= t.charAt(i);
+        }
+        return res;
+    }
+
+
+    public int lengthLongestPath(String input) {
+        if (input == null || input.isEmpty()) { return 0; }
+        List<Integer> dir = new ArrayList<>();
+        dir.add(0);
+        int cur = 0;
+        int level = 1;
+        int max = 0;
+        boolean isFile = false;
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            if (c == '\t') { level++; }
+            else if (c == '\n') {
+                    if (isFile) {
+                        max = Math.max(max, cur + dir.get(level - 1));
+                    } else {
+                        if (level >= dir.size()) {
+                            dir.add(dir.get(level - 1) + cur + 1);
+                        } else {
+                            dir.set(level, dir.get(level - 1) + cur + 1);
+                        }
+                    }
+                    cur = 0;
+                    level = 1;
+                    isFile = false;
+            } else {
+                if (c == '.') isFile = true;
+                cur++;
+            }
+        }
+        if (isFile) {
+            max = Math.max(max, cur + dir.get(level - 1));
+        }
+        return max;
+    }
+
+    boolean isBase(char c) {
+       return "aeiouAEIOU".indexOf(c) != -1;
+    }
+
+    public String reverseVowels(String s) {
+        int n = s.length();
+        int i= 0, j = n-1;
+        char[] chars = s.toCharArray();
+        while (i <= j) {
+            while(i < j && !isBase(chars[i])) {
+                i++;
+            }
+            while(i < j && !isBase(chars[j])) {
+                j--;
+            }
+            swap(chars, i, j);
+            i++;j--;
+        }
+        return new String(chars);
+    }
+
+
+
+    public void reverseString(char[] s) {
+         int i = 0, j = s.length -1;
+        while (i < j) {
+            char temp = s[i];
+            s[i] = s[j];
+            s[j] = temp;
+            i++; j--;
+        }
+    }
+
 
     public String removeDuplicateLetters(String s) {
         int n = s.length();

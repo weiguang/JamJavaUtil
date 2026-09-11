@@ -11,8 +11,185 @@ public class Grid {
     public static void main(String[] args) {
         System.out.println("Default main method!");
     }
+
     private final static int[][] DIRECTIONS4 = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
-    int[][] direction = new int[][] {{-1,-1},{-1,0},{-1,1}, {0,-1},{0,1}, {1,-1},{1,0},{1,1}};
+    private final int[][] direction = new int[][] {{-1,-1},{-1,0},{-1,1}, {0,-1},{0,1}, {1,-1},{1,0},{1,1}};
+
+
+    /**
+     * 576. Out of Boundary Paths
+     * 定义 dp[i][j][k] 表示球移动 i 次之后位于坐标 (j,k) 的路径数量。当 i=0 时，球一定位于起始坐标 (startRow,startColumn)
+     * 因此动态规划的边界情况是：dp[0][startRow][startColumn]=1，当 (j,k) != (startRow,startColumn) 时有 dp[0][j][k]=0
+     * 当 0≤j′<m 且 0≤k′<n 时，球在移动 i+1 次之后没有出界，将 dp[i][j][k] 的值加到 dp[i+1][j′][k′]；
+     * 否则，球在第 i+1 次移动之后出界，将 dp[i][j][k] 的值加到出界的路径数。
+     * 注意到 dp[i][][] 只在计算 dp[i+1][][] 时会用到，因此可以将 dp 中的移动次数的维度省略，将空间复杂度优化到 O(m×n)
+     * @param m m
+     * @param n n
+     * @param maxMove maxMove
+     * @param startRow startRow
+     * @param startColumn startColumn
+     * @return ans
+     */
+    public int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
+        final int MOD = 1000000007;
+        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        int outCounts = 0;
+        int[][] dp = new int[m][n];
+        dp[startRow][startColumn] = 1;
+        for (int i = 0; i < maxMove; i++) {
+            int[][] dpNew = new int[m][n];
+            for (int j = 0; j < m; j++) {
+                for (int k = 0; k < n; k++) {
+                    int count = dp[j][k];
+                    if (count <= 0) continue;
+                    for (int[] direction : directions) {
+                        int j1 = j + direction[0], k1 = k + direction[1];
+                        if (j1 >= 0 && j1 < m && k1 >= 0 && k1 < n) {
+                            dpNew[j1][k1] = (dpNew[j1][k1] + count) % MOD;
+                        } else {
+                            outCounts = (outCounts + count) % MOD;
+                        }
+                    }
+                }
+            }
+            dp = dpNew;
+        }
+        return outCounts;
+    }
+
+    /**
+     * 566. Reshape the Matrix
+     * @param mat mat
+     * @param r r
+     * @param c c
+     * @return ans
+     */
+    public int[][] matrixReshape(int[][] mat, int r, int c) {
+        int m = mat.length, n = mat[0].length;
+        int total = m * n;
+        if (total  != r * c) return mat;
+        int[][] ans = new int[r][c];
+        for (int i = 0; i < total; i++) {
+            ans[i/c][i % c] = mat[i/n][i %n];
+        }
+        return ans;
+    }
+
+    /**
+     * 542. 01 矩阵
+     * @param mat mat
+     * @return ans
+     */
+    public int[][] updateMatrix(int[][] mat) {
+        int m = mat.length;
+        int n = mat[0].length;
+        int[][] ans = new int[m][n];
+        Queue<int[]> queue = new LinkedList<>();
+        for (int i = 0; i < mat.length; i++) {
+            for (int j = 0; j < mat[0].length; j++) {
+                if (mat[i][j] == 0) {
+                    queue.offer(new int[]{i, j});
+                } else {
+                    ans[i][j] = -1;
+                }
+            }
+        }
+        while (!queue.isEmpty()) {
+            int[] cur = queue.poll();
+            int x = cur[0];
+            int y = cur[1];
+            for (int k = 0; k < 4; k++) {
+                int nx = x + DIRECTIONS4[k][0];
+                int ny = y + DIRECTIONS4[k][1];
+                if (nx >= 0 && nx < m && ny >= 0 && ny < n && ans[nx][ny] == -1) {
+                    ans[nx][ny] = ans[x][y] + 1;
+                    // 新增之后，继续遍历
+                    queue.offer(new int[]{nx, ny});
+                }
+            }
+        }
+        return ans;
+    }
+
+    public int[][] updateMatrixDP(int[][] mat) {
+        int m = mat.length;
+        int n = mat[0].length;
+        int[][] ans = new int[m][n];
+        int INF = m + n; // 安全上限，避免 Integer.MAX_VALUE + 1 溢出
+
+        // 初始化：0 保持 0，1 先置为 INF
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++)
+                ans[i][j] = mat[i][j] == 0 ? 0 : INF;
+
+        // 第一遍：上、左
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (mat[i][j] == 1) {
+                    if (i > 0)     ans[i][j] = Math.min(ans[i][j], ans[i - 1][j] + 1);
+                    if (j > 0)     ans[i][j] = Math.min(ans[i][j], ans[i][j - 1] + 1);
+                }
+            }
+        }
+
+        // 第二遍：下、右
+        for (int i = m - 1; i >= 0; i--) {
+            for (int j = n - 1; j >= 0; j--) {
+                if (mat[i][j] == 1) {
+                    if (i < m - 1) ans[i][j] = Math.min(ans[i][j], ans[i + 1][j] + 1);
+                    if (j < n - 1) ans[i][j] = Math.min(ans[i][j], ans[i][j + 1] + 1);
+                }
+            }
+        }
+        return ans;
+    }
+
+
+
+    /**
+         * 529. 扫雷游戏 529. Minesweeper
+         * @param board board
+         * @param click click
+         * @return ans
+         */
+    public char[][] updateBoard(char[][] board, int[] click) {
+       if(board[click[0]][click[1]] == 'M') {
+           board[click[0]][click[1]] = 'X';
+           return board;
+       }
+        updateBoard(board, click[0],click[1]);
+       return board;
+    }
+
+    public void updateBoard(char[][] board, int i, int j) {
+        if (board[i][j] != 'E' ) return;
+        // 设置为 空格 避免被重复查找
+        board[i][j] = ' ';
+        // 8个方向雷的数量
+        int cnt = 0;
+        for (int[] ints : direction) {
+          int i1 = i + ints[0];
+          int j1 = j + ints[1];
+          if (i1 < 0 || i1 == board.length || j1 < 0 || j1 == board[0].length ) continue;
+          if ( board[i1][j1] =='M') cnt++;
+        }
+        // 如果周边没有雷，需要递归查找E的空格
+        if (cnt == 0) {
+            for (int[] ints : direction) {
+                int i1 = i + ints[0];
+                int j1 = j + ints[1];
+                if (i1 < 0 || i1 == board.length || j1 < 0 || j1 == board[0].length ) continue;
+                updateBoard(board, i1, j1);
+            }
+        }
+        // 如果8 个方向都没有雷，可以设置为B，否则显示数量
+        if (cnt == 0) {
+            board[i][j] = 'B';
+        } else {
+            board[i][j] = (char)(cnt + '0');
+        }
+    }
+
 
     /**
      * 310. 最小高度树
@@ -600,12 +777,13 @@ public class Grid {
 
     /**
      * 463. 岛屿的周长
-     * https://leetcode.cn/problems/island-perimeter/
-     *
-     * @param grid
-     * @return
+     * <a href="https://leetcode.cn/problems/island-perimeter/">463. 岛屿的周长</a>
+     * 第一种检查四个方向的情况
+     * 后面有一种更好的写法，检查有相连的领边，减少了两个方向
+     * @param grid grid
+     * @return ans
      */
-    public int islandPerimeter(int[][] grid) {
+    public int islandPerimeter1(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
         int re = 0;
@@ -632,12 +810,34 @@ public class Grid {
         return 0;
     }
 
+    public int islandPerimeter(int[][] grid) {
+        // 举例推导出公式 res = 4 * 岛屿格子数量 - 2 * 岛屿格子之间的相邻边
+        // 每个格子4条边，只要有相邻的格子，那么旧会少2条边
+        int m = 0, n= 0;
+        if(grid == null || (m = grid.length) == 0 || (n = grid[0].length) == 0) return 0;
+
+        int count = 0; // 岛屿格子数量
+        int edge = 0; // 岛屿格子之间的相邻边
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(grid[i][j] == 0) continue;
+                count++;
+                // 判断右边是不是 陆地格子
+                if(j+1 < n && grid[i][j+1] == 1)    edge++;
+                // 判断下面是不是 陆地格子
+                if(i+1 < m && grid[i+1][j] == 1)    edge++;
+            }
+        }
+        return 4 * count - 2 * edge;
+    }
+
+
     /**
      * 200. 岛屿数量
-     * https://leetcode.cn/problems/number-of-islands/
+     * <a href="https://leetcode.cn/problems/number-of-islands/">200. 岛屿数量</a>
      *
-     * @param grid
-     * @return
+     * @param grid grid
+     * @return ans
      */
     public int numIslands(char[][] grid) {
         int m = grid.length;

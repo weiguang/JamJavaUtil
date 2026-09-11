@@ -1,7 +1,6 @@
 package com.okayjam.code.leetcode;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import com.okayjam.code.leetcode.LinkedListJam.ListNode;
 
@@ -12,13 +11,356 @@ import com.okayjam.code.leetcode.LinkedListJam.ListNode;
 public class Tree {
 
     public static void main(String[] args) {
-        TreeNode left = new TreeNode(3, null, null);
-        TreeNode right = new TreeNode(15, null, null);
-        TreeNode root = new TreeNode(7, left, right);
-        BSTIterator iterator = new BSTIterator(root);
-        while (iterator.hasNext()) {
-            System.out.println(iterator.next());
+//        TreeNode left = new TreeNode(3, null, null);
+//        TreeNode right = new TreeNode(15, null, null);
+//        TreeNode root = new TreeNode(7, left, right);
+//        BSTIterator iterator = new BSTIterator(root);
+//        while (iterator.hasNext()) {
+//            System.out.println(iterator.next());
+//        }
+        new Tree().isValidSerialization("9,3,4,#,#,1,#,#,2,#,6,#,#");
+    }
+
+    /**
+     * 572. Subtree of Another Tree
+     * @param root root
+     * @param subRoot s
+     * @return ans
+     */
+    public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+        if (root == null) return false;
+        return isSubtreeCheck(root, subRoot) || isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
+    }
+
+    public boolean isSubtreeCheck(TreeNode root, TreeNode subRoot ) {
+        if(root == null && subRoot == null) return true;
+        if(root == null || subRoot == null || root.val != subRoot.val) {return false;}
+        return isSubtreeCheck(root.left, subRoot.left) && isSubtreeCheck(root.right, subRoot.right);
+    }
+
+
+    /**
+     * 563. Binary Tree Tilt
+     * @param root root
+     * @return ans
+     */
+    public int findTilt(TreeNode root) {
+        findTiltDfs(root);
+        return findTiltAns;
+    }
+
+    int findTiltAns = 0;
+    public int findTiltDfs(TreeNode root) {
+        if (root == null) return 0;
+        int left = findTiltDfs(root.left);
+        int right = findTiltDfs(root.right);
+        findTiltAns += Math.abs(left - right);
+        return root.val + left + right;
+    }
+
+
+        /**
+         * 543. 二叉树的直径
+         * @param root root
+         * @return ans
+         */
+    public int diameterOfBinaryTree(TreeNode root) {
+        diameterOfBinaryTreeDeep(root);
+        return diameterOfBinaryTreeAns;
+    }
+
+    int diameterOfBinaryTreeAns = 0;
+    public int diameterOfBinaryTreeDeep(TreeNode root) {
+        if (root == null) return 0;
+        int left = diameterOfBinaryTreeDeep(root.left);
+        int right = diameterOfBinaryTreeDeep(root.right);
+        diameterOfBinaryTreeAns = Math.max(diameterOfBinaryTreeAns, left + right);
+        return Math.max(left, right) + 1;
+    }
+
+
+    /**
+     * 538. 把二叉搜索树转换为累加树
+     * @param root root
+     * @return ans
+     */
+    public TreeNode convertBST(TreeNode root) {
+        if (root == null) { return null; }
+        convertBST(root.right);
+        convertBSTSum += root.val;
+        root.val = convertBSTSum;
+        convertBST(root.left);
+        return root;
+    }
+    int convertBSTSum = 0;
+
+
+
+    /**
+     * 530. 二叉搜索树的最小绝对差
+     * 中序遍历可以得到有序序列
+     * @param root root
+     * @return ans
+     */
+    public int getMinimumDifference(TreeNode root) {
+        getMinimumDifferenceDfs(root);
+        return minimumDifferenceAns;
+    }
+
+    int minimumDifferenceAns = Integer.MAX_VALUE;
+    int minimumDifferencePre = -1;
+    private void getMinimumDifferenceDfs(TreeNode root) {
+        if (root == null) {
+            return;
         }
+        getMinimumDifferenceDfs(root.left);
+        // 中序遍历， 不过需要记住 前一个节点的信息，所以加了个pre全局参数
+        if (minimumDifferencePre == -1) {
+            minimumDifferencePre = root.val;
+        } else {
+            minimumDifferenceAns = Math.min(minimumDifferenceAns, root.val - minimumDifferencePre);
+            minimumDifferencePre = root.val;
+        }
+        getMinimumDifferenceDfs(root.right);
+    }
+    
+
+
+
+        public List<Integer> largestValues(TreeNode root) {
+        if(root == null) return Collections.emptyList();
+        List<Integer> ans = new LinkedList<>();
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            int max = Integer.MIN_VALUE;
+            for (int i = 0; i < size; i++) {
+                TreeNode p = queue.poll();
+                max = Math.max(max, p.val);
+                if (p.left != null) queue.add(p.left);
+                if (p.right != null) queue.add(p.right);
+            }
+            ans.add(max);
+        }
+        return ans;
+    }
+
+    /**
+     * 513. 找树左下角的值 Find Bottom Left Tree Value
+     * 使用广度优先搜索遍历每一层的节点。在遍历一个节点时，需要先把它的非空右子节点放入队列，然后再把它的非空左子节点放入队列，这样才能保证从右到左遍历每一层的节点
+     * 。广度优先搜索所遍历的最后一个节点的值就是最底层最左边节点的值。
+     * @param root root
+     * @return ans
+     */
+    public int findBottomLeftValue(TreeNode root) {
+        int ret = 0;
+        Queue<TreeNode> queue = new ArrayDeque<TreeNode>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            TreeNode p = queue.poll();
+            if (p.right != null) {
+                queue.offer(p.right);
+            }
+            if (p.left != null) {
+                queue.offer(p.left);
+            }
+            ret = p.val;
+        }
+        return ret;
+    }
+
+
+    public int findBottomLeftValue2(TreeNode root) {
+        findFrequentTreeSum(root, 1);
+        return findBottomLeftValue;
+    }
+
+    int findBottomLeftValue;
+    int findBottomLeftValueDeep = 0;
+    public void findFrequentTreeSum(TreeNode root, int deep) {
+        if (root == null) return;
+        if ((root.left == null && root.right == null) && deep > findBottomLeftValueDeep) {
+            findBottomLeftValueDeep = deep;
+            findBottomLeftValue = root.val;
+        }
+        findFrequentTreeSum(root.left, deep + 1);
+        findFrequentTreeSum(root.right, deep + 1);
+    }
+
+    /**
+     * 508. 出现次数最多的子树元素和
+     * @param root root
+     * @return ans
+     */
+    public int[] findFrequentTreeSum(TreeNode root) {
+        if (root == null) return null;
+        Map<Integer, Integer> map = new HashMap<>();
+        findFrequentTreeSum(root, map);
+        return map.entrySet().stream().filter(v -> v.getValue() == findFrequentTreeSumMaxCnt).mapToInt(Map.Entry::getKey).toArray();
+    }
+
+    int findFrequentTreeSumMaxCnt = 0;
+    public int findFrequentTreeSum(TreeNode root, Map<Integer, Integer> map) {
+        if (root == null) return 0 ;
+        int sum =root.val + findFrequentTreeSum(root.left, map) +  findFrequentTreeSum(root.right, map);
+        int cnt = map.merge(sum, 1, Integer::sum);
+        // 更新最大值
+        findFrequentTreeSumMaxCnt = Math.max(findFrequentTreeSumMaxCnt, cnt);
+        return sum;
+    }
+
+    /**
+     * 501. 二叉搜索树中的众数
+     * @param root root
+     * @return ans
+     */
+    public int[] findMode(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        // 使用content传递这几个参数，这个几参数会更新 int base = 0, count = 0, max = 0;
+        int[] content = new int[3];
+        findModeDfs(root, content, ans);
+        return ans.stream().mapToInt(Integer::intValue).toArray();
+    }
+
+    private void findModeDfs(TreeNode root, int[] content, List<Integer> ans) {
+        if (root == null) return;
+        findModeDfs(root.left, content, ans);
+        findModeUpdate(root.val, content, ans);
+        findModeDfs(root.right, content, ans);
+    }
+
+    private void findModeUpdate(int val, int[] content, List<Integer> ans) {
+        if (val == content[0]) content[1]++;
+        else {content[0] = val; content[1] = 1;}
+        if (content[1] == content[2]) ans.add(val);
+        else if (content[1] > content[2]) {
+            content[2] = content[1];
+            ans.clear();
+            ans.add(val);
+        }
+    }
+
+
+
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if (root == null) return root;
+        if (root.val == key) {
+            if (root.right == null && root.left == null) {
+                return null;
+            }
+            if (root.right == null  ) {
+                return root.left;
+            }
+            if (root.left == null) {
+                return root.right;
+            }
+            TreeNode successor = root.right;
+            while (successor.left != null) {
+                successor = successor.left;
+            }
+            root.right = deleteNode(root.right, successor.val);
+            successor.right = root.right;
+            successor.left = root.left;
+            return successor;
+        } else if (root.val > key ) {
+            root.left = deleteNode(root.left, key);
+        } else  {
+            root.right = deleteNode(root.right, key);
+        }
+        return root;
+    }
+
+    public int pathSum(TreeNode root, int targetSum) {
+        Map<Long, Integer> prefix = new HashMap<>();
+        prefix.put(0L, 1);
+        return dfs(root, prefix, 0, targetSum);
+    }
+
+    public int dfs(TreeNode root, Map<Long, Integer> prefix, long curr, int targetSum) {
+        if (root == null) {
+            return 0;
+        }
+        int ret;
+        curr += root.val;
+
+        ret = prefix.getOrDefault(curr - targetSum, 0);
+        prefix.put(curr, prefix.getOrDefault(curr, 0) + 1);
+        ret += dfs(root.left, prefix, curr, targetSum);
+        ret += dfs(root.right, prefix, curr, targetSum);
+        prefix.put(curr, prefix.getOrDefault(curr, 0) - 1);
+
+        return ret;
+    }
+
+
+    public int sumOfLeftLeaves(TreeNode root) {
+        return sumOfLeftLeaves(root, false);
+    }
+
+    public int sumOfLeftLeaves(TreeNode root, boolean left) {
+        if (root == null) return 0;
+        if (root.left == null && root.right == null) return left ? root.val: 0;
+        return sumOfLeftLeaves(root.left, true) + sumOfLeftLeaves(root.right, false);
+    }
+
+
+    public int[] countBits(int n) {
+        int[] bits = new int[n + 1];
+        int highBit = 0;
+        for (int i = 1; i <= n; i++) {
+            if ((i & (i - 1)) == 0) {
+                highBit = i;
+            }
+            bits[i] = bits[i - highBit] + 1;
+        }
+        return bits;
+    }
+
+    public int[] countBits2(int n) {
+        int[] res = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            int t = i;
+            while (t != 0 ) {
+                t &= t - 1;
+                res[i]++;
+            }
+        }
+        return res;
+    }
+
+    public int rob(TreeNode root) {
+        int[] ints = robDfs(root);
+        return Math.max(ints[0], ints[1]);
+    }
+
+    public int[] robDfs(TreeNode root) {
+        if (root == null) {
+            return new int[2];
+        }
+        int[] left = robDfs(root.left);
+        int[] right = robDfs(root.right);
+        int selected = left[1] + right[1] + root.val;
+        int nonSelected = Math.max(left[0], left[1]) + Math.max(right[0], right[1]) ;
+        return new int[]{selected, nonSelected};
+    }
+
+
+    public boolean isValidSerialization(String preorder) {
+        int count = 0;
+        String[] split = preorder.split(",");
+        if ("#".equals(preorder)) return true;
+        if(split[0].charAt(0) == '#') {return false;}
+        count = 2;
+        for (int i = 1; i < split.length; i++) {
+            if (split[i].charAt(0) == '#') {
+                count--;
+                if (count == 0 && i < split.length -1) {return false;}
+            } else {
+                count++;
+            }
+        }
+        return count == 0;
     }
 
 
@@ -755,7 +1097,7 @@ public class Tree {
     }
 
 
-    TreeNode p = null;
+    TreeNode tp = null;
 
     public void flatten(TreeNode root) {
         if (root == null) {
@@ -765,11 +1107,11 @@ public class Tree {
         TreeNode left = root.left;
         root.left = null;
         root.right = null;
-        if (p == null) {
-            p = root;
+        if (tp == null) {
+            tp = root;
         } else {
-            p.right = root;
-            p = p.right;
+            tp.right = root;
+            tp = tp.right;
         }
         flatten(left);
         flatten(right);
@@ -783,8 +1125,8 @@ public class Tree {
         TreeNode left = root.left;
         root.left = null;
         root.right = null;
-        p.right = root;
-        p = p.right;
+        tp.right = root;
+        tp = tp.right;
         flatten1(left);
         flatten1(right);
     }
@@ -793,7 +1135,7 @@ public class Tree {
     List<List<Integer>> ans = new ArrayList<>();
     List<Integer> t = new ArrayList<>();
 
-    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+    public List<List<Integer>> pathSum1(TreeNode root, int targetSum) {
         if (root == null) {
             return ans;
         }
@@ -805,8 +1147,8 @@ public class Tree {
             t.remove(t.size() - 1);
             return ans;
         }
-        pathSum(root.left, targetSum - root.val);
-        pathSum(root.right, targetSum - root.val);
+        pathSum1(root.left, targetSum - root.val);
+        pathSum1(root.right, targetSum - root.val);
         t.remove(t.size() - 1);
         return ans;
     }

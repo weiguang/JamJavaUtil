@@ -1,8 +1,7 @@
 package com.okayjam.net.socket.tcp;
 
 
-import org.msgpack.MessagePack;
-import org.msgpack.template.Templates;
+
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -11,6 +10,9 @@ import java.net.Socket;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.*;
+import java.util.HashMap;
+import org.msgpack.core.MessagePack;
+import org.msgpack.core.MessageUnpacker;
 
 /**
  * Created by Weiguang Chen <chen2621978@gmail.com> on 2018/6/13 21:10.
@@ -68,8 +70,13 @@ class ServerTask implements Runnable {
             while (true) {
                 byte[] a = new byte[1024];
                 in.read(a);
-                MessagePack msgPack = new MessagePack();
-                Map<String, String> read = msgPack.read(a, Templates.tMap(Templates.TString, Templates.TString));
+                MessageUnpacker unpacker = MessagePack.newDefaultUnpacker(a);
+                int mapSize = unpacker.unpackMapHeader();
+                Map<String, String> read = new HashMap<>();
+                for (int i = 0; i < mapSize; i++) {
+                    read.put(unpacker.unpackString(), unpacker.unpackString());
+                }
+                unpacker.close();
                 System.out.println(new String(a));
 
                 BufferedOutputStream out = new BufferedOutputStream(task.getOutputStream());
