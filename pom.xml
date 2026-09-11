@@ -19,7 +19,7 @@
         <tess4j.version>4.6.1</tess4j.version>
         <selenium.version>4.34.0</selenium.version>
         <msgpack.version>0.9.12</msgpack.version>
-        <slf4j.version>2.0.18</slf4j.version>
+        <slf4j.version>2.25.3</slf4j.version>
         <mina.version>2.2.7</mina.version>
         <opencsv.version>5.12.0</opencsv.version>
     </properties>
@@ -221,7 +221,12 @@
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-reload4j</artifactId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.8.0-beta2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
         <!-- log -->
