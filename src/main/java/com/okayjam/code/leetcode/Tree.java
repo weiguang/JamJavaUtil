@@ -21,6 +21,15 @@ public class Tree {
         new Tree().isValidSerialization("9,3,4,#,#,1,#,#,2,#,6,#,#");
     }
 
+    public String tree2str(TreeNode root) {
+        if (root == null) return  "";
+        if (root.left == null && root.right == null) {
+            return "" + root.val ;
+        }
+        return String.format("%s(%s)%s", root.val, tree2str(root.left), root.right == null ? "" : "(" + tree2str(root.right) + ")");
+    }
+
+
     /**
      * 572. Subtree of Another Tree
      * @param root root

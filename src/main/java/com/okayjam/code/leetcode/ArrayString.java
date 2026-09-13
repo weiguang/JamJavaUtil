@@ -80,6 +80,25 @@ public class ArrayString {
     }
 
     /**
+     * 605. 种花问题
+     * @param flowerbed flowerbed
+     * @param n n
+     * @return ans
+     */
+    public boolean canPlaceFlowers(int[] flowerbed, int n) {
+        int pre = 0;
+        for (int i = 0; i < flowerbed.length - 1 && n > 0; i++) {
+            if (flowerbed[i] == 1) {pre = 1; continue;}
+            if (pre == 1 ) {pre = 0; continue;}
+            if (flowerbed[i + 1] == 1) {pre =1; i++; continue;}
+            n--;
+            pre = 1;
+        }
+        if (flowerbed[flowerbed.length -1] == 0 && pre == 0) n--;
+        return  n < 1;
+    }
+
+    /**
      * 600. 不含连续1的非负整数
      * @param n n
      * @return ans
