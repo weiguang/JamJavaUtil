@@ -63,6 +63,26 @@ public class StringJam {
     }
 
     /**
+     * 609. 在系统中查找重复文件
+     * @param paths paths
+     * @return ans
+     */
+    public List<List<String>> findDuplicate(String[] paths) {
+        Map<String, List<String>> map1 = new HashMap<>();
+        for (String path : paths) {
+            String[] split = path.split(" ");
+            String base  = split[0];
+            for (int i = 1; i < split.length; i++) {
+                int idx = split[i].indexOf('(');
+                String fileName = split[i].substring(0, idx);
+                String context = split[i].substring(idx + 1);
+                map1.computeIfAbsent(context, k-> new ArrayList<>()).add(base + "/" + fileName);
+            }
+        }
+       return  map1.values().stream().filter(v-> v.size() > 1).collect(Collectors.toList());
+     }
+
+    /**
      * 599. 两个列表的最小索引总和
      * @param list1 list1
      * @param list2 list2
