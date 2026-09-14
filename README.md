@@ -6,24 +6,53 @@
 查询转JSON对象或者JAVA对象
 list插入数据库
 
-## 验证码识别
- 可以使用VerifyCodeUtil类识别验证码，使用tesseract进行验证
+## OCR 文字识别
 
-### OCR 语言数据（tessdata）
- 识别功能依赖 `tessdata/` 目录下的训练数据文件，当前仓库只保留了英文模型：
+### 分层结构
+- 通用能力（识别任意图片文字，与业务无关）：
+  - `TesseractOcrUtil` —— 基于 Tesseract（tess4j）
+  - `DdddOcrUtil` —— 基于 ddddocr（ONNX），对验证码等短文本准确率更高
+- 业务封装：
+  - `VerifyCodeUtil` —— 验证码识别（内部调用上面的通用工具，附加单行模式与字符白名单）
 
- - `eng.traineddata`（约 23MB）—— 英文，`VerifyCodeUtil` 默认使用（`setLanguage("eng")`）
- - `chi_sim.traineddata`（约 44MB）—— 简体中文，本仓库未使用，已从仓库移除以减小体积
+### 模型目录（models/）
+ 所有模型统一放在 `models/` 目录，已随仓库提交，**开箱即用**：
 
- 如需识别其他语言（如中文），请自行下载对应文件放入 `tessdata/` 目录即可：
+ - `eng.traineddata`（约 22MB）—— Tesseract 英文语言数据
+ - `common_old.onnx`（约 13MB）—— ddddocr 默认 OCR 模型
+ - `charset_old.txt` —— ddddocr 模型配套字符集（8209 个字符）
 
- - 官方数据仓库：https://github.com/tesseract-ocr/tessdata
- - 简体中文：https://github.com/tesseract-ocr/tessdata/raw/main/chi_sim.traineddata
- - 英文：https://github.com/tesseract-ocr/tessdata/raw/main/eng.traineddata
- - 全部语言打包下载：https://codeload.github.com/tesseract-ocr/tessdata/zip/4.0.0
+ 路径均可用 JVM 参数覆盖：
+ - Tesseract 数据目录：`-Dtesseract.datapath=models`
+ - ddddocr 模型：`-Dddddocr.model.path=models/common_old.onnx`
+ - ddddocr 字符集：`-Dddddocr.charset.path=models/charset_old.txt`
 
- > 下载后按 `tessdata/文件名.traineddata` 放置，例如中文为 `tessdata/chi_sim.traineddata`。
- > 注意：`tessdata/` 下的 `*.traineddata` 属大体积第三方数据，不建议提交到 git。
+### 使用示例
+ ```java
+ // 通用文字识别
+ TesseractOcrUtil.ocr("doc.png");                       // 默认 eng + 自动版面
+ TesseractOcrUtil.ocr("cn.png", "chi_sim", 3, null);    // 指定语言
+ DdddOcrUtil.ocr("text.png");                           // ddddocr 方案
+
+ // 验证码识别
+ VerifyCodeUtil.ocrCode("captcha.png");                 // Tesseract 方案
+ VerifyCodeUtil.ddddOcrCode("captcha.png");             // ddddocr 方案
+ ```
+
+### 更换 / 新增自己的模型
+ **Tesseract（更换语言或模型）**
+ - 从 https://github.com/tesseract-ocr/tessdata 下载 `*.traineddata`（如简体中文 `chi_sim.traineddata`），放入 `models/`
+ - 调用时指定语言即可：`TesseractOcrUtil.ocr(image, "chi_sim", 3, null)`
+ - 若模型放在其他目录，用 `-Dtesseract.datapath=你的目录` 指定
+
+ **ddddocr（更换为自己的 ONNX 模型）**
+ - 把模型与配套 charset 放入 `models/`，用 JVM 参数指定：
+   `-Dddddocr.model.path=models/my_model.onnx -Dddddocr.charset.path=models/my_charset.txt`
+ - 要求：输入为**高度 64 的单通道灰度图**，输出为 CTC 字符序列（`[T,1,C]` 或 `[1,T,C]`），charset 索引 0 为 blank
+ - 字符集导出方式：
+   `python -c "import ddddocr.charsets as c; open('charset_old.txt','w',encoding='utf-8').write(''.join(c.CHARSET_OLD[1:]))"`
+ - 输入尺寸不同的模型，需同步调整 `DdddOcrUtil.INPUT_HEIGHT` 与预处理逻辑
+
  
 
 

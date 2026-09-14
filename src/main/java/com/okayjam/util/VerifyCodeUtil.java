@@ -1,59 +1,80 @@
 package com.okayjam.util;
 
-import net.sourceforge.tess4j.ITesseract;
-import net.sourceforge.tess4j.Tesseract;
-import net.sourceforge.tess4j.TesseractException;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Optional;
 
 /**
- * OCR 语言训练数据（tessdata）
+ * 验证码识别工具：负责验证码图片的获取与识别。
  *
- * 本类默认使用英文模型 eng，需保证 tessdata/eng.traineddata 存在。
- * 如需识别其他语言（如中文），下载对应 *.traineddata 放入 tessdata/ 目录，
- * 并调用 tesseract.setLanguage("chi_sim") 指定即可。
- *
- * 下载地址：
- *  - 官方数据仓库: https://github.com/tesseract-ocr/tessdata
- *  - 简体中文:     https://github.com/tesseract-ocr/tessdata/raw/main/chi_sim.traineddata
- *  - 英文:         https://github.com/tesseract-ocr/tessdata/raw/main/eng.traineddata
- *  - 全部打包:     https://codeload.github.com/tesseract-ocr/tessdata/zip/4.0.0
- *  - 字形训练源:   https://github.com/tesseract-ocr/langdata
- *
- * 注：大体积的 *.traineddata 不建议提交到 git。
+ * <p>文字识别能力由通用 OCR 工具类提供，本类只做验证码场景的封装：
+ * <ul>
+ *     <li>{@link TesseractOcrUtil}：Tesseract 方案</li>
+ *     <li>{@link DdddOcrUtil}：ddddocr(ONNX) 方案</li>
+ * </ul>
+ * 如需识别其他类型的文字，直接使用上述通用工具类即可。
  *
  * @author: Chen weiguang <weiguangchen@sf-express.com>
  * @create: 2018/11/22 16:28
  **/
 public class VerifyCodeUtil {
+
+    private static final Logger log = LoggerFactory.getLogger(VerifyCodeUtil.class);
+
+    /** 验证码字符集白名单，限定范围可显著减少误识别 */
+    private static final String CHAR_WHITELIST =
+            "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    /** 验证码通常为单行字符，PSM 7 = SINGLE_LINE */
+    private static final int CAPTCHA_PAGE_SEG_MODE = 7;
+
+    /** 验证码默认使用英文模型 */
+    private static final String CAPTCHA_LANGUAGE = "eng";
+
     /**
-     * 识别图片中的验证码
+     * 使用 Tesseract 识别验证码。
      *
-     * 语言包下载见类注释；使用前请确认 tessdata/eng.traineddata 已存在。
+     * <p>相比通用识别，这里启用了单行模式与字符白名单；识别失败返回 {@link Optional#empty()}。
      *
-     * @param picName picture path
-     * @return OCR result
-     * @throws Exception
+     * @param imagePath 图片路径
+     * @return 识别结果（已去除空白字符）
      */
-    public static String OCRCode(String picName) throws Exception {
-        File filepic = new File(picName);
-        if(!filepic.exists()) {
-            return null;
-        }
-        ITesseract tesseract = new Tesseract();
-        tesseract.setDatapath(".\\tessdata");
-        tesseract.setLanguage("eng");
+    public static Optional<String> ocrCode(String imagePath) {
+        return TesseractOcrUtil.ocr(imagePath, CAPTCHA_LANGUAGE, CAPTCHA_PAGE_SEG_MODE, CHAR_WHITELIST)
+                .map(s -> s.replaceAll("\\s+", ""));
+    }
+
+    /**
+     * 兼容旧调用方式，识别失败时返回 {@code null}。
+     *
+     * @param imagePath 图片路径
+     * @return 识别结果，失败为 {@code null}
+     */
+    public static String OCRCode(String imagePath) {
+        return ocrCode(imagePath).orElse(null);
+    }
+
+    /**
+     * 使用 ddddocr(ONNX) 识别验证码，与 {@link #ocrCode(String)} 的 Tesseract 方案并存，便于对比效果。
+     *
+     * <p>使用前请确认模型文件与 charset 已就绪，详见 {@link DdddOcrUtil}。
+     *
+     * @param imagePath 图片路径
+     * @return 识别结果；失败返回 {@link Optional#empty()}
+     */
+    public static Optional<String> ddddOcrCode(String imagePath) {
         try {
-            String result = tesseract.doOCR(filepic);
-            return result;
-        } catch (TesseractException e) {
-            System.err.println(e.getMessage());
+            return DdddOcrUtil.ocr(imagePath);
+        } catch (Exception e) {
+            log.error("ddddocr 识别失败: {}", imagePath, e);
+            return Optional.empty();
         }
-        return null;
     }
 
     /**
@@ -101,8 +122,8 @@ public class VerifyCodeUtil {
      * @return
      */
     static WebDriver getWebDriver(String url, String driverPath) {
-        if (driverPath == null) {
-            System.setProperty("webdriver.chrome.driver",  driverPath);
+        if (driverPath != null) {
+            System.setProperty("webdriver.chrome.driver", driverPath);
         }
         WebDriver driver = new ChromeDriver();
         if (null != url) {

@@ -5,7 +5,7 @@ import org.junit.Test;
 
 /**
  * @description: ${description}
- * @author: Chen wei guang <weiguangchen@sf-express.com>
+ * @author: Chen wei guang <chen2621978@gmail.com>
  * @create: 2018/08/09 14:51
  **/
 public class FileTest {

@@ -8,7 +8,7 @@ import org.junit.Ignore;
 
 /**
  * @description: ${description}
- * @author: Chen wei guang <weiguangchen@sf-express.com>
+ * @author: Chen wei guang <chen2621978@gmail.com>
  * @create: 2018/07/26 09:49
  **/
 public class NettyTest {

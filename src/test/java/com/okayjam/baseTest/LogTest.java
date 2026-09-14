@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @description: ${description}
- * @author: Chen wei guang <weiguangchen@sf-express.com>
+ * @author: Chen wei guang <chen2621978@gmail.com>
  * @create: 2018/08/06 16:39
  **/
 public class LogTest {

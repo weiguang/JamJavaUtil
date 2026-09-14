@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * @description: 这个类使用 Netty 实现了简单的Http服务器，可以处理get和post请求，并打印请求信息
  *                  ref.https://blog.csdn.net/huangshanchun/article/details/78302602
- * @author: Chen wei guang <weiguangchen@sf-express.com>
+ * @author: Chen wei guang <chen2621978@gmail.com>
  * @create: 2018/07/24 15:17
  **/
 public class HttpServerHandler extends ChannelInboundHandlerAdapter {

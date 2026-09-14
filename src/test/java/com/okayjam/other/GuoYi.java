@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * @description: ${description}
- * @author: Chen weiguang <weiguangchen@sf-express.com>
+ * @author: Chen weiguang <chen2621978@gmail.com>
  * @create: 2018/08/23 10:05
  **/
 public class GuoYi {

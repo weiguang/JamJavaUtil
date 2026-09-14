@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 /**
  * @description: HTTP一些工具实现
- * @author: Chen wei guang <weiguangchen@sf-express.com>
+ * @author: Chen wei guang <chen2621978@gmail.com>
  * @create: 2018/07/24  15:17
  **/
 

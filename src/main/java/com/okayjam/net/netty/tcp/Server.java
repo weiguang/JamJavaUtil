@@ -2,7 +2,7 @@ package com.okayjam.net.netty.tcp;
 
 /**
  * @description:
- * @author: Chen wei guang <weiguangchen@sf-express.com>
+ * @author: Chen wei guang <chen2621978@gmail.com>
  * @create: 2018/07/26 09:37
  **/
 import io.netty.bootstrap.ServerBootstrap;

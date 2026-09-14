@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * @author: Chen weiguang <weiguangchen@sf-express.com>
+ * @author: Chen weiguang <chen2621978@gmail.com>
  * @create: 2018/08/27 15:35
  **/
 public class DateTest {

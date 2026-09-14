@@ -558,9 +558,15 @@ public class StringJam {
         int n = s.length();
         for (int i = 0; i < n/2; i++) {
             if (s.charAt(0) != s.charAt(i+1) || s.charAt(i) != s.charAt(n -1)) continue;
-            int t = n/(i +1);
-            if (t * (i +1) != n) continue;
-            if (s.equals(s.substring(0, i + 1).repeat(t))) return true;
+            // 子串长度
+            int len = i + 1;
+            if (n % len != 0) continue;
+            // 判断是否由 s[0, len) 重复构成，不用 repeat（Java 11 才有）
+            int j = len;
+            while (j < n && s.charAt(j) == s.charAt(j % len)) {
+                j++;
+            }
+            if (j == n) return true;
         }
         return false;
     }

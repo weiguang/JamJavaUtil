@@ -1,7 +1,7 @@
 package com.okayjam.test;
 
 /**
- * @author: Chen weiguang <weiguangchen@sf-express.com>
+ * @author: Chen weiguang <chen2621978@gmail.com>
  * @create: 2018/12/04 10:15
  **/
 public class TestStatic1 {
