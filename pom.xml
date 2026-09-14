@@ -22,7 +22,8 @@
         <mysql.version>9.7.0</mysql.version>
         <sqlite.version>3.53.4.0</sqlite.version>
         <tess4j.version>4.6.1</tess4j.version>
-        <selenium.version>3.141.59</selenium.version>
+        <!-- Selenium 4.x 需要 Java 11 运行环境 -->
+        <selenium.version>4.49.0</selenium.version>
         <msgpack.version>0.9.12</msgpack.version>
         <slf4j.version>2.0.18</slf4j.version>
         <mina.version>2.2.9</mina.version>
@@ -232,13 +233,6 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
-            <exclusions>
-                <!-- 项目仅使用 Chrome，排除未使用的 IE 驱动（含 CVE-2023-5590 / GHSA-4phc-fq33-39gx） -->
-                <exclusion>
-                    <groupId>org.seleniumhq.selenium</groupId>
-                    <artifactId>selenium-ie-driver</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver -->
