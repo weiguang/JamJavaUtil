@@ -23,6 +23,12 @@ import java.util.Optional;
  * 通用图片文字识别（OCR）工具类，基于 ONNX Runtime 运行 ddddocr 模型。
  *
  * <p>与 {@link TesseractOcrUtil} 的 Tesseract 方案互为补充；验证码等业务可基于它们二次封装（见 {@link VerifyCodeUtil}）。
+ *
+ * <p><b>适用边界</b>：本模型是「验证码级」的短文本识别（CTC 单行解码、字符集为单个字符、结果不含空格与标点），
+ * 且预处理会把整图等比缩放到高 {@value #INPUT_HEIGHT} 像素。因此它<b>只适合验证码等极短文本</b>；
+ * <b>不要用于文档、代码截图、整页文字</b>——缩放后字形被压扁，且无法输出换行/缩进/空格，此时请用
+ * {@link TesseractOcrUtil#ocrDocument(String)}。
+ *
  * 核心流程与 ddddocr 保持一致：
  * <ol>
  *     <li>预处理：等比缩放到高 {@value #INPUT_HEIGHT}，转灰度，像素除以 255 归一化，输出 CHW 布局</li>

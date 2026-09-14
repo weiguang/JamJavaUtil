@@ -15,13 +15,14 @@ import java.util.Optional;
  *
  * <p>文字识别能力由通用 OCR 工具类提供，本类只做验证码场景的封装：
  * <ul>
- *     <li>{@link TesseractOcrUtil}：Tesseract 方案</li>
- *     <li>{@link DdddOcrUtil}：ddddocr(ONNX) 方案</li>
+ *     <li>{@link DdddOcrUtil}：ddddocr(ONNX) 方案，{@link #OCRCode(String)} 与
+ *         {@link #ocrCode(String)} 默认采用该方案（准确率更高）</li>
+ *     <li>{@link TesseractOcrUtil}：Tesseract 方案，见 {@link #tesseractOcrCode(String)}</li>
  * </ul>
  * 如需识别其他类型的文字，直接使用上述通用工具类即可。
  *
- * @author: Chen weiguang <weiguangchen@sf-express.com>
- * @create: 2018/11/22 16:28
+ * @author Chen weiguang <chen2621978@gmail.com>
+ * @date 2018/11/22 16:28
  **/
 public class VerifyCodeUtil {
 
@@ -37,6 +38,36 @@ public class VerifyCodeUtil {
     /** 验证码默认使用英文模型 */
     private static final String CAPTCHA_LANGUAGE = "eng";
 
+
+    /**
+     * 识别验证码，<b>默认使用 ddddocr 方案</b>（{@link #ddddOcrCode(String)}）。
+     *
+     * <p>如需 Tesseract 方案，请改用 {@link #tesseractOcrCode(String)}。
+     *
+     * @param imagePath 图片路径
+     * @return 识别结果（已去除空白字符）；失败返回 {@link Optional#empty()}
+     */
+    public static Optional<String> ocrCode(String imagePath) {
+        return ddddOcrCode(imagePath);
+    }
+
+    /**
+     * 使用 ddddocr(ONNX) 识别验证码（推荐方案，准确率更高）。
+     *
+     * <p>使用前请确认模型文件与 charset 已就绪，详见 {@link DdddOcrUtil}。
+     *
+     * @param imagePath 图片路径
+     * @return 识别结果（已去除空白字符）；失败返回 {@link Optional#empty()}
+     */
+    public static Optional<String> ddddOcrCode(String imagePath) {
+        try {
+            return DdddOcrUtil.ocr(imagePath).map(s -> s.replaceAll("\\s+", ""));
+        } catch (Exception e) {
+            log.error("ddddocr 识别失败: {}", imagePath, e);
+            return Optional.empty();
+        }
+    }
+
     /**
      * 使用 Tesseract 识别验证码。
      *
@@ -45,13 +76,15 @@ public class VerifyCodeUtil {
      * @param imagePath 图片路径
      * @return 识别结果（已去除空白字符）
      */
-    public static Optional<String> ocrCode(String imagePath) {
+    public static Optional<String> tesseractOcrCode(String imagePath) {
         return TesseractOcrUtil.ocr(imagePath, CAPTCHA_LANGUAGE, CAPTCHA_PAGE_SEG_MODE, CHAR_WHITELIST)
                 .map(s -> s.replaceAll("\\s+", ""));
     }
 
+
+
     /**
-     * 兼容旧调用方式，识别失败时返回 {@code null}。
+     * 兼容旧调用方式，默认使用 ddddocr 方案，识别失败时返回 {@code null}。
      *
      * @param imagePath 图片路径
      * @return 识别结果，失败为 {@code null}
@@ -61,28 +94,11 @@ public class VerifyCodeUtil {
     }
 
     /**
-     * 使用 ddddocr(ONNX) 识别验证码，与 {@link #ocrCode(String)} 的 Tesseract 方案并存，便于对比效果。
-     *
-     * <p>使用前请确认模型文件与 charset 已就绪，详见 {@link DdddOcrUtil}。
-     *
-     * @param imagePath 图片路径
-     * @return 识别结果；失败返回 {@link Optional#empty()}
-     */
-    public static Optional<String> ddddOcrCode(String imagePath) {
-        try {
-            return DdddOcrUtil.ocr(imagePath);
-        } catch (Exception e) {
-            log.error("ddddocr 识别失败: {}", imagePath, e);
-            return Optional.empty();
-        }
-    }
-
-    /**
      * 获取页面中的验证码
-     * @param driver
-     * @param ele
-     * @param savePath
-     * @throws Exception
+     * @param driver driver
+     * @param ele ele
+     * @param savePath path
+     * @throws Exception e
      */
     static void getCodeToLocation(WebDriver driver,WebElement ele, String savePath) throws Exception
     {
@@ -102,15 +118,15 @@ public class VerifyCodeUtil {
         // Crop the entire page screenshot to get only element screenshot
         BufferedImage eleScreenshot= fullImg.getSubimage(point.getX(), point.getY(),
                 eleWidth, eleHeight);
-        eleScreenshot=ImagePreProcess2.removeBackgroud2(eleScreenshot);
+        ImagePreProcess2.removeBackgroud2(eleScreenshot);
         ImageIO.write(eleScreenshot, "png", new File(savePath));
 
     }
 
     /**
      * 获取WebDriver
-     * @param url
-     * @return
+     * @param url url
+     * @return driver
      */
     static WebDriver getWebDriver(String url) {
         return getWebDriver(url,null);
@@ -118,8 +134,8 @@ public class VerifyCodeUtil {
 
     /**
      * 获取WebDriver
-     * @param url
-     * @return
+     * @param url url
+     * @return driver
      */
     static WebDriver getWebDriver(String url, String driverPath) {
         if (driverPath != null) {
