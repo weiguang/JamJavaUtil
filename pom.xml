@@ -35,7 +35,6 @@
         <!-- 以下用于修复传递依赖中的已知漏洞（见 dependencyManagement） -->
         <fastjson.version>2.0.65</fastjson.version>
         <jackson.version>2.22.2</jackson.version>
-        <guava.version>33.7.1-jre</guava.version>
         <log4j.version>2.26.1</log4j.version>
     </properties>
 
@@ -75,12 +74,6 @@
                 <version>${log4j.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <!-- guava 旧版本存在信息泄露/临时目录漏洞（经 selenium 传递引入） -->
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
