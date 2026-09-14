@@ -8,6 +8,22 @@ list插入数据库
 
 ## 验证码识别
  可以使用VerifyCodeUtil类识别验证码，使用tesseract进行验证
+
+### OCR 语言数据（tessdata）
+ 识别功能依赖 `tessdata/` 目录下的训练数据文件，当前仓库只保留了英文模型：
+
+ - `eng.traineddata`（约 23MB）—— 英文，`VerifyCodeUtil` 默认使用（`setLanguage("eng")`）
+ - `chi_sim.traineddata`（约 44MB）—— 简体中文，本仓库未使用，已从仓库移除以减小体积
+
+ 如需识别其他语言（如中文），请自行下载对应文件放入 `tessdata/` 目录即可：
+
+ - 官方数据仓库：https://github.com/tesseract-ocr/tessdata
+ - 简体中文：https://github.com/tesseract-ocr/tessdata/raw/main/chi_sim.traineddata
+ - 英文：https://github.com/tesseract-ocr/tessdata/raw/main/eng.traineddata
+ - 全部语言打包下载：https://codeload.github.com/tesseract-ocr/tessdata/zip/4.0.0
+
+ > 下载后按 `tessdata/文件名.traineddata` 放置，例如中文为 `tessdata/chi_sim.traineddata`。
+ > 注意：`tessdata/` 下的 `*.traineddata` 属大体积第三方数据，不建议提交到 git。
  
 
 

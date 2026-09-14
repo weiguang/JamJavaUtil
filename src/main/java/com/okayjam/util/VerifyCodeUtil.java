@@ -11,16 +11,30 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 /**
- * 训练数 https://github.com/tesseract-ocr/langdata
+ * OCR 语言训练数据（tessdata）
+ *
+ * 本类默认使用英文模型 eng，需保证 tessdata/eng.traineddata 存在。
+ * 如需识别其他语言（如中文），下载对应 *.traineddata 放入 tessdata/ 目录，
+ * 并调用 tesseract.setLanguage("chi_sim") 指定即可。
+ *
+ * 下载地址：
+ *  - 官方数据仓库: https://github.com/tesseract-ocr/tessdata
+ *  - 简体中文:     https://github.com/tesseract-ocr/tessdata/raw/main/chi_sim.traineddata
+ *  - 英文:         https://github.com/tesseract-ocr/tessdata/raw/main/eng.traineddata
+ *  - 全部打包:     https://codeload.github.com/tesseract-ocr/tessdata/zip/4.0.0
+ *  - 字形训练源:   https://github.com/tesseract-ocr/langdata
+ *
+ * 注：大体积的 *.traineddata 不建议提交到 git。
+ *
  * @author: Chen weiguang <weiguangchen@sf-express.com>
  * @create: 2018/11/22 16:28
  **/
 public class VerifyCodeUtil {
     /**
+     * 识别图片中的验证码
      *
-     * language pakeget:
-     *  english: https://raw.githubusercontent.com/tesseract-ocr/tessdata/master/eng.traineddata
-     *  all : https://codeload.github.com/tesseract-ocr/tessdata/zip/4.0.0
+     * 语言包下载见类注释；使用前请确认 tessdata/eng.traineddata 已存在。
+     *
      * @param picName picture path
      * @return OCR result
      * @throws Exception
