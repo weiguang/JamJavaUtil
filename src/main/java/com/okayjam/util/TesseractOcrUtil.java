@@ -122,9 +122,9 @@ public final class TesseractOcrUtil {
             tesseract.setLanguage(language);
             tesseract.setPageSegMode(pageSegMode);
             if (charWhitelist != null && !charWhitelist.isEmpty()) {
-                tesseract.setTessVariable("tessedit_char_whitelist", charWhitelist);
+                tesseract.setVariable("tessedit_char_whitelist", charWhitelist);
             }
-            tesseract.setTessVariable("user_defined_dpi", DEFAULT_DPI);
+            tesseract.setVariable("user_defined_dpi", DEFAULT_DPI);
             return tesseract;
         });
     }

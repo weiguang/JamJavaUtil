@@ -20,7 +20,8 @@
         <poi.version>5.5.1</poi.version>
         <mysql.version>9.7.0</mysql.version>
         <sqlite.version>3.53.4.0</sqlite.version>
-        <tess4j.version>4.6.1</tess4j.version>
+        <!-- tess4j 5.19.0 起捆绑 Tesseract 5.5.2；5.20+ 需 Java 17，故 5.19.0 为 Java 11 下最高可用版本 -->
+        <tess4j.version>5.19.0</tess4j.version>
         <!-- Selenium 4.x 需要 Java 11 运行环境 -->
         <selenium.version>4.49.0</selenium.version>
         <msgpack.version>0.9.12</msgpack.version>

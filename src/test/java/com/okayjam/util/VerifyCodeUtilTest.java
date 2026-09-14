@@ -1,10 +1,9 @@
 package com.okayjam.util;
 
-
 import org.junit.Test;
 
 /**
- * @author: Chen weiguang <chen2621978@gmail.com>
+ * @author: Chen weiguang <weiguangchen@sf-express.com>
  * @create: 2018/11/26 11:34
  **/
 public class VerifyCodeUtilTest {
