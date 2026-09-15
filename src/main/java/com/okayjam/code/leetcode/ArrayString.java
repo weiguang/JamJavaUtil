@@ -80,6 +80,34 @@ public class ArrayString {
     }
 
     /**
+     * 611. 有效三角形的个数
+     * @param nums nums
+     * @return ans
+     */
+    public int triangleNumber(int[] nums) {
+        Arrays.sort(nums);
+        int ans = 0, len = nums.length;
+        // 从大到小固定最长边 nums[i]
+        for (int i = len - 1; i >= 2; i--) {
+            int left = 0, right = i - 1;
+
+            while (left < right) {
+                if (nums[left] + nums[right] > nums[i]) {
+                    // nums[left] + nums[right] > nums[i]
+                    // 则 nums[left+1] .. nums[right-1] 加上 nums[right] 也必定大于 nums[i]
+                    ans += right - left;
+                    // 缩小右界，继续寻找
+                    right--;
+                } else {
+                    // 两数之和太小，增大左界
+                    left++;
+                }
+            }
+        }
+        return ans;
+    }
+
+    /**
      * 605. 种花问题
      * @param flowerbed flowerbed
      * @param n n
