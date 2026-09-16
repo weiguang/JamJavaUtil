@@ -60,7 +60,7 @@ public class ArrayString {
 //                        new int[] {5, 2}})));
 //        new ArrayString().findDuplicates(new int[]{4,3,2,7,8,2,3,1});
 //        System.out.println(new ArrayString().findSubsequences(new int[]{4,6,7,7}));
-        System.out.println( -15 / 7);
+        System.out.println(new ArrayString().leastInterval(new char[]{'B','C','D','A','A','A','A','G'}, 1));
 
      }
 
@@ -77,6 +77,44 @@ public class ArrayString {
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
+    }
+
+    /**
+     * 621. 任务调度器
+     * 基本思路： 找到出现次数最多的任务（假设最高频率为 maxCount），将它们作为骨架分割出 maxCount - 1 个冷却组，每组包含 $n+1$ 个槽位。
+     * 公式推导：基础公式为：(maxCount - 1) * (n + 1) + countMax其中 countMax 为拥有最高频率的任务种类数量。
+     * 边界处理： 如果任务种类非常多，填满所有冷却槽位后还有剩余任务，则不需要任何待命时间，总时间直接等于任务总长度 tasks.length。
+     * A 3 B 3 C1， n=2 的情况, 我们使用A B 排列，但是由于n， 一行必须要 3个槽位， C这些可以随意放到A，B之后， 最后一行就是放 A和B的，所以公司+countMax
+     * A B C
+     * A B 1
+     * A B
+     *但是也能 n 本来就比较少 , 每次 A， B A B C 能排完，不需要分组，这个数量刚好是任务的数量，这个数量会比分组的大，司所以去max
+     * @param tasks tasks
+     * @param n n
+     * @return ans
+     */
+    public int leastInterval(char[] tasks, int n) {
+        int[] count = new int[26];
+        for (char c : tasks) {
+            count[c - 'A']++;
+        }
+
+        // 找出最高频次
+        int maxCount = 0;
+        for (int c : count) {
+            maxCount = Math.max(maxCount, c);
+        }
+
+        // 统计有多少个任务达到了最高频次
+        int countMax = 0;
+        for (int c : count) {
+            if (c == maxCount) {
+                countMax++;
+            }
+        }
+
+        // 计算公式结果并与任务总数取最大值
+        return Math.max((maxCount - 1) * (n + 1) + countMax, tasks.length);
     }
 
     /**
