@@ -21,6 +21,66 @@ public class Tree {
         new Tree().isValidSerialization("9,3,4,#,#,1,#,#,2,#,6,#,#");
     }
 
+    /**
+     * 623. 在二叉树中增加一行
+     * @param root root
+     * @param val val
+     * @param depth depth
+     * @return ans
+     */
+    public TreeNode addOneRow(TreeNode root, int val, int depth) {
+        if (depth == 1) {
+            TreeNode newRoot = new TreeNode(val);
+            newRoot.left = root;
+            return newRoot;
+        }
+        // DFS
+        addOneRowDfs(root, val, depth, 1);
+        // BFS
+//        addOneRowBfs(root, val, depth);
+        return root;
+    }
+
+    private void addOneRowBfs(TreeNode root, int val, int depth) {
+        if (root == null) return;
+
+        Deque<TreeNode> queue = new LinkedList<>();
+        queue.addLast(root);
+        int curDepth = 1;
+        while (!queue.isEmpty() && curDepth < depth) {
+            int size = queue.size();
+            curDepth++;
+            for (int i = 0; i < size; i++) {
+                TreeNode pop = queue.removeFirst();
+                if (depth == curDepth) {
+                    pop.left = new TreeNode(val, pop.left, null);
+                    pop.right = new TreeNode(val, null, pop.right);
+                } else {
+                    if (pop.left != null) {
+                        queue.add(pop.left);
+                    }
+                    if (pop.right != null) {
+                        queue.add(pop.right);
+                    }
+                }
+            }
+        }
+    }
+
+    private void addOneRowDfs(TreeNode node, int val, int depth, int curDepth) {
+        if (node == null) return;
+
+        // 当到达目标层的前一层时，插入新节点
+        if (curDepth == depth - 1) {
+            node.left = new TreeNode(val, node.left, null);
+            node.right = new TreeNode(val, null, node.right);
+            return;
+        }
+
+        addOneRowDfs(node.left, val, depth, curDepth + 1);
+        addOneRowDfs(node.right, val, depth, curDepth + 1);
+    }
+
 
     public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
         if (root1 == null) return root2;

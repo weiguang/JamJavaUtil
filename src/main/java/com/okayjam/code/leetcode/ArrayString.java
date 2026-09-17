@@ -80,6 +80,68 @@ public class ArrayString {
     }
 
     /**
+     * 628. 三个数的最大乘积
+     * 其实就是找到最大的3个数，或者 最小的2个数和最大的数 ，看下哪个乘积最大
+     * 使用排序最容易，也可以直击一次扫描直到这个几个值，这样解法最优
+     * @param nums nums
+     * @return ans
+     */
+    public int maximumProduct(int[] nums) {
+        Arrays.sort(nums);
+        int len = nums.length;
+        return Math.max(nums[len -1] * nums[len -2] * nums[len-3], nums[0] * nums[1] * nums[len-1]);
+    }
+
+    /**
+     * 624. 数组列表中的最大距离
+     * 核心逻辑:在遍历的过程中，用当前数组的极值去跟“历史极值”计算最大距离，计算完后再更新历史极值。
+     * 先计算距离：
+     * 用当前数组 i 的最大值减去前 0 ~ i-1 个数组中的全局最小值；
+     * 用前 0 ~ i-1 个数组中的全局最大值减去当前数组 i 的最小值。
+     * 此时参与计算的两个值，必然来自不同的数组（一个是之前的全局极值，一个是当前数组 i 的极值）。
+     * @param arrays arrays
+     * @return ans
+     */
+    public int maxDistance(List<List<Integer>> arrays) {
+        int res = 0;
+        int n;
+        int min_val = arrays.get(0).get(0);
+        int max_val = arrays.get(0).get(arrays.get(0).size() - 1);
+        for (int i = 1; i < arrays.size(); i++) {
+            n = arrays.get(i).size();
+            res = Math.max(res, Math.max(Math.abs(arrays.get(i).get(n - 1) - min_val),
+                    Math.abs(max_val - arrays.get(i).get(0))));
+            min_val = Math.min(min_val, arrays.get(i).get(0));
+            max_val = Math.max(max_val, arrays.get(i).get(n - 1));
+        }
+        return res;
+    }
+
+    /**
+     * 624. 数组列表中的最大距离
+     *  自己写的方法，如果最大和最小值是在同一个数组，那么久找其他的最小和最大值，然后对比差值，可能需要遍历2次
+     * @param arrays a
+     * @return ans
+     */
+    public int maxDistance2(List<List<Integer>> arrays) {
+        int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE, minIdx = 0, maxIdx = 0;
+        for (int i = 0; i < arrays.size(); i++) {
+            if (arrays.get(i).get(0) < min) {min = arrays.get(i).get(0); minIdx = i; }
+            if (arrays.get(i).get(arrays.get(i).size() - 1) > max) {max = arrays.get(i).get(arrays.get(i).size() - 1); maxIdx = i; }
+        }
+        int min2 = Integer.MAX_VALUE, max2 = Integer.MIN_VALUE;
+        if (minIdx == maxIdx) {
+            for (int i = 0; i < arrays.size(); i++) {
+                if (i != minIdx && arrays.get(i).get(0) < min2) {min2 = arrays.get(i).get(0);  }
+                if (i != maxIdx &&arrays.get(i).get(arrays.get(i).size() - 1) > max2) {max2 = arrays.get(i).get(arrays.get(i).size() - 1);}
+            }
+        } else {
+            return max - min;
+        }
+        return Math.max(max - min2, max2 - min);
+    }
+
+    /**
      * 621. 任务调度器
      * 基本思路： 找到出现次数最多的任务（假设最高频率为 maxCount），将它们作为骨架分割出 maxCount - 1 个冷却组，每组包含 $n+1$ 个槽位。
      * 公式推导：基础公式为：(maxCount - 1) * (n + 1) + countMax其中 countMax 为拥有最高频率的任务种类数量。
