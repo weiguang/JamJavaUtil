@@ -80,6 +80,24 @@ public class ArrayString {
     }
 
     /**
+     * 633. 平方数之和
+     * @param c c
+     * @return ans
+     */
+    public boolean judgeSquareSum(int c) {
+        if (c == 0) return true;
+        int start = (int) Math.sqrt(c);
+        for (int i = start; i >= 0; i--) {
+            int re = c - i * i;
+            int t = (int) Math.sqrt(re);
+            if (t * t == re) return true;
+            // 这样之前已经计算过了，不需要重复计算
+            if (re > i * i) break;
+        }
+        return false;
+    }
+
+    /**
      * 628. 三个数的最大乘积
      * 其实就是找到最大的3个数，或者 最小的2个数和最大的数 ，看下哪个乘积最大
      * 使用排序最容易，也可以直击一次扫描直到这个几个值，这样解法最优
