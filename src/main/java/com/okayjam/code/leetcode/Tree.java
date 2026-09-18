@@ -22,6 +22,31 @@ public class Tree {
     }
 
     /**
+     * 637. 二叉树的层平均值
+     * @param root root
+     * @return ans
+     */
+    public List<Double> averageOfLevels(TreeNode root) {
+        if (root == null) return null;
+        List<Double> ans = new ArrayList<>();
+        Deque<TreeNode> queue = new LinkedList<>();
+        queue.push(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            long sum = 0;
+            for (int i = 0; i < size; i++) {
+                TreeNode pop = queue.pop();
+                sum += pop.val;
+                if (pop.left != null) queue.add(pop.left);
+                if (pop.right != null) queue.add(pop.right);
+            }
+            ans.add(sum * 1.0 / size);
+        }
+        return ans;
+    }
+
+
+    /**
      * 623. 在二叉树中增加一行
      * @param root root
      * @param val val
