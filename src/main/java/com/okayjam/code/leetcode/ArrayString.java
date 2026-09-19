@@ -80,6 +80,65 @@ public class ArrayString {
     }
 
     /**
+     * 638. 大礼包
+     * @param price price
+     * @param special special
+     * @param needs needs
+     * @return ans
+     */
+    public int shoppingOffers(List<Integer> price, List<List<Integer>> special, List<Integer> needs) {
+        int n = price.size();
+
+        // 过滤不需要计算的大礼包，只保留需要计算的大礼包
+        List<List<Integer>> filterSpecial = new ArrayList<>();
+        for (List<Integer> sp : special) {
+            int totalCount = 0, totalPrice = 0;
+            for (int i = 0; i < n; ++i) {
+                totalCount += sp.get(i);
+                totalPrice += sp.get(i) * price.get(i);
+            }
+            if (totalCount > 0 && totalPrice > sp.get(n)) {
+                filterSpecial.add(sp);
+            }
+        }
+        Map<List<Integer>, Integer> memo = new HashMap<>();
+        return shoppingOffersDfs(price, needs, filterSpecial, n, memo);
+    }
+
+    // 记忆化搜索计算满足购物清单所需花费的最低价格
+    private int shoppingOffersDfs(List<Integer> price, List<Integer> curNeeds, List<List<Integer>> filterSpecial, int n,
+                                 Map<List<Integer>, Integer> memo) {
+        if (!memo.containsKey(curNeeds)) {
+            int minPrice = 0;
+            // 不购买任何大礼包，原价购买购物清单中的所有物品
+            for (int i = 0; i < n; ++i) {
+                minPrice += curNeeds.get(i) * price.get(i);
+            }
+            for (List<Integer> curSpecial : filterSpecial) {
+                int specialPrice = curSpecial.get(n);
+                List<Integer> nxtNeeds = new ArrayList<>();
+                for (int i = 0; i < n; ++i) {
+                    // 不能购买超出购物清单指定数量的物品
+                    if (curSpecial.get(i) > curNeeds.get(i)) {
+                        break;
+                    }
+                    nxtNeeds.add(curNeeds.get(i) - curSpecial.get(i));
+                }
+                // 大礼包可以购买, 没有触发break
+                if (nxtNeeds.size() == n) {
+                    minPrice = Math.min(minPrice,
+                            shoppingOffersDfs(price, nxtNeeds, filterSpecial, n, memo) + specialPrice);
+                }
+            }
+            memo.put(curNeeds, minPrice);
+        }
+        return memo.get(curNeeds);
+    }
+
+
+
+
+    /**
      * 633. 平方数之和
      * @param c c
      * @return ans
