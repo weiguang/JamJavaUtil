@@ -80,6 +80,54 @@ public class ArrayString {
     }
 
     /**
+     * 647. 回文子串
+     * @param s s
+     * @return ans
+     */
+    public int countSubstrings(String s) {
+        int count = 0;
+        int n = s.length();
+
+        for (int i = 0; i < n; i++) {
+            // 以 s[i] 为中心扩展（奇数长度）
+            count += countSubstringsExtend(s, i, i, n);
+            // 以 s[i] 和 s[i+1] 为中心扩展（偶数长度）
+            count += countSubstringsExtend(s, i, i + 1, n);
+        }
+
+        return count;
+    }
+
+    private int countSubstringsExtend(String s, int left, int right, int n) {
+        int res = 0;
+        // 向两边扩展，只要满足回文条件就计数 +1
+        while (left >= 0 && right < n && s.charAt(left) == s.charAt(right)) {
+            res++;
+            left--;
+            right++;
+        }
+        return res;
+    }
+
+    /**
+     * 646. 最长数对链
+     * @param pairs pairs
+     * @return ans
+     */
+    public int findLongestChain(int[][] pairs) {
+        Arrays.sort(pairs, Comparator.comparingInt(a -> a[1]));
+        int ans = 1;
+        int right = pairs[0][1];
+        for (int[] pair : pairs ) {
+            if (right < pair[0]) {
+                right = pair[1];
+                ans++;
+            }
+        }
+        return ans;
+    }
+
+    /**
      * 643. 子数组最大平均数 I
      * @param nums nums
      * @param k k
