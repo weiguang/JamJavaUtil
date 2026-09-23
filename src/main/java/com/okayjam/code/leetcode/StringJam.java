@@ -1,6 +1,7 @@
 package com.okayjam.code.leetcode;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class StringJam {
@@ -60,6 +61,63 @@ public class StringJam {
         char temp = s[i];
         s[i] = s[j];
         s[j] = temp;
+    }
+
+    static class TrieNode {
+        TrieNode[] children = new TrieNode[26];
+        String word = null; // 节点到达词根结尾时直接存储完整词根
+    }
+
+    /**
+     * 648. 单词替换
+     * @param dictionary dict
+     * @param sentence sentence
+     * @return ans
+     */
+    public String replaceWords(List<String> dictionary, String sentence) {
+        TrieNode root = new TrieNode();
+
+        // 1. 构建前缀树
+        for (String dict : dictionary) {
+            TrieNode cur = root;
+            for (char c : dict.toCharArray()) {
+                int idx = c - 'a';
+                if (cur.children[idx] == null) {
+                    cur.children[idx] = new TrieNode();
+                }
+                cur = cur.children[idx];
+            }
+            cur.word = dict; // 标记词根结尾
+        }
+
+        // 2. 替换句子中的单词
+        StringBuilder sb = new StringBuilder();
+        String[] words = sentence.split(" ");
+
+        for (int i = 0; i < words.length; i++) {
+            if (i > 0) sb.append(" ");
+
+            TrieNode cur = root;
+            String replacement = words[i];
+
+            for (char c : words[i].toCharArray()) {
+                int idx = c - 'a';
+                // 没有匹配的前缀，或者已经遇到了最短词根
+                if (cur.children[idx] == null || cur.word != null) {
+                    break;
+                }
+                cur = cur.children[idx];
+            }
+
+            // 如果找到了匹配的词根，则进行替换
+            if (cur.word != null) {
+                sb.append(cur.word);
+            } else {
+                sb.append(replacement);
+            }
+        }
+
+        return sb.toString();
     }
 
     /**
