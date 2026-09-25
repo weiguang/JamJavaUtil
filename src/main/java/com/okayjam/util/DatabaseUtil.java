@@ -21,13 +21,38 @@ public class DatabaseUtil {
     public static final String TABLE = "jam1";
     private static final Logger logger =  LoggerFactory.getLogger(DatabaseUtil.class);
 
-    // JDBC driver name and database URL
-    static final String JDBC_DRIVER =  ResourceBundle.getBundle("jdbc").getString("driverClassName");
-    static final String DB_URL = ResourceBundle.getBundle("jdbc").getString("url");
-    //  Database credentials
-    static final String USER = ResourceBundle.getBundle("jdbc").getString("user" );
-    static final String PASS = ResourceBundle.getBundle("jdbc").getString("password");
-    static final int MAX_ACTIVE = Integer.valueOf(ResourceBundle.getBundle("jdbc").getString("maxActive"));
+    // 配置优先级：系统属性 jdbc.xxx > 环境变量 JDBC_XXX > src/main/resources/jdbc.properties
+    // jdbc.properties 只保留在本机、不再入库，真实账号密码不要提交
+    private static final ResourceBundle JDBC_FILE = loadJdbcFile();
+
+    static final String JDBC_DRIVER = setting("driverClassName", "JDBC_DRIVER", "");
+    static final String DB_URL = setting("url", "JDBC_URL", "");
+    static final String USER = setting("user", "JDBC_USER", "");
+    static final String PASS = setting("password", "JDBC_PASSWORD", "");
+    static final int MAX_ACTIVE = Integer.parseInt(setting("maxActive", "JDBC_MAX_ACTIVE", "15"));
+
+    private static ResourceBundle loadJdbcFile() {
+        try {
+            return ResourceBundle.getBundle("jdbc");
+        } catch (MissingResourceException e) {
+            return null;
+        }
+    }
+
+    private static String setting(String fileKey, String envKey, String defaultValue) {
+        String value = System.getProperty("jdbc." + fileKey);
+        if (isBlank(value)) {
+            value = System.getenv(envKey);
+        }
+        if (isBlank(value) && JDBC_FILE != null && JDBC_FILE.containsKey(fileKey)) {
+            value = JDBC_FILE.getString(fileKey);
+        }
+        return isBlank(value) ? defaultValue : value;
+    }
+
+    private static boolean isBlank(String value) {
+        return value == null || value.trim().isEmpty();
+    }
 
 
     static Connection conn = null;
@@ -86,7 +111,7 @@ public class DatabaseUtil {
             ds.setPassword(PASS);
             ds.setUrl(DB_URL);
             try {
-                ds.setMaxTotal(Integer.valueOf(MAX_ACTIVE));
+                ds.setMaxTotal(MAX_ACTIVE);
             } catch (Exception e) {logger.error("set database pool maxSize error :", e);}
             DATASOURCE = ds;
         } catch (Exception e) {

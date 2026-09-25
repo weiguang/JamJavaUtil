@@ -9,8 +9,9 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <!-- 用 release 而非 source/target：构建机 JDK 可能高于 11，release 才能同时约束 API 面，
+     避免编译期误用 JDK 12+ 的 API、运行到 JDK 11 上抛 NoSuchMethodError -->
+        <maven.compiler.release>11</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <commons-io.version>2.22.0</commons-io.version>
@@ -22,11 +23,11 @@
         <sqlite.version>3.53.4.0</sqlite.version>
         <!-- tess4j 5.19.0 起捆绑 Tesseract 5.5.2；5.20+ 需 Java 17，故 5.19.0 为 Java 11 下最高可用版本 -->
         <tess4j.version>5.19.0</tess4j.version>
-        <!-- Selenium 4.x 需要 Java 11 运行环境 -->
+        <!-- Selenium 4.x 是本仓库唯一强制 Java 11 运行时的依赖（class 文件版本 55）；
+             3.141.59 已 EOL 且无法驱动新版浏览器，故不接受降回 Java 8 基线 -->
         <selenium.version>4.49.0</selenium.version>
         <msgpack.version>0.9.12</msgpack.version>
         <slf4j.version>2.0.18</slf4j.version>
-        <mina.version>2.2.9</mina.version>
         <opencsv.version>5.12.0</opencsv.version>
         <!-- 注：1.2x 以后部分版本的 native 在部分环境下加载失败，1.20.0 已验证可用 -->
         <onnxruntime.version>1.20.0</onnxruntime.version>
@@ -40,11 +41,6 @@
     </properties>
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -53,6 +49,12 @@
                 <configuration>
                     <encoding>UTF-8</encoding>
                 </configuration>
+            </plugin>
+            <!-- 显式锁定版本：不锁的话随 Maven 版本漂移，JUnit5 provider 行为不确定 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.6</version>
             </plugin>
         </plugins>
     </build>
@@ -76,6 +78,14 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- BOM 必须在 dependencyManagement 里 import 才生效（放在 dependencies 里不管理版本） -->
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit5.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -94,15 +104,8 @@
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
             <version>${netty.version}</version>
-            <scope>compile</scope>
         </dependency>
 
-
-        <dependency>
-            <groupId>org.apache.mina</groupId>
-            <artifactId>mina-core</artifactId>
-            <version>${mina.version}</version>
-        </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
         <dependency>
@@ -226,13 +229,6 @@
             <version>${selenium.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver -->
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-chrome-driver</artifactId>
-            <version>${selenium.version}</version>
-        </dependency>
-
 <!--        <dependency>-->
 <!--            <groupId>org.msgpack</groupId>-->
 <!--            <artifactId>msgpack</artifactId>-->
@@ -271,6 +267,15 @@
             <artifactId>slf4j-reload4j</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
+        <!-- POI / tess4j 走 log4j-api 2.x，此前 classpath 上没有它的实现，日志被丢弃并打
+             StatusLogger WARN。这里把 log4j2 API 路由到 slf4j，最终由 reload4j 按现有
+             src/main/resources/log4j.properties 输出。
+             不要再加 log4j-slf4j2-impl：它和 slf4j-reload4j 都是 SLF4J provider，会重复绑定。
+             版本由 log4j-bom 统一管理。 -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-to-slf4j</artifactId>
+        </dependency>
         <!-- log -->
 
 
@@ -282,20 +287,12 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.junit/junit-bom -->
-        <dependency>
-            <groupId>org.junit</groupId>
-            <artifactId>junit-bom</artifactId>
-            <version>${junit5.version}</version>
-            <type>pom</type>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+        <!-- JUnit 5：版本由上面的 junit-bom 管理。必须是 junit-jupiter（含 engine），
+             只引 junit-jupiter-api 时 surefire 找不到引擎，测试会被静默跳过而不是失败。
+             注：JUnit 6.x 最低要求 Java 17，故 5.x 是当前 JDK 基线下的最高可用大版本。 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit5.version}</version>
+            <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
 
