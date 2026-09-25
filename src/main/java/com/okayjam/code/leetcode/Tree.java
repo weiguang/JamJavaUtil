@@ -21,6 +21,37 @@ public class Tree {
         new Tree().isValidSerialization("9,3,4,#,#,1,#,#,2,#,6,#,#");
     }
 
+
+    /**
+     * 652. 寻找重复的子树
+     * @param root root
+     * @return ans
+     */
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+        List<TreeNode> res = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        traverse(root, res, map);
+        return res;
+    }
+
+    private String traverse(TreeNode root, List<TreeNode> res,   Map<String, Integer> map) {
+        if (root == null) {
+            return "#";
+        }
+
+        String left = traverse(root.left, res, map);
+        String right = traverse(root.right, res, map);
+
+        String subTree = root.val + "," + left + "," + right;
+
+        // merge 会把 subTree 的频次 +1，并返回 +1 后的结果
+        if (map.merge(subTree, 1, Integer::sum) == 2) {
+            res.add(root);
+        }
+
+        return subTree;
+    }
+
     /**
      * 637. 二叉树的层平均值
      * @param root root
