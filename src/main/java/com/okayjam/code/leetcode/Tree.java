@@ -21,6 +21,35 @@ public class Tree {
         new Tree().isValidSerialization("9,3,4,#,#,1,#,#,2,#,6,#,#");
     }
 
+    public TreeNode constructMaximumBinaryTree(int[] nums) {
+        return constructMaximumBinaryTree(nums, 0, nums.length - 1);
+    }
+
+    private TreeNode constructMaximumBinaryTree(int[] nums, int start, int end) {
+        if (start > end) return null;
+        int max = start;
+        for (int i = start + 1; i <= end; i++) {
+            if (nums[max] < nums[i]) {
+                max = i;
+            }
+        }
+        return new TreeNode(nums[max], constructMaximumBinaryTree(nums, start, max -1), constructMaximumBinaryTree(nums, max  + 1, end));
+    }
+
+
+    /**
+     * 653. 两数之和 IV - 输入二叉搜索树
+     * @param root root
+     * @param k k
+     * @return ans
+     */
+    public boolean findTarget(TreeNode root, int k) {
+        if (root == null) return false;
+        if (findTargetSet.contains(root.val)) return true;
+        findTargetSet.add(k - root.val);
+        return findTarget(root.left, k) || findTarget(root.right, k);
+    }
+    private final Set<Integer> findTargetSet = new HashSet<>();
 
     /**
      * 652. 寻找重复的子树
