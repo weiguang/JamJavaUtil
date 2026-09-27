@@ -1,5 +1,7 @@
 package com.okayjam.code.leetcode;
 
+import static org.bouncycastle.asn1.x500.style.RFC4519Style.c;
+
 import java.util.*;
 
 import com.okayjam.code.leetcode.LinkedListJam.ListNode;
@@ -20,6 +22,61 @@ public class Tree {
 //        }
         new Tree().isValidSerialization("9,3,4,#,#,1,#,#,2,#,6,#,#");
     }
+
+    /**
+     * 计算树的最大深度deep，高度height
+     * @param root root
+     * @return 深度
+     */
+    private int getHeight(TreeNode root) {
+        return root == null ? 0 : Math.max(getHeight(root.left), getHeight(root.right)) + 1;
+    }
+
+
+    /**
+     * 655. 输出二叉树
+     * @param root root
+     * @return ans
+     */
+    public List<List<String>> printTree(TreeNode root) {
+        int height = getHeight(root) - 1; // 树的高度 height (从 0 开始计数)
+        int m = height + 1;               // 矩阵行数
+        int n = (1 << m) - 1;            // 矩阵列数 2^(height+1) - 1
+
+        // 初始化矩阵，全部填入 ""
+        List<List<String>> res = new ArrayList<>();
+        for (int i = 0; i < m; i++) {
+            List<String> row = new ArrayList<>();
+            for (int j = 0; j < n; j++) {
+                row.add("");
+            }
+            res.add(row);
+        }
+
+        // DFS 填充节点值
+        printTreeDfs(root, 0, (n - 1) / 2, height, res);
+        return res;
+    }
+
+    private void printTreeDfs(TreeNode node, int r, int c, int height, List<List<String>> res) {
+        if (node == null) return;
+
+        // 放置当前节点值
+        res.get(r).set(c, String.valueOf(node.val));
+
+        // 计算左右子节点的偏移量 2^(height - r - 1)
+        int offset = 1 << (height - r - 1);
+
+        // 递归处理左、右子节点
+        if (node.left != null) {
+            printTreeDfs(node.left, r + 1, c - offset, height, res);
+        }
+        if (node.right != null) {
+            printTreeDfs(node.right, r + 1, c + offset, height, res);
+        }
+    }
+
+
 
     public TreeNode constructMaximumBinaryTree(int[] nums) {
         return constructMaximumBinaryTree(nums, 0, nums.length - 1);
