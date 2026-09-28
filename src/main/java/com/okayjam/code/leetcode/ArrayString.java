@@ -60,7 +60,8 @@ public class ArrayString {
 //                        new int[] {5, 2}})));
 //        new ArrayString().findDuplicates(new int[]{4,3,2,7,8,2,3,1});
 //        System.out.println(new ArrayString().findSubsequences(new int[]{4,6,7,7}));
-        System.out.println(new ArrayString().leastInterval(new char[]{'B','C','D','A','A','A','A','G'}, 1));
+//        System.out.println(new ArrayString().leastInterval(new char[]{'B','C','D','A','A','A','A','G'}, 1));
+        System.out.println(new ArrayString().findClosestElements(new int[]{0,1,1,1,2,3,6,7,8,9}, 9, 4));
 
      }
 
@@ -77,6 +78,39 @@ public class ArrayString {
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
+    }
+
+    /**
+     * 658. 找到 K 个最接近的元素
+     * 由于原数组 arr 已经是有序的，寻找 $k$ 个最接近 $x$ 的元素，等价于在数组中寻找一个长度为 $k$ 的连续子数组 $[l, r]$
+     * 这个逻辑的本质是：比较“舍弃 $arr[mid]$”和“纳入 $arr[mid + k]$”哪一个更优。
+     * 对比窗口 $A$ 和窗口 $B$，它们共同包含了中间的 $k - 1$ 个元素（即 $arr[mid + 1]$ 到 $arr[mid + k - 1]$）。
+     * @param arr arr
+     * @param k k
+     * @param x x
+     * @return ans
+     */
+    public List<Integer> findClosestElements(int[] arr, int k, int x) {
+        int l = 0, r = arr.length - k;
+
+        // 二分查找区间 [0, arr.length - k]
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            // 比较窗口左端点外侧和右端点的距离
+            if (x - arr[mid] > arr[mid + k] - x) {
+                l = mid + 1;
+            } else {
+                r = mid;
+            }
+        }
+
+        // 构造结果集，预设初始容量避免扩容
+        List<Integer> ans = new ArrayList<>(k);
+        for (int i = l; i < l + k; i++) {
+            ans.add(arr[i]);
+        }
+        return ans;
+
     }
 
     /**
