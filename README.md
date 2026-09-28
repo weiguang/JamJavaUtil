@@ -12,7 +12,7 @@ list插入数据库
 - 通用能力（识别任意图片文字，与业务无关）：
   - `TesseractOcrUtil` —— 基于 Tesseract（tess4j）
     - `ocr(...)`：通用识别（自动版面分析）
-    - `ocrDocument(...)`：**文档 / 代码截图专用**（PSM6 整块文本 + 放大 3 倍 + 保留缩进），多行文本识别率明显更高
+    - `ocrDocument(...)`：**文档 / 代码截图专用**（PSM6 整块文本 + 放大 3 倍），直接返回 Tesseract 的识别文本，不额外补空格或缩进
   - `DdddOcrUtil` —— 基于 ddddocr（ONNX），**仅适合验证码等极短文本**
 - 业务封装：
   - `VerifyCodeUtil` —— 验证码识别（内部调用上面的通用工具，附加单行模式与字符白名单）

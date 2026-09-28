@@ -11,8 +11,8 @@ import java.lang.reflect.Field;
 public class AnTest {
     @Test
     public void  t() throws Exception{
-        Class cls = Class.forName("com.okayjam.test.User");
-        Object o = cls.newInstance();
+        Class<?> cls = Class.forName("com.okayjam.test.User");
+        Object o = cls.getDeclaredConstructor().newInstance();
         System.out.println(o);
         Field field = cls.getDeclaredField("name");
         field.setAccessible(true);

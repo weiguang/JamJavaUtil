@@ -1,6 +1,10 @@
 package com.okayjam.util;
 
 import ai.onnxruntime.OrtException;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
@@ -32,11 +36,46 @@ public class OcrCodeUtilTest {
         }
     }
 
+    @Test
+    public void ocrDocumentPlainText() {
+        BufferedImage image = new BufferedImage(700, 140, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics = image.createGraphics();
+        try {
+            graphics.setColor(Color.WHITE);
+            graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
+            graphics.setColor(Color.BLACK);
+            graphics.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 30));
+            graphics.drawString("Hello World", 30, 50);
+            graphics.drawString("Second Line", 100, 105);
+        } finally {
+            graphics.dispose();
+        }
+
+        Optional<String> result = TesseractOcrUtil.ocrDocument(image);
+        Assertions.assertTrue(result.isPresent());
+        Assertions.assertEquals("Hello World\nSecond Line", result.get().trim());
+    }
+
+    @Test
+    public void ocrDocumentBlankImage() {
+        BufferedImage image = new BufferedImage(200, 80, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics = image.createGraphics();
+        try {
+            graphics.setColor(Color.WHITE);
+            graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
+        } finally {
+            graphics.dispose();
+        }
+
+        Optional<String> result = TesseractOcrUtil.ocrDocument(image);
+        Assertions.assertTrue(result.isPresent());
+        Assertions.assertEquals("", result.get());
+    }
+
     /**
-     * 文档 / 代码截图识别（Tesseract）：img.png 是一张多行 Java 代码截图。
+     * Recognizes the multi-line Java code screenshot in img.png.
      *
-     * <p>使用 {@link TesseractOcrUtil#ocrDocument(java.io.File)} 识别
-     * （PSM6 整块文本 + 放大 3 倍 + 保留缩进），并校验其中的关键代码片段。
+     * <p>Uses {@link TesseractOcrUtil#ocrDocument(java.io.File)} with PSM 6 and 3x scaling.
      */
     @Test
     public void ocrDocumentImage() {
