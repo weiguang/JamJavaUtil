@@ -68,6 +68,24 @@ public class StringJam {
         String word = null; // 节点到达词根结尾时直接存储完整词根
     }
 
+
+    /**
+     *    657. 机器人能否返回原点
+     * @param moves moves
+     * @return ans
+     */
+    public boolean judgeCircle(String moves) {
+        int x = 0, y = 0;
+        for (int i = 0; i < moves.length(); i++) {
+            char c = moves.charAt(i);
+            if (c == 'R') x++;
+            else if (c == 'L') x--;
+            else if (c == 'U') y++;
+            else if (c == 'D') y--;
+        }
+        return  x== 0 && y == 0;
+    }
+
     /**
      * 648. 单词替换
      * @param dictionary dict
