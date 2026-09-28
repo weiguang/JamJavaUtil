@@ -31,7 +31,6 @@
         <opencsv.version>5.12.0</opencsv.version>
         <!-- 注：1.2x 以后部分版本的 native 在部分环境下加载失败，1.20.0 已验证可用 -->
         <onnxruntime.version>1.20.0</onnxruntime.version>
-        <junit4.version>4.13.2</junit4.version>
         <junit5.version>5.14.4</junit5.version>
 
         <!-- 以下用于修复传递依赖中的已知漏洞（见 dependencyManagement） -->
@@ -278,14 +277,6 @@
         </dependency>
         <!-- log -->
 
-
-        <!-- https://mvnrepository.com/artifact/junit/junit -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit4.version}</version>
-            <scope>test</scope>
-        </dependency>
 
         <!-- JUnit 5：版本由上面的 junit-bom 管理。必须是 junit-jupiter（含 engine），
              只引 junit-jupiter-api 时 surefire 找不到引擎，测试会被静默跳过而不是失败。

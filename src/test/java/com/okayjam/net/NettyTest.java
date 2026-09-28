@@ -3,8 +3,9 @@ package com.okayjam.net;
 
 import com.okayjam.net.netty.tcp.Client;
 import com.okayjam.net.netty.tcp.Server;
-import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * @description: ${description}
@@ -14,16 +15,18 @@ import org.junit.Ignore;
 public class NettyTest {
     int port = 10001;
     String  host = "127.0.0.1";
-    @Before
+    @BeforeEach
     public void  setUp(){
         host = "127.0.0.1";
         port = 10001;
     }
-    @Ignore
+    @Test
+    @Disabled("requires a manually running TCP server")
     public  void testTCPServer() throws Exception {
         new Server(port).run();
     }
-    @Ignore
+    @Test
+    @Disabled("requires a manually running TCP server")
     public  void testTCPClient() throws Exception {
         new Thread(new Client(host,port)).start();
     }

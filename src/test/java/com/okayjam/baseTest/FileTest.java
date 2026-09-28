@@ -1,7 +1,7 @@
 package com.okayjam.baseTest;
 
 import com.okayjam.util.FileUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @description: ${description}

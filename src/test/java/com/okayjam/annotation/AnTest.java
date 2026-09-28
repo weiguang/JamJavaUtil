@@ -1,6 +1,6 @@
 package com.okayjam.annotation;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 

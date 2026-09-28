@@ -2,7 +2,7 @@ package com.okayjam.baseTest;
 
 import com.okayjam.algorithm.Algorithm;
 import com.okayjam.util.MathUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 import java.util.Arrays;

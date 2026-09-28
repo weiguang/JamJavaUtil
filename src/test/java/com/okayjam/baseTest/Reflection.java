@@ -1,7 +1,7 @@
 package com.okayjam.baseTest;
 
 import com.okayjam.test.Animal;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
