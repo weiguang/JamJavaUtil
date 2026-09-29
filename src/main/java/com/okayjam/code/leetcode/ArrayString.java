@@ -61,7 +61,8 @@ public class ArrayString {
 //        new ArrayString().findDuplicates(new int[]{4,3,2,7,8,2,3,1});
 //        System.out.println(new ArrayString().findSubsequences(new int[]{4,6,7,7}));
 //        System.out.println(new ArrayString().leastInterval(new char[]{'B','C','D','A','A','A','A','G'}, 1));
-        System.out.println(new ArrayString().findClosestElements(new int[]{0,1,1,1,2,3,6,7,8,9}, 9, 4));
+//        System.out.println(new ArrayString().findClosestElements(new int[]{0,1,1,1,2,3,6,7,8,9}, 9, 4));
+        System.out.println(new ArrayString().isPossible(new int[]{1,2,3,3,4,5}));
 
      }
 
@@ -78,6 +79,45 @@ public class ArrayString {
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
+    }
+
+    /**
+     * 659. 分割数组为连续子序列
+     * @param nums 按非递减顺序排列的数组
+     * @return ans
+     */
+    public boolean isPossible(int[] nums) {
+        if (nums.length == 0) return false;
+
+        // frequency 记录尚未分配的数字数量；tails 记录以某个数字结尾的子序列数量。
+        Map<Integer, Integer> frequency = new HashMap<>();
+        Map<Integer, Integer> tails = new HashMap<>();
+        for (int num : nums) {
+            frequency.merge(num, 1, Integer::sum);
+        }
+
+        for (int num : nums) {
+            int remaining = frequency.getOrDefault(num, 0);
+            if (remaining == 0) continue;
+            frequency.put(num, remaining - 1);
+
+            // 优先延长已有序列，避免留下无法达到长度 3 的短序列。
+            int extendable = tails.getOrDefault(num - 1, 0);
+            if (extendable > 0) {
+                tails.put(num - 1, extendable - 1);
+                tails.merge(num, 1, Integer::sum);
+            } else if (frequency.getOrDefault(num + 1, 0) > 0
+                    && frequency.getOrDefault(num + 2, 0) > 0) {
+                // 无法延长时，必须同时取到后两个连续数字，才能新建合法序列。
+                frequency.put(num + 1, frequency.get(num + 1) - 1);
+                frequency.put(num + 2, frequency.get(num + 2) - 1);
+                // 新建的序列以 num + 2 结尾。
+                tails.merge(num + 2, 1, Integer::sum);
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
