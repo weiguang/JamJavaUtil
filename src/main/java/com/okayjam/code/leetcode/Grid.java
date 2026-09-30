@@ -15,6 +15,42 @@ public class Grid {
     private final static int[][] DIRECTIONS4 = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
     private final int[][] direction = new int[][] {{-1,-1},{-1,0},{-1,1}, {0,-1},{0,1}, {1,-1},{1,0},{1,1}};
 
+
+    /**
+     * 661. 图片平滑器
+     * @param img img
+     * @return ans
+     */
+    public int[][] imageSmoother(int[][] img) {
+        int m = img.length, n = img[0].length;
+        int[][] sum = new int[m + 1][n + 1];
+
+        // 1. 构建二维前缀和数组
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                sum[i + 1][j + 1] = sum[i][j + 1] + sum[i + 1][j] - sum[i][j] + img[i][j];
+            }
+        }
+
+        int[][] res = new int[m][n];
+        // 2. 利用前缀和计算 3x3 区域和
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                int r1 = Math.max(0, i - 1), c1 = Math.max(0, j - 1);
+                int r2 = Math.min(m - 1, i + 1), c2 = Math.min(n - 1, j + 1);
+
+                // 求解子矩阵和：sum[r2+1][c2+1] - sum[r1][c2+1] - sum[r2+1][c1] + sum[r1][c1]
+                int totalSum = sum[r2 + 1][c2 + 1] - sum[r1][c2 + 1] - sum[r2 + 1][c1] + sum[r1][c1];
+                int count = (r2 - r1 + 1) * (c2 - c1 + 1);
+
+                res[i][j] = totalSum / count;
+            }
+        }
+        return res;
+    }
+
+
+
     public int findCircleNum(int[][] isConnected) {
         int cities = isConnected.length;
         boolean[] visited = new boolean[cities];
@@ -36,6 +72,7 @@ public class Grid {
             }
         }
     }
+
 
     /**
      * 576. Out of Boundary Paths
