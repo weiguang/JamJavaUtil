@@ -5,6 +5,7 @@ import static org.bouncycastle.asn1.x500.style.RFC4519Style.c;
 import java.util.*;
 
 import com.okayjam.code.leetcode.LinkedListJam.ListNode;
+import javax.swing.tree.TreeNode;
 
 /**
  * @author Chen weiguang chen2621978@gmail.com
@@ -30,6 +31,31 @@ public class Tree {
      */
     private int getHeight(TreeNode root) {
         return root == null ? 0 : Math.max(getHeight(root.left), getHeight(root.right)) + 1;
+    }
+
+    /**
+     * 662. 二叉树最大宽度
+     * @param root root
+     * @return ans
+     */
+    public int widthOfBinaryTree(TreeNode root) {
+        if (root == null) return  0;
+        Deque<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        root.val = 1;
+        int ans = 1;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            TreeNode first = queue.peek();
+            for (int i = 0; i < size; i++) {
+                TreeNode pop = queue.pop();
+                if (pop.left != null) {queue.add(pop.left); pop.left.val = pop.val * 2;}
+                if (pop.right != null) {queue.add(pop.right); pop.right.val = pop.val * 2 + 1;}
+                if (i == size -1)
+                    ans = Math.max(ans, pop.val - first.val + 1);
+            }
+        }
+        return ans;
     }
 
 
