@@ -82,6 +82,25 @@ public class ArrayString {
     }
 
     /**
+     * 665. 非递减数列
+     * @param nums nums
+     * @return ans
+     */
+    public boolean checkPossibility(int[] nums) {
+        if (nums.length < 3) return true;
+        boolean charge = false;
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] <= nums[i+1]) continue;
+            if (charge) return false;
+            charge = true;
+            if (i == 0 || nums[i-1] <= nums[i+1]) {
+                nums[i] = nums[i+1];
+            } else nums[i + 1] = nums[i];
+        }
+        return true;
+    }
+
+    /**
      * 659. 分割数组为连续子序列
      * @param nums 按非递减顺序排列的数组
      * @return ans
