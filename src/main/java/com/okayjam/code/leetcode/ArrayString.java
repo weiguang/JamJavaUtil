@@ -82,6 +82,24 @@ public class ArrayString {
     }
 
     /**
+     * 667. 优美的排列 II
+     * @param n n
+     * @param k k
+     * @return ans
+     */
+    public int[] constructArray(int n, int k) {
+        int[] ans = new int[n];
+        int l = 1, r = k + 1;
+        for (int i = 0; i < k+1; i++) {
+            ans[i] = (i & 1) == 0 ? l++ : r--;
+        }
+        for (int i = k+2; i <= n; i++) {
+            ans[i-1] = i;
+        }
+        return ans;
+    }
+
+    /**
      * 665. 非递减数列
      * @param nums nums
      * @return ans
