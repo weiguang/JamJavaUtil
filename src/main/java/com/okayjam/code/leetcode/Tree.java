@@ -34,6 +34,57 @@ public class Tree {
     }
 
     /**
+     * 669. 修剪二叉搜索树
+     * 递归和非递归解法
+     * @param root root
+     * @param low low
+     * @param high high
+     * @return ans
+     */
+    public TreeNode trimBST(TreeNode root, int low, int high) {
+        if (root == null) return root;
+        if (root.val < low) return trimBST(root.right, low, high);
+        if (root.val > high) return trimBST(root.left, low, high);
+        // 在 [low, high] 范围内：递归修剪左右子树并重新连接
+        root.left = trimBST(root.left, low, high);
+        root.right = trimBST(root.right, low, high);
+        return root;
+    }
+
+    public TreeNode trimBST2(TreeNode root, int low, int high) {
+        if (root == null) return null;
+
+        // 1. 寻找合法的新根节点
+        while (root != null && (root.val < low || root.val > high)) {
+            if (root.val < low) root = root.right;
+            else root = root.left;
+        }
+        if (root == null) return null;
+
+        // 2. 修剪左子树（若左子节点 < low，则接上其右子节点）
+        TreeNode cur = root;
+        while (cur != null) {
+            while (cur.left != null && cur.left.val < low) {
+                cur.left = cur.left.right;
+            }
+            cur = cur.left;
+        }
+
+        // 3. 修剪右子树（若右子节点 > high，则接上其左子节点）
+        cur = root;
+        while (cur != null) {
+            while (cur.right != null && cur.right.val > high) {
+                cur.right = cur.right.left;
+            }
+            cur = cur.right;
+        }
+
+        return root;
+    }
+
+
+
+    /**
      * 662. 二叉树最大宽度
      * @param root root
      * @return ans

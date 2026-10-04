@@ -62,7 +62,8 @@ public class ArrayString {
 //        System.out.println(new ArrayString().findSubsequences(new int[]{4,6,7,7}));
 //        System.out.println(new ArrayString().leastInterval(new char[]{'B','C','D','A','A','A','A','G'}, 1));
 //        System.out.println(new ArrayString().findClosestElements(new int[]{0,1,1,1,2,3,6,7,8,9}, 9, 4));
-        System.out.println(new ArrayString().isPossible(new int[]{1,2,3,3,4,5}));
+//        System.out.println(new ArrayString().isPossible(new int[]{1,2,3,3,4,5}));
+        System.out.println(new ArrayString().maximumSwap(2736));
 
      }
 
@@ -80,6 +81,42 @@ public class ArrayString {
         nums[i] = nums[j];
         nums[j] = temp;
     }
+
+    /**
+     * 670. 最大交换
+     * @param num num
+     * @return ans
+     */
+    public int maximumSwap(int num) {
+        char[] charArray = String.valueOf(num).toCharArray();
+        int n = charArray.length;
+
+        // 1. 记录数字 0-9 最后一次出现的索引
+        int[] last = new int[10];
+        for (int i = 0; i < n; i++) {
+            last[charArray[i] - '0'] = i;
+        }
+
+        // 2. 从左到右扫描，寻找最佳交换点
+        for (int i = 0; i < n; i++) {
+            // 从 9 往下找到当前字符的最大替换可能
+            for (int d = 9; d > charArray[i] - '0'; d--) {
+                if (last[d] > i) {
+                    // 交换位置 i 和 last[d]
+                    char temp = charArray[i];
+                    charArray[i] = charArray[last[d]];
+                    charArray[last[d]] = temp;
+
+                    // 交换一次后即为最大值，直接返回
+                    return Integer.parseInt(new String(charArray));
+                }
+            }
+        }
+
+        // 若无需交换，返回原值
+        return num;
+    }
+
 
     /**
      * 667. 优美的排列 II
