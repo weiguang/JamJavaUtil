@@ -34,6 +34,25 @@ public class Tree {
     }
 
     /**
+     * 671. 二叉树中第二小的节点
+     * @param root root
+     * @return ans
+     */
+    public int findSecondMinimumValue(TreeNode root) {
+        int min = root.val;
+        Deque<TreeNode> queue = new LinkedList<>();
+        queue.push(root);
+        int ans = -1;
+        while (!queue.isEmpty()) {
+            TreeNode pop = queue.pop();
+            if (pop.val != min && (ans == -1 || ans > pop.val) ) ans = pop.val;
+            if (pop.left != null) queue.push(pop.left);
+            if (pop.right != null) queue.push(pop.right);
+        }
+        return ans;
+    }
+
+    /**
      * 669. 修剪二叉搜索树
      * 递归和非递归解法
      * @param root root
