@@ -63,7 +63,8 @@ public class ArrayString {
 //        System.out.println(new ArrayString().leastInterval(new char[]{'B','C','D','A','A','A','A','G'}, 1));
 //        System.out.println(new ArrayString().findClosestElements(new int[]{0,1,1,1,2,3,6,7,8,9}, 9, 4));
 //        System.out.println(new ArrayString().isPossible(new int[]{1,2,3,3,4,5}));
-        System.out.println(new ArrayString().maximumSwap(2736));
+        System.out.println(new ArrayString().findNumberOfLIS(new int[]{1,2,4,3,5,4,7,2}));
+//        System.out.println(new ArrayString().maximumSwap(2736));
 
      }
 
@@ -80,6 +81,48 @@ public class ArrayString {
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
+    }
+
+    /**
+     * 673. 最长递增子序列的个数
+     * @param nums nums
+     * @return ans
+     */
+    public int findNumberOfLIS(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        int n = nums.length;
+        int[] dp = new int[n];
+        int[] count = new int[n];
+
+        int maxLen = 0;
+
+        for (int i = 0; i < n; i++) {
+            dp[i] = 1;
+            // 初始每个元素自身构成长度为 1 的子序列，计数为 1
+            count[i] = 1;
+
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    if (dp[j] + 1 > dp[i]) {
+                        dp[i] = dp[j] + 1;
+                        // 找到更长的子序列，重置并继承 count[j]
+                        count[i] = count[j];
+                    } else if (dp[j] + 1 == dp[i]) {
+                        // 找到相同长度的子序列，累加 count[j]
+                        count[i] += count[j];
+                    }
+                }
+            }
+            maxLen = Math.max(maxLen, dp[i]);
+        }
+
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            if (dp[i] == maxLen) {
+                ans += count[i];
+            }
+        }
+        return ans;
     }
 
     /**
