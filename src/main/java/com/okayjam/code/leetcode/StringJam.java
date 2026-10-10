@@ -68,6 +68,90 @@ public class StringJam {
         String word = null; // 节点到达词根结尾时直接存储完整词根
     }
 
+    /**
+     * 680. 验证回文串 II
+     * @param s s
+     * @return ans
+     */
+    public boolean validPalindrome(String s) {
+        return validPalindrome(s, 0, s.length() -1, false);
+    }
+
+    public boolean validPalindrome(String s, int start, int end, boolean del) {
+        if (start == end) return true;
+        while (start < end) {
+            if (s.charAt(start) != s.charAt(end) ) {
+                if (del) return false;
+                return validPalindrome(s, start + 1, end , true) || validPalindrome(s, start , end - 1 , true);
+            }
+            start++;
+            end--;
+        }
+        return true;
+    }
+
+
+    /**
+     * 678. 有效的括号字符串
+     * 贪心算法
+     * maxCount：未匹配左括号数量的最大可能值，如果 maxCount 降到了 0 以下，说明即便把前面所有的 * 都当成左括号 ( 来用，右括号 ) 的数量依然超标了。
+     * minCount：未匹配左括号数量的最小可能值,当 minCount 变成负数时，说明前面遇到的 * 太多了，如果全部当成右括号 ) 会导致右括号过剩, 下届为0
+     * 如果 minCount == 0，说明 0 落在最终的取值区间，返回 true
+     * 如果 minCount > 0，说明即使把能当右括号的 * 统统当成右括号，依然有剩余的左括号无法被抵消，返回 false
+     * @param s s
+     * @return ans
+     */
+
+    public boolean checkValidString(String s) {
+        int minCount = 0, maxCount = 0;
+        int n = s.length();
+        for (int i = 0; i < n; i++) {
+            char c = s.charAt(i);
+            if (c == '(') {
+                minCount++;
+                maxCount++;
+            } else if (c == ')') {
+                minCount = Math.max(0, minCount - 1);
+                maxCount--;
+            } else { // '*'
+                minCount = Math.max(0, minCount - 1);
+                maxCount++;
+            }
+            if (maxCount < 0) return false;
+        }
+        return minCount == 0;
+    }
+
+    public boolean checkValidString2(String s) {
+        Deque<Integer> leftStack = new ArrayDeque<>();
+        Deque<Integer> starStack = new ArrayDeque<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '(') {
+                leftStack.push(i);
+            } else if (c == '*') {
+                starStack.push(i);
+            } else { // c == ')'
+                if (!leftStack.isEmpty()) {
+                    leftStack.pop();
+                } else if (!starStack.isEmpty()) {
+                    starStack.pop();
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        // 检查剩余的 '(' 能否被右侧的 '*' 抵消
+        while (!leftStack.isEmpty() && !starStack.isEmpty()) {
+            if (leftStack.pop() > starStack.pop()) {
+                return false;
+            }
+        }
+
+        return leftStack.isEmpty();
+    }
 
     /**
      *    657. 机器人能否返回原点
