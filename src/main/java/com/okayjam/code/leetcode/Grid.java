@@ -1,11 +1,10 @@
 package com.okayjam.code.leetcode;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
  * @author Chen weiguang chen2621978@gmail.com
- * @date 2022/08/02 20:05
+ * &#064;date  2022/08/02 20:05
  **/
 public class Grid {
     public static void main(String[] args) {
@@ -14,6 +13,74 @@ public class Grid {
 
     private final static int[][] DIRECTIONS4 = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
     private final int[][] direction = new int[][] {{-1,-1},{-1,0},{-1,1}, {0,-1},{0,1}, {1,-1},{1,0},{1,1}};
+
+
+    /**
+     * 684. 冗余连接
+     * 【题目解析与核心思想：并查集 (Union-Find)】
+     * 1. 问题本质：
+     *    在一个 N 个节点、N 条边的连通无向图中，找到那条导致“出环”的冗余边。
+     * 2. 核心思路：
+     *    - 初始时，将所有节点看作互不相连的独立集合（每个节点的根节点是自己）。
+     *    - 按顺序遍历每一条边 [node1, node2]：
+     *      a) 分别查找 node1 和 node2 的根节点（即它们各自所在的集合/圈子）：
+     *         - 如果两者的【根节点相同】：说明在连入这条边之前，node1 和 node2 已经通过其他节点连通了。
+     *           此时再加这条边就会形成一个“环”，因此这条边就是导致冗余的边，直接返回！
+     *         - 如果两者的【根节点不同】：说明它们还未连通，调用 union 方法将它们合并为一个集合。
+     * 3. 关键优化（路径压缩 Path Compression）：
+     *    - 在 find 查找根节点时，递归地将沿途所有节点的父节点直接指向最终的根节点，
+     *      防止树结构退化成链表，使后续查找操作的时间复杂度接近 O(1)。
+     * 复杂度：
+     * - 时间复杂度: O(N * α(N)) ≈ O(N)，单次查找/合并近乎 O(1)。
+     * - 空间复杂度: O(N)，用于存储 parent 数组。
+     * @param edges edges
+     * @return ans
+     */
+    public int[] findRedundantConnection(int[][] edges) {
+        int n = edges.length;
+        parent684 = new int[n + 1];
+
+        // 初始化：每个节点的根节点是它自己
+        for (int i = 1; i <= n; i++) {
+            parent684[i] = i;
+        }
+
+        // 遍历每条边
+        for (int[] edge : edges) {
+            int node1 = edge[0];
+            int node2 = edge[1];
+
+            // 如果两个节点已经在同一个集合中，说明这条边导致了环
+            if (find(node1) == find(node2)) {
+                return edge;
+            } else {
+                // 否则将两个节点所在的集合合并
+                union(node1, node2);
+            }
+        }
+
+        return new int[0];
+    }
+
+    // 存储父节点数组
+    private int[] parent684;
+
+    // 查找节点的根节点（带路径压缩优化）
+    private int find(int node) {
+        if (parent684[node] != node) {
+            parent684[node] = find(parent684[node]); // 路径压缩
+        }
+        return parent684[node];
+    }
+
+    // 合并两个节点所在的集合
+    private void union(int node1, int node2) {
+        int root1 = find(node1);
+        int root2 = find(node2);
+        if (root1 != root2) {
+            parent684[root1] = root2;
+        }
+    }
 
 
     /**

@@ -83,6 +83,46 @@ public class ArrayString {
         nums[j] = temp;
     }
 
+
+    /**
+     * 682. 棒球比赛
+     * 用原生数组模拟栈 + 入栈求和
+     * @param operations 1
+     * @return ans
+     */
+    public int calPoints(String[] operations) {
+        int[] scores = new int[operations.length];
+        int size = 0;
+        int sum = 0;
+
+        for (String op : operations) {
+            switch (op) {
+                case "+":
+                    scores[size] = scores[size - 1] + scores[size - 2];
+                    sum += scores[size];
+                    size++;
+                    break;
+                case "D":
+                    scores[size] = scores[size - 1] * 2;
+                    sum += scores[size];
+                    size++;
+                    break;
+                case "C":
+                    sum -= scores[size - 1];
+                    size--;
+                    break;
+                default:
+                    int score = Integer.parseInt(op);
+                    scores[size] = score;
+                    sum += score;
+                    size++;
+                    break;
+            }
+        }
+
+        return sum;
+    }
+
     /**
      * 673. 最长递增子序列的个数
      * @param nums nums
