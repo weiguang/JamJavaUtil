@@ -34,6 +34,35 @@ public class Tree {
     }
 
     /**
+     * 687. 最长同值路径
+     * @param root root
+     * @return ans
+     */
+    public int longestUnivaluePath(TreeNode root) {
+        longestUnivaluePathDFS(root);
+        return max;
+    }
+    int max = 0;
+    private int longestUnivaluePathDFS(TreeNode root) {
+        if (root == null) return 0;
+
+        // 递归计算左右子树向下的最大单侧同值路径
+        int left = longestUnivaluePathDFS(root.left);
+        int right = longestUnivaluePathDFS(root.right);
+
+        // 如果节点值与子节点值不匹配，单侧路径断开，重置为 0
+        int leftPath = (root.left != null && root.left.val == root.val) ? left + 1 : 0;
+        int rightPath = (root.right != null && root.right.val == root.val) ? right + 1 : 0;
+
+        // 更新经过当前节点的最大同值路径（左边路径 + 右边路径）
+        max = Math.max(max, leftPath + rightPath);
+
+        // 返回当前节点能向上提供的最大单侧同值路径
+        return Math.max(leftPath, rightPath);
+    }
+
+
+    /**
      * 671. 二叉树中第二小的节点
      * @param root root
      * @return ans
