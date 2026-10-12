@@ -69,6 +69,35 @@ public class StringJam {
     }
 
     /**
+     * 686. 重复叠加字符串匹配
+     * @param a a
+     * @param b b
+     * @return ans
+     */
+    public int repeatedStringMatch(String a, String b) {
+        int lenA = a.length(), lenB = b.length();
+
+        // 计算至少需要重复 a 的次数 C， 向上取整的写法
+        // 等同 (int) Math.ceil((double) b.length() / a.length());
+        int count = (lenB + lenA - 1) / lenA;
+
+        // 构建重复 C 次的字符串
+        StringBuilder sb = new StringBuilder(a.repeat(count));
+
+        if (sb.indexOf(b) != -1) {
+            return count;
+        }
+
+        // 如果 C 次不够，最多只需要再加一次 a 应对首尾跨边界情况
+        sb.append(a);
+        if (sb.indexOf(b) != -1) {
+            return count + 1;
+        }
+
+        return -1;
+    }
+
+    /**
      * 680. 验证回文串 II
      * @param s s
      * @return ans
