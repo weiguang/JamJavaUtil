@@ -84,6 +84,31 @@ public class ArrayString {
     }
 
     /**
+     * 696. 计数二进制子串
+     * @param s s
+     * @return ans
+     */
+    public int countBinarySubstrings(String s) {
+        char[] ca = s.toCharArray();
+        int ans = 0;
+        int last = 0;
+        int cur = 1;
+
+        for (int i = 1; i < ca.length; i++) {
+            if (ca[i] == ca[i - 1]) {
+                cur++;
+            } else {
+                ans += Math.min(last, cur);
+                last = cur;
+                cur = 1;
+            }
+        }
+        ans += Math.min(last, cur);
+
+        return ans;
+    }
+
+    /**
      * 693. 交替位二进制数
      * @param n n
      * @return ans

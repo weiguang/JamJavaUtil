@@ -911,10 +911,10 @@ public class Grid {
 
     /**
      * 695. 岛屿的最大面积
-     * https://leetcode.cn/problems/max-area-of-island/
+     * <a href="https://leetcode.cn/problems/max-area-of-island/">695. 岛屿的最大面积</a>
      *
-     * @param grid
-     * @return
+     * @param grid grid
+     * @return ans
      */
     public int maxAreaOfIsland(int[][] grid) {
         int m = grid.length;
@@ -923,7 +923,7 @@ public class Grid {
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 if (grid[i][j] == 1) {
-                    int t = dfs(grid, i, j);
+                    int t = maxAreaOfIslandDfs(grid, i, j);
                     if (t > re) {
                         re = t;
                     }
@@ -933,7 +933,7 @@ public class Grid {
         return re;
     }
 
-    public int dfs(int[][] grid, int r, int c) {
+    private int maxAreaOfIslandDfs(int[][] grid, int r, int c) {
         if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length) {
             return 0;
         }
@@ -942,10 +942,10 @@ public class Grid {
         }
         grid[r][c] = '2';
         int re = 1;
-        re += dfs(grid, r + 1, c);
-        re += dfs(grid, r - 1, c);
-        re += dfs(grid, r, c - 1);
-        re += dfs(grid, r, c + 1);
+        re += maxAreaOfIslandDfs(grid, r + 1, c);
+        re += maxAreaOfIslandDfs(grid, r - 1, c);
+        re += maxAreaOfIslandDfs(grid, r, c - 1);
+        re += maxAreaOfIslandDfs(grid, r, c + 1);
         return re;
     }
 
