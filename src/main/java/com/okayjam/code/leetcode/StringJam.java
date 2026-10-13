@@ -68,6 +68,48 @@ public class StringJam {
         String word = null; // 节点到达词根结尾时直接存储完整词根
     }
 
+
+    /**
+     * 692. 前K个高频单词
+     * @param words words
+     * @param k k
+     * @return ans
+     */
+    public List<String> topKFrequent(String[] words, int k) {
+        HashMap<String, Integer> map = new HashMap<>();
+        for (String word : words) {
+            map.merge(word, 1, Integer::sum);
+        }
+        // 比较器写法， 但是会慢点
+//        PriorityQueue<Map.Entry<String, Integer>> minHeap = new PriorityQueue<>(
+//                Map.Entry.<String, Integer>comparingByValue(Comparator.reverseOrder())
+//                        .thenComparing(Map.Entry::getKey)
+//                        .reversed()
+//        );
+        // 用原生三元表达式，不使用 thenComparing 和 reversed() 链式调用
+        PriorityQueue<Map.Entry<String, Integer>> minHeap = new PriorityQueue<>(
+                (a, b) -> a.getValue().equals(b.getValue())
+                        ? b.getKey().compareTo(a.getKey())  // 频率相同，字典序逆序（小顶堆弹出大的）
+                        : Integer.compare(a.getValue(), b.getValue())        // 频率不同，频率升序（小顶堆弹出小的）
+        );
+        // 如果多出k个数，把排序在前面的去掉
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            minHeap.offer(entry);
+            if (minHeap.size() > k) {
+                minHeap.poll();
+            }
+        }
+        // 4. 从堆中取出元素（此时堆顶是第 k 大的元素，弹出顺序是逆序）
+        List<String> result = new ArrayList<>(k);
+        while (!minHeap.isEmpty()) {
+            result.add(minHeap.poll().getKey());
+        }
+
+        // 5. 翻转列表得到从高频到低频的最终结果 O(k)
+        Collections.reverse(result);
+        return result;
+    }
+
     /**
      * 686. 重复叠加字符串匹配
      * @param a a

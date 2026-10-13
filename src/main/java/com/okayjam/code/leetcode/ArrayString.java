@@ -83,6 +83,25 @@ public class ArrayString {
         nums[j] = temp;
     }
 
+    /**
+     * 693. 交替位二进制数
+     * @param n n
+     * @return ans
+     */
+    public boolean hasAlternatingBits(int n) {
+        // 1. 错位相异或,这样就会得到最高位之后全是1的数
+        int temp = n ^ (n >> 1);
+        // 2. 检查 temp 是否为全 1 的二进制数（如 111...1）， +1就会进位，最高位后续全是0，&就是得到0
+        return (temp & (temp + 1)) == 0;
+    }
+
+    public boolean hasAlternatingBits2(int n) {
+        while (n > 0) {
+            if (((n>>1)&1) == (n & 1)) return false;
+            n >>= 1;
+        }
+        return true;
+    }
 
     /**
      * 682. 棒球比赛

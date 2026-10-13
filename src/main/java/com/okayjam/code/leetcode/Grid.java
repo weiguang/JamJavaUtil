@@ -15,6 +15,56 @@ public class Grid {
     private final int[][] direction = new int[][] {{-1,-1},{-1,0},{-1,1}, {0,-1},{0,1}, {1,-1},{1,0},{1,1}};
 
 
+
+
+    /**
+     * 688. 骑士在棋盘上的概率
+     * @param n n
+     * @param k k
+     * @param row row
+     * @param column column
+     * @return ans
+     */
+    public double knightProbability(int n, int k, int row, int column) {
+        // memo[r][c][step] 表示从坐标 (r, c) 出发、还需移动 step 步时留在棋盘上的概率
+        double[][][] memo = new double[n][n][k + 1];
+        return knightProbabilityDfs(n, k, row, column, memo);
+    }
+
+    // 骑士 8 个方向的相对坐标偏移量
+    private static final int[][] DIRECTIONS = {
+            {-2, -1}, {-2, 1}, {-1, -2}, {-1, 2},
+            {1, -2}, {1, 2}, {2, -1}, {2, 1}
+    };
+
+    private double knightProbabilityDfs(int n, int k, int r, int c, double[][][] memo) {
+        // 1. 越界检查：一旦离开棋盘，该条路径存活概率为 0
+        if (r < 0 || r >= n || c < 0 || c >= n) {
+            return 0.0;
+        }
+        // 2. 终止条件：走完 k 步且未出界，说明成功存活，概率为 1
+        if (k == 0) {
+            return 1.0;
+        }
+        // 3. 命中缓存：直接返回已知结果，避免重复计算
+        if (memo[r][c][k] > 0) {
+            return memo[r][c][k];
+        }
+
+        // 4. 遍历 8 个可能的移动方向，累加后一步的存活概率
+        double totalProb = 0.0;
+        for (int[] dir : DIRECTIONS) {
+            int nextR = r + dir[0];
+            int nextC = c + dir[1];
+            // 选择各个方向的概率均为 1/8
+            totalProb += knightProbabilityDfs(n, k - 1, nextR, nextC, memo) / 8.0;
+        }
+
+        // 5. 存入记忆化数组并返回
+        memo[r][c][k] = totalProb;
+        return totalProb;
+    }
+
     /**
      * 684. 冗余连接
      * 【题目解析与核心思想：并查集 (Union-Find)】
