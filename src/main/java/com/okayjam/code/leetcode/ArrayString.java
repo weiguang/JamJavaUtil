@@ -84,6 +84,79 @@ public class ArrayString {
     }
 
     /**
+     * 698. 划分为k个相等的子集
+     * 1. 数据规模信号：注意条件 N <= 16，这是极强烈的指数级复杂度信号，排除普通贪心/线性DP，锁定【回溯搜索 (DFS)】。
+     * 2. 为什么贪心会错：本题本质是 NP-Hard 的装箱问题，局部最优解（如顺序摆放）会打乱全局组合，无法保证得出可行解。
+     * 3. 决策模型构建：站在“数字”的角度，按顺序将 nums[index] 尝试放入 k 个桶中的某一个（状态树分支为 k^N）。
+     * 【三大核心剪枝策略】
+     * - 剪枝 1（可行性）：总和不能整除 k 或最大元素 > target 时，直接返回 false。
+     * - 剪枝 2（先大后小/降序）：优先放置大数。大数占空间大，若放不下会极早触发越界返回，大幅削减搜索树深度。
+     * - 剪枝 3（桶去重/对称性）：若 buckets[i] == buckets[i-1]，说明前一个同状态的桶放入该数后已验证失败，
+     *   当前桶放入也必然失败，直接 continue 跳过。
+     * @param nums nums
+     * @param k k
+     * @return ans
+     */
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+        if (sum % k != 0) return false;
+
+        int target = sum / k;
+
+        // 排序并降序处理
+        Arrays.sort(nums);
+        int n = nums.length;
+        if (nums[n - 1] > target) return false;
+
+        // 建立 k 个桶，记录各桶当前累加和
+        int[] buckets = new int[k];
+
+        // 从最大的数字开始回溯放桶
+        return canPartitionKSubsetsBacktrack(nums, n - 1, buckets, target);
+    }
+
+    /**
+     * 回溯搜索核心逻辑：将 nums[index] 尝试放入 k 个桶中的某一个
+     *
+     * @param nums    排序后的输入数组
+     * @param index   当前处理的数字下标（从 n-1 到 0 降序）
+     * @param buckets 存储当前 k 个桶累加和的数组
+     * @param target  每个桶的目标和
+     * @return 当前分支能否找到可行解
+     */
+    private boolean canPartitionKSubsetsBacktrack(int[] nums, int index, int[] buckets, int target) {
+        // 所有数字安排完毕，说明分割成功
+        if (index < 0) return true;
+
+        for (int i = 0; i < buckets.length; i++) {
+            // 剪枝 1：如果放到该桶后超限，跳过
+            if (buckets[i] + nums[index] > target) {
+                continue;
+            }
+
+            // 剪枝 2：如果当前桶的状态与前一个桶相同，跳过以避免重复搜索
+            if (i > 0 && buckets[i] == buckets[i - 1]) {
+                continue;
+            }
+
+            // 做选择
+            buckets[i] += nums[index];
+
+            // 递归下一个数字
+            if (canPartitionKSubsetsBacktrack(nums, index - 1, buckets, target)) {
+                return true;
+            }
+
+            // 撤销选择（回溯）
+            buckets[i] -= nums[index];
+        }
+        return false;
+    }
+
+    /**
      * 696. 计数二进制子串
      * @param s s
      * @return ans
