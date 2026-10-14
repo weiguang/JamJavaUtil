@@ -84,6 +84,75 @@ public class ArrayString {
     }
 
     /**
+     *  697. 数组的度
+     * @param nums nums
+     * @return ans
+     */
+    public int findShortestSubArray(int[] nums) {
+        // key: 元素值, value: int[3]{频次, 第一次出现的位置, 最后一次出现的位置}
+        Map<Integer, int[]> map = new HashMap<>();
+        int maxDegree = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            int num = nums[i];
+            if (!map.containsKey(num)) {
+                map.put(num, new int[]{1, i, i});
+            } else {
+                int[] info = map.get(num);
+                info[0]++;   // 频次 +1
+                info[2] = i; // 更新最后出现的位置
+            }
+            // 动态记录最大度
+            maxDegree = Math.max(maxDegree, map.get(num)[0]);
+        }
+
+        int minLen = nums.length;
+        // 遍历哈希表，找出所有达到最大度的元素，计算最小子数组长度
+        for (int[] info : map.values()) {
+            if (info[0] == maxDegree) {
+                minLen = Math.min(minLen, info[2] - info[1] + 1);
+            }
+        }
+        return minLen;
+    }
+
+
+    public int findShortestSubArray2(int[] nums) {
+        int maxNum = 0; //计算需要的数组大小maxNum
+        for (int num : nums) {
+            if (num > maxNum) maxNum = num;
+        }
+        // 由于题目限定 nums[i] 的范围通常较小（LeetCode 697 题中 0 <= nums[i] < 50000），用固定大小数组代替 HashMap
+        int[] count = new int[maxNum + 1];
+        int[] first = new int[maxNum + 1];
+        int[] last = new int[maxNum + 1];
+        // 计算度
+        int maxDegree = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int num = nums[i];
+            if (count[num] == 0) {
+                first[num] = i; // 开始位置
+            }
+            count[num]++; // 频次 +1
+            last[num] = i; // 更新最后出现的位置
+            // 动态记录最大度
+            if (count[num] > maxDegree) {
+                maxDegree = count[num];
+            }
+        }
+        int minLen = nums.length;
+        // 遍历数组，找出所有达到最大度的元素，计算最小子数组长度
+        for (int num : nums) {
+            if (count[num] == maxDegree) {
+                minLen = Math.min(minLen, last[num] - first[num] + 1);
+            }
+        }
+        return minLen;
+    }
+
+
+
+    /**
      * 696. 计数二进制子串
      * @param s s
      * @return ans
