@@ -34,6 +34,25 @@ public class Tree {
     }
 
     /**
+     * 700. 二叉搜索树中的搜索
+     * @param root root
+     * @param val val
+     * @return ans
+     */
+    public TreeNode searchBST(TreeNode root, int val) {
+        // 当 root 不为空，且还没找到目标值时，持续向下探索
+        while (root != null && root.val != val) {
+            if (val < root.val) {
+                root = root.left;   // 目标值较小，往左走
+            } else {
+                root = root.right;  // 目标值较大，往右走
+            }
+        }
+        // 循环结束时，root 要么是找到的节点，要么是 null（未找到）
+        return root;
+    }
+
+    /**
      * 687. 最长同值路径
      * @param root root
      * @return ans
