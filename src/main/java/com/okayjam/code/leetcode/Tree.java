@@ -34,6 +34,32 @@ public class Tree {
     }
 
     /**
+     * 701. 二叉搜索树中的插入操作
+     * @param root root
+     * @param val val
+     * @return ans
+     */
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        if (root == null) return new TreeNode(val);
+        TreeNode cur = root;
+        while (true) {
+            if (cur.val > val) {
+                if (cur.left == null) {
+                    cur.left = new TreeNode(val);
+                    return root;
+                }
+               cur = cur.left;
+            } else {
+                if (cur.right == null) {
+                    cur.right = new TreeNode(val);
+                    return root;
+                }
+                cur = cur.right;
+            }
+        }
+    }
+
+    /**
      * 700. 二叉搜索树中的搜索
      * @param root root
      * @param val val
