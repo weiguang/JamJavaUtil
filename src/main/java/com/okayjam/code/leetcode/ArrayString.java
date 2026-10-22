@@ -84,6 +84,50 @@ public class ArrayString {
     }
 
     /**
+     * 712. 两个字符串的最小ASCII删除和
+     * @param s1 s1
+     * @param s2 s2
+     * @return ans
+     */
+    public int minimumDeleteSum(String s1, String s2) {
+        int m = s1.length();
+        int n = s2.length();
+
+        // dp[i][j] 表示使 s1[0...i-1] 和 s2[0...j-1] 相等所需的最小 ASCII 删除和
+        int[][] dp = new int[m + 1][n + 1];
+
+        // 初始化边界条件
+        // 当 s2 为空串时，只能删光 s1 的前 i 个字符
+        for (int i = 1; i <= m; i++) {
+            dp[i][0] = dp[i - 1][0] + s1.charAt(i - 1);
+        }
+        // 当 s1 为空串时，只能删光 s2 的前 j 个字符
+        for (int j = 1; j <= n; j++) {
+            dp[0][j] = dp[0][j - 1] + s2.charAt(j - 1);
+        }
+
+        // 状态转移
+        for (int i = 1; i <= m; i++) {
+            char c1 = s1.charAt(i - 1);
+            for (int j = 1; j <= n; j++) {
+                char c2 = s2.charAt(j - 1);
+
+                if (c1 == c2) {
+                    // 字符匹配，无需删除
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    // 字符不匹配，取删除 s1[i-1] 或删除 s2[j-1] 的较小代价
+                    dp[i][j] = Math.min(
+                            dp[i - 1][j] + c1,
+                            dp[i][j - 1] + c2
+                    );
+                }
+            }
+        }
+        return dp[m][n];
+    }
+
+    /**
      * 698. 划分为k个相等的子集
      * 1. 数据规模信号：注意条件 N <= 16，这是极强烈的指数级复杂度信号，排除普通贪心/线性DP，锁定【回溯搜索 (DFS)】。
      * 2. 为什么贪心会错：本题本质是 NP-Hard 的装箱问题，局部最优解（如顺序摆放）会打乱全局组合，无法保证得出可行解。
