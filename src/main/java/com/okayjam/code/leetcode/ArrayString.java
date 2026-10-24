@@ -84,6 +84,53 @@ public class ArrayString {
     }
 
     /**
+     * 714. 买卖股票的最佳时机含手续费
+     * 第一种 dp 方法， 第二种是 贪心
+     *
+     * @param prices prices
+     * @param fee fee
+     * @return ans
+     */
+    public int maxProfit(int[] prices, int fee) {
+        int n = prices.length;
+        // 定义状态 dp[i][0] 表示第 i 天交易完后手里没有股票的最大利润，dp[i][1] 表示第 i 天交易完后手里持有一支股票的最大利润（i 从 0 开始）
+        // 注意到dp[i][0] 和 dp[i][1] 只会从 dp[i−1][0] 和 dp[i−1][1] 转移而来
+        // 因此使用两个变量 sell 以及 buy 分别表示 dp[..][0] 和 dp[..][1] 直接进行状态转移即可。
+        int sell = 0, buy = -prices[0];
+        for (int i = 1; i < n; ++i) {
+            // 前一天已经没有股票，即 dp[i−1][0] 或 前一天结束的时候手里持有一支股票，即 dp[i−1][1]
+            sell = Math.max(sell, buy + prices[i] - fee);
+            // 前一天已经持有一支股票，即 dp[i−1][1] 或 前一天结束时还没有股票且要买入，即 dp[i−1][0] − prices[i]
+            buy = Math.max(buy, sell - prices[i]);
+        }
+        return sell;
+    }
+
+    public int maxProfit2(int[] prices, int fee) {
+        int n = prices.length;
+        // 我们换一个角度考虑，将手续费放在买入时进行计算
+        int buy = prices[0] + fee;
+        int profit = 0;
+        for (int i = 1; i < n; ++i) {
+            if (prices[i] + fee < buy) {
+                // 当前的股票价格 prices[i] 加上手续费 fee 小于 buy，我们将 buy 更新为 prices[i]+fee
+                buy = prices[i] + fee;
+            } else if (prices[i] > buy) {
+                // 如果当前的股票价格 prices[i] 大于 buy，那么我们直接卖出股票并且获得 prices[i]−buy 的收益
+                profit += prices[i] - buy;
+                // 此时卖出股票可能并不是全局最优，可以提供一个反悔操作，看成当前手上拥有一支买入价格为 prices[i] 的股票，将 buy 更新为 prices[i]
+                // 如果下一天股票价格继续上升，我们会获得 prices[i+1]−prices[i] 的收益，加上这一天 prices[i]−buy 的收益
+                // 恰好就等于在这一天不进行任何操作，而在下一天卖出股票的收益
+                buy = prices[i];
+            }
+        }
+        return profit;
+    }
+
+
+
+
+    /**
      * 712. 两个字符串的最小ASCII删除和
      * @param s1 s1
      * @param s2 s2
