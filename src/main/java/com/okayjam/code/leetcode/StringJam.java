@@ -45,7 +45,8 @@ public class StringJam {
 //          System.out.println(new StringJam().lengthLongestPath("a.txt"));
 //          System.out.println(new StringJam().decodeString("3[a2[c]]"));
 //          System.out.println(new StringJam().repeatedSubstringPattern("babbabbabbabbab"));
-          System.out.println(new StringJam().validIPAddress("2001:0db8:85a3:0:0:8A2E:0370:7334:"));
+//          System.out.println(new StringJam().validIPAddress("2001:0db8:85a3:0:0:8A2E:0370:7334:"));
+          System.out.println(new StringJam().longestWord(new String[]{"w","wo", "wor", "worl", "world"}));
 
     }
 
@@ -66,6 +67,26 @@ public class StringJam {
     static class TrieNode {
         TrieNode[] children = new TrieNode[26];
         String word = null; // 节点到达词根结尾时直接存储完整词根
+    }
+
+    /**
+     * 720. 词典中最长的单词
+     * @param words w
+     * @return ans
+     */
+    public String longestWord(String[] words) {
+        Arrays.sort(words); // 字典序：真前缀一定排在该词前面，"a" < "ab"
+        Set<String> buildable = new HashSet<>();
+        String answer = "";
+        for (String word : words) {
+            if (word.length() == 1 || buildable.contains(word.substring(0, word.length() - 1))) {
+                buildable.add(word);
+                if (word.length() > answer.length()) {
+                    answer = word;
+                }
+            }
+        }
+        return answer;
     }
 
 
