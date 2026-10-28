@@ -14,8 +14,87 @@ public class Grid {
     private final static int[][] DIRECTIONS4 = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
     private final int[][] direction = new int[][] {{-1,-1},{-1,0},{-1,1}, {0,-1},{0,1}, {1,-1},{1,0},{1,1}};
 
+    // 标准并查集实现（带路径压缩）
+    private static class UnionFind {
+        private final int[] parent;
 
+        public UnionFind(int n) {
+            parent = new int[n];
+            for (int i = 0; i < n; i++) {
+                parent[i] = i;
+            }
+        }
+        public int find(int x) {
+            if (parent[x] != x) {
+                parent[x] = find(parent[x]); // 路径压缩
+            }
+            return parent[x];
+        }
+        public void union(int x, int y) {
+            int rootX = find(x);
+            int rootY = find(y);
+            if (rootX != rootY) {
+                parent[rootX] = rootY;
+            }
+        }
+    }
 
+    /**
+     * 721. 账户合并
+     * @param accounts a
+     * @return ans
+     */
+    public List<List<String>> accountsMerge(List<List<String>> accounts) {
+        Map<String, String> emailToName = new HashMap<>();
+        Map<String, Integer> emailToId = new HashMap<>();
+        int emailCount = 0;
+
+        // 1. 为每个唯一邮箱分配 ID，并建立 email -> name 的映射
+        for (List<String> account : accounts) {
+            String name = account.get(0);
+            for (int i = 1; i < account.size(); i++) {
+                String email = account.get(i);
+                emailToName.put(email, name);
+                if (!emailToId.containsKey(email)) {
+                    emailToId.put(email, emailCount++);
+                }
+            }
+        }
+
+        // 2. 初始化并查集
+        UnionFind uf = new UnionFind(emailCount);
+
+        // 3. 将同一账户中的所有邮箱连通（以第一个邮箱作为代表元）
+        for (List<String> account : accounts) {
+            String firstEmail = account.get(1);
+            int firstId = emailToId.get(firstEmail);
+            for (int i = 2; i < account.size(); i++) {
+                String nextEmail = account.get(i);
+                int nextId = emailToId.get(nextEmail);
+                uf.union(firstId, nextId);
+            }
+        }
+
+        // 4. 按并查集的根节点 ID 对邮箱进行分组
+        Map<Integer, List<String>> rootToEmails = new HashMap<>();
+        for (String email : emailToId.keySet()) {
+            int rootId = uf.find(emailToId.get(email));
+            rootToEmails.computeIfAbsent(rootId, k -> new ArrayList<>()).add(email);
+        }
+
+        // 5. 组装结果：排序邮箱列表并在头部加上姓名
+        List<List<String>> result = new ArrayList<>();
+        for (List<String> emails : rootToEmails.values()) {
+            Collections.sort(emails); // 字典序排序
+            String name = emailToName.get(emails.get(0));
+            List<String> mergedAccount = new ArrayList<>();
+            mergedAccount.add(name);
+            mergedAccount.addAll(emails);
+            result.add(mergedAccount);
+        }
+
+        return result;
+    }
 
     /**
      * 688. 骑士在棋盘上的概率
@@ -441,7 +520,7 @@ public class Grid {
 
 
         public List<Integer> numIslands2(int m, int n, int[][] positions) {
-        UnionFind unionFind = new UnionFind(m * n);
+        com.okayjam.code.leetcode.UnionFind unionFind = new com.okayjam.code.leetcode.UnionFind(m * n);
         boolean[] visited = new boolean[m * n];
 
         List<Integer> res = new ArrayList<>();
