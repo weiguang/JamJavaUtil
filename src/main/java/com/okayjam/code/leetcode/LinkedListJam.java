@@ -8,886 +8,957 @@ import java.util.stream.Collectors;
  */
 
 public class LinkedListJam {
-	public static class ListNode {
-		int val;
-		ListNode next;
-		ListNode() {}
-		ListNode(int val) {
-			this.val = val;
-		}
-		ListNode(int val, ListNode next) {
-			this.val = val;
-			this.next = next;
-		}
-	}
+    public static class ListNode {
+        int val;
+        ListNode next;
 
-	static class Node {
-		int val;
-		Node next;
-		Node random;
+        ListNode() {
+        }
 
-		public Node(int val) {
-			this.val = val;
-			this.next = null;
-			this.random = null;
-		}
-	}
+        ListNode(int val) {
+            this.val = val;
+        }
 
-	public static void main(String[] args) {
-		ListNode head = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
+    }
+
+    static class Node {
+        int val;
+        Node next;
+        Node random;
+
+        public Node(int val) {
+            this.val = val;
+            this.next = null;
+            this.random = null;
+        }
+    }
+
+    public static void main(String[] args) {
+        ListNode head = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
 //		new LinkedListJam().reverseBetween(head, 2,4);
 //		new LinkedListJam().reorderList(head);
-		ListNode head1 = new ListNode(4, new ListNode(2, new ListNode(1, new ListNode(3, null))));
-		new LinkedListJam().insertionSortList(head1);
-	}
+        ListNode head1 = new ListNode(4, new ListNode(2, new ListNode(1, new ListNode(3, null))));
+        new LinkedListJam().insertionSortList(head1);
+    }
 
-	public void deleteNode(ListNode node) {
-		node.val = node.next.val;
-		node.next = node.next.next;
-	}
+    public void deleteNode(ListNode node) {
+        node.val = node.next.val;
+        node.next = node.next.next;
+    }
 
-	/**
+    /**
+     * 725. 分隔链表
+     * @param head head
+     * @param k k
+     * @return ans
+     */
+    public ListNode[] splitListToParts(ListNode head, int k) {
+        int len = 0;
+        ListNode p = head;
+        while (p != null) {
+            len++;
+            p = p.next;
+        }
+        int n = len / k, r = len % k;
+        ListNode[] ans = new ListNode[k];
+        p = head;
+        for (int i = 0; i < k && p != null; i++) {
+            ans[i] = p;
+            for (int j = 1; j < n + (i < r ? 1 : 0); j++) {
+                p = p.next;
+            }
+            ListNode next = p.next;
+            p.next = null;
+            p = next;
+        }
+        return ans;
+    }
+
+    /**
      * 445. 两数相加 II
      * <a href="https://leetcode.cn/problems/add-two-numbers-ii">445. 两数相加 II</a>
      * 给你两个 非空 链表来代表两个非负整数。数字最高位位于链表开始位置。它们的每个节点只存储一位数字。将这两数相加会返回一个新的链表。
-     *
      * 你可以假设除了数字 0 之外，这两个数字都不会以零开头。
+     *
      * @param l1 l1
      * @param l2 l2
      * @return ans
      */
-	public ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
-		Deque<Integer> stack1 = new LinkedList<>();
-		Deque<Integer> stack2 = new LinkedList<>();
-		ListNode p = l1;
-		while (p != null) {stack1.push(p.val); p= p.next;}
-		p = l2;
-		while (p != null) {stack2.push(p.val); p= p.next;}
-		int a, b , c = 0;
-		ListNode ans = null;
-		while (!stack1.isEmpty() || !stack2.isEmpty() || c != 0 ) {
-			a = stack1.isEmpty() ? 0 : stack1.pop();
-			b = stack2.isEmpty() ? 0 : stack2.pop();
-			int sum = a + b + c;
-			ListNode node = new ListNode(sum % 10);
-			c = sum / 10;
-			node.next = ans;
-			ans = node;
-		}
-		return ans;
-	}
+    public ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
+        Deque<Integer> stack1 = new LinkedList<>();
+        Deque<Integer> stack2 = new LinkedList<>();
+        ListNode p = l1;
+        while (p != null) {
+            stack1.push(p.val);
+            p = p.next;
+        }
+        p = l2;
+        while (p != null) {
+            stack2.push(p.val);
+            p = p.next;
+        }
+        int a, b, c = 0;
+        ListNode ans = null;
+        while (!stack1.isEmpty() || !stack2.isEmpty() || c != 0) {
+            a = stack1.isEmpty() ? 0 : stack1.pop();
+            b = stack2.isEmpty() ? 0 : stack2.pop();
+            int sum = a + b + c;
+            ListNode node = new ListNode(sum % 10);
+            c = sum / 10;
+            node.next = ans;
+            ans = node;
+        }
+        return ans;
+    }
 
 
-	public ListNode oddEvenList(ListNode head) {
-		ListNode oDummy = new ListNode(0);
-		ListNode eDummy = new ListNode(0);
-		ListNode p = head, o1 = oDummy, e1 = eDummy;
-		boolean oflag = true;
-		while (p != null) {
-			if (oflag) {
-				o1.next = p;
-				o1 = o1.next;
-			} else {
-				e1.next = p;
-				e1 = e1.next;
-			}
-			oflag = !oflag;
-			p = p.next;
-		}
-		e1.next = null;
-		o1.next = eDummy.next;
-		return oDummy.next;
-	}
+    public ListNode oddEvenList(ListNode head) {
+        ListNode oDummy = new ListNode(0);
+        ListNode eDummy = new ListNode(0);
+        ListNode p = head, o1 = oDummy, e1 = eDummy;
+        boolean oflag = true;
+        while (p != null) {
+            if (oflag) {
+                o1.next = p;
+                o1 = o1.next;
+            } else {
+                e1.next = p;
+                e1 = e1.next;
+            }
+            oflag = !oflag;
+            p = p.next;
+        }
+        e1.next = null;
+        o1.next = eDummy.next;
+        return oDummy.next;
+    }
 
 
-	/**
-	 * 234. 回文链表
-	 * https://leetcode.cn/problems/palindrome-linked-list/description/
-	 * @param head
-	 * @return
-	 */
-	public boolean isPalindrome(ListNode head) {
-		if(head == null || head.next == null) return true;
-		int n = 0;
-		ListNode dummy = new ListNode(0, head);
-		ListNode p1 = dummy, p2 = dummy;
-		while (p2 != null && p2.next != null) {
-			p1 = p1.next;
-			p2 = p2.next.next;
-		}
-		p2 = reverseList(p1.next);
-		p1.next = null;
-		p1 = head;
-		while (p1 != null && p2 != null) {
-			if (p1.val != p2.val) {
-				return false;
-			}
-			p1 = p1.next;
-			p2 = p2.next;
-		}
-		return true;
-	}
+    /**
+     * 234. 回文链表
+     * https://leetcode.cn/problems/palindrome-linked-list/description/
+     *
+     * @param head
+     * @return
+     */
+    public boolean isPalindrome(ListNode head) {
+        if (head == null || head.next == null) {
+            return true;
+        }
+        int n = 0;
+        ListNode dummy = new ListNode(0, head);
+        ListNode p1 = dummy, p2 = dummy;
+        while (p2 != null && p2.next != null) {
+            p1 = p1.next;
+            p2 = p2.next.next;
+        }
+        p2 = reverseList(p1.next);
+        p1.next = null;
+        p1 = head;
+        while (p1 != null && p2 != null) {
+            if (p1.val != p2.val) {
+                return false;
+            }
+            p1 = p1.next;
+            p2 = p2.next;
+        }
+        return true;
+    }
 
 
-	/**
-	 * 203. 移除链表元素
-	 * https://leetcode.cn/problems/remove-linked-list-elements/description/
-	 * @param head
-	 * @param val
-	 * @return
-	 */
-	public ListNode removeElements(ListNode head, int val) {
-		if (head == null) {return null;}
-		ListNode dummy = new ListNode(0, head);
-		ListNode p = dummy;
-		while (p.next != null) {
-			if (p.next.val == val) {
-				p.next = p.next.next;
-			}  else {
-				p = p.next;
-			}
-		}
-		return dummy.next;
-	}
+    /**
+     * 203. 移除链表元素
+     * https://leetcode.cn/problems/remove-linked-list-elements/description/
+     *
+     * @param head
+     * @param val
+     * @return
+     */
+    public ListNode removeElements(ListNode head, int val) {
+        if (head == null) {
+            return null;
+        }
+        ListNode dummy = new ListNode(0, head);
+        ListNode p = dummy;
+        while (p.next != null) {
+            if (p.next.val == val) {
+                p.next = p.next.next;
+            } else {
+                p = p.next;
+            }
+        }
+        return dummy.next;
+    }
 
-	public ListNode removeElements2(ListNode head, int val) {
-		if (head == null) {
-			return head;
-		}
-		head.next = removeElements(head.next, val);
-		return head.val == val ? head.next : head;
-	}
-
-
-	/**
-	 * 160. 相交链表
-	 * 第一种方法： 双指针，大家都走一遍 不相交部份+相交部份，同要距离会在交点汇合
-	 * 第二种直观，先计算长度，让长的先走多出来的部份，然后开始一起同时走，就知道交点位置，如果没有交点就到null
-	 * https://leetcode.cn/problems/intersection-of-two-linked-lists/
-	 * @param headA
-	 * @param headB
-	 * @return
-	 */
-
-	public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-		if (headA == null || headB == null) return null;
-		if (headA == headB) return headA;
-		ListNode p1 = headA, p2 = headB;
-		while (p1 != p2) {
-			p1 = p1==null? headB: p1.next;
-			p2 = p2==null? headA: p2.next;
-		}
-		return p1;
-	}
-
-	public ListNode getIntersectionNode2(ListNode headA, ListNode headB) {
-		if (headA == null || headB == null) return null;
-		if (headA == headB) return headA;
-		ListNode p1 = headA, p2 = headB;
-		int lenA = 0, lenB = 0;
-		while(p1 != null) {
-			p1 = p1.next;
-			lenA++;
-		}
-		while(p2 != null) {
-			p2 = p2.next;
-			lenB++;
-		}
-		int diff;
-		p1 = headA; p2 = headB;
-		if (lenA > lenB) {
-			diff = lenA - lenB;
-			while (diff-- > 0) {
-				p1 = p1.next;
-			}
-		}else if (lenB > lenA) {
-			diff = lenB - lenA;
-			while (diff-- > 0) {
-				p2 = p2.next;
-			}
-		}
-		while (p1 != null && p2 != null) {
-			if (p1 == p2) return p1;
-			p1 = p1.next;
-			p2 = p2.next;
-		}
-		return null;
-	}
+    public ListNode removeElements2(ListNode head, int val) {
+        if (head == null) {
+            return head;
+        }
+        head.next = removeElements(head.next, val);
+        return head.val == val ? head.next : head;
+    }
 
 
-	public ListNode sortList(ListNode head) {
-		if (head == null || head.next == null) {return head;}
-		return sortList(head, null);
-	}
+    /**
+     * 160. 相交链表
+     * 第一种方法： 双指针，大家都走一遍 不相交部份+相交部份，同要距离会在交点汇合
+     * 第二种直观，先计算长度，让长的先走多出来的部份，然后开始一起同时走，就知道交点位置，如果没有交点就到null
+     * https://leetcode.cn/problems/intersection-of-two-linked-lists/
+     *
+     * @param headA
+     * @param headB
+     * @return
+     */
 
-	public ListNode sortList(ListNode head, ListNode tail) {
-		if (head == null ) {return head;}
-		if (head.next == tail) {
-			head.next = null;
-			return head;
-		}
-		ListNode slow = head, fast = head;
-		while( fast != tail) {
-			slow = slow.next;
-			fast = fast.next;
-			if (fast != tail) {
-				fast = fast.next;
-			}
-		}
-		ListNode mid = slow;
-		ListNode list1 = sortList(head, mid);
-		ListNode list2 = sortList(mid, tail);
-		return merge(list1, list2);
-	}
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) {
+            return null;
+        }
+        if (headA == headB) {
+            return headA;
+        }
+        ListNode p1 = headA, p2 = headB;
+        while (p1 != p2) {
+            p1 = p1 == null ? headB : p1.next;
+            p2 = p2 == null ? headA : p2.next;
+        }
+        return p1;
+    }
 
-	public ListNode merge(ListNode head1, ListNode head2) {
-		ListNode dummy = new ListNode(0);
-		ListNode cur = dummy, p1 = head1, p2 = head2;
-		while (p1 != null &&  p2 != null) {
-			if (p1.val < p2.val) {
-				cur.next = p1;
-				p1 = p1.next;
-			}  else {
-				cur.next = p2;
-				p2 = p2.next;
-			}
-			cur = cur.next;
-		}
-		if (p1 != null) {
-			cur.next = p1;
-		} else  {
-			cur.next = p2;
-		}
-		return dummy.next;
-	}
-
-
-	public ListNode sortList2(ListNode head) {
-		if (head == null || head.next == null) {return head;}
-		ArrayList<ListNode> list = new ArrayList<>();
-		ListNode cur = head;
-		while (cur != null) {
-			list.add(cur);
-			cur = cur.next;
-		}
-		list.sort(Comparator.comparing(node -> node.val));
-		for (int i = 1; i < list.size(); i++) {
-			list.get(i-1).next = list.get(i);
-		}
-		list.get(list.size()-1).next = null;
-		return list.get(0);
-	}
-
-
-
-	public ListNode insertionSortList(ListNode head) {
-		if (head == null || head.next == null) return head;
-		ListNode dummy = new ListNode(0,head);
-		ListNode cur = head;
-		while (cur.next!= null) {
-			ListNode p = dummy;
-			while (p.next != cur.next) {
-				if (p.next == null || (p.next.val > cur.next.val) ) {
-					break;
-				}
-				p = p.next;
-			}
-			if (p != cur) { // 不是原来的位置
-				ListNode t = cur.next;
-				cur.next = t.next;
-				t.next = p.next;
-				p.next = t;
-			} else {
-				cur = cur.next;
-			}
-		}
-		return dummy.next;
-	}
+    public ListNode getIntersectionNode2(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) {
+            return null;
+        }
+        if (headA == headB) {
+            return headA;
+        }
+        ListNode p1 = headA, p2 = headB;
+        int lenA = 0, lenB = 0;
+        while (p1 != null) {
+            p1 = p1.next;
+            lenA++;
+        }
+        while (p2 != null) {
+            p2 = p2.next;
+            lenB++;
+        }
+        int diff;
+        p1 = headA;
+        p2 = headB;
+        if (lenA > lenB) {
+            diff = lenA - lenB;
+            while (diff-- > 0) {
+                p1 = p1.next;
+            }
+        } else if (lenB > lenA) {
+            diff = lenB - lenA;
+            while (diff-- > 0) {
+                p2 = p2.next;
+            }
+        }
+        while (p1 != null && p2 != null) {
+            if (p1 == p2) {
+                return p1;
+            }
+            p1 = p1.next;
+            p2 = p2.next;
+        }
+        return null;
+    }
 
 
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        return sortList(head, null);
+    }
+
+    public ListNode sortList(ListNode head, ListNode tail) {
+        if (head == null) {
+            return head;
+        }
+        if (head.next == tail) {
+            head.next = null;
+            return head;
+        }
+        ListNode slow = head, fast = head;
+        while (fast != tail) {
+            slow = slow.next;
+            fast = fast.next;
+            if (fast != tail) {
+                fast = fast.next;
+            }
+        }
+        ListNode mid = slow;
+        ListNode list1 = sortList(head, mid);
+        ListNode list2 = sortList(mid, tail);
+        return merge(list1, list2);
+    }
+
+    public ListNode merge(ListNode head1, ListNode head2) {
+        ListNode dummy = new ListNode(0);
+        ListNode cur = dummy, p1 = head1, p2 = head2;
+        while (p1 != null && p2 != null) {
+            if (p1.val < p2.val) {
+                cur.next = p1;
+                p1 = p1.next;
+            } else {
+                cur.next = p2;
+                p2 = p2.next;
+            }
+            cur = cur.next;
+        }
+        if (p1 != null) {
+            cur.next = p1;
+        } else {
+            cur.next = p2;
+        }
+        return dummy.next;
+    }
 
 
-	public ListNode reverseBetween(ListNode head, int left, int right) {
-		if (left == right) {
-			return head;
-		}
-		int i = 1;
-		ListNode l1;
-		ListNode p = new ListNode(0, head);
-		while (i < left ) {
-			p = p.next;
-			i++;
-		}
-		l1 = p;
-		p = p.next;
-	    ListNode pre = null, lNode = p;
-		// 翻转
-		while(p != null && i <= right) {
-			ListNode next = p.next;
-			p.next = pre;
-			pre = p;
-			p = next;
-			i++;
-		}
-		// 前面连接
-		if (left !=1) {
-			l1.next = pre;
-		} else {
-			head = pre;
-		}
-		// 后面连接
-		if (lNode != null) {
-			lNode.next = p;
-		}
-		return head;
-	}
+    public ListNode sortList2(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ArrayList<ListNode> list = new ArrayList<>();
+        ListNode cur = head;
+        while (cur != null) {
+            list.add(cur);
+            cur = cur.next;
+        }
+        list.sort(Comparator.comparing(node -> node.val));
+        for (int i = 1; i < list.size(); i++) {
+            list.get(i - 1).next = list.get(i);
+        }
+        list.get(list.size() - 1).next = null;
+        return list.get(0);
+    }
 
 
-	public List<Integer> grayCode(int n) {
-		List<Integer> ans = new ArrayList<>();
-		for (int i = 0; i < 1<<n; i++) {
-			ans.add((i >>1) ^ i);
-		}
-		return ans;
-	}
+    public ListNode insertionSortList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode dummy = new ListNode(0, head);
+        ListNode cur = head;
+        while (cur.next != null) {
+            ListNode p = dummy;
+            while (p.next != cur.next) {
+                if (p.next == null || (p.next.val > cur.next.val)) {
+                    break;
+                }
+                p = p.next;
+            }
+            if (p != cur) { // 不是原来的位置
+                ListNode t = cur.next;
+                cur.next = t.next;
+                t.next = p.next;
+                p.next = t;
+            } else {
+                cur = cur.next;
+            }
+        }
+        return dummy.next;
+    }
 
 
-	public void merge(int[] nums1, int m, int[] nums2, int n) {
-		int i = m+n-1;
-		m--;n--;
-		while (m >= 0 || n >= 0) {
-			if (m >= 0 && n >= 0) {
-				if (nums1[m] > nums2[n]) {
-					nums1[i] = nums1[m--];
-				} else {
-					nums1[i] = nums2[n--];
-				}
-			} else if (m < 0 ) {
-				nums1[i] = nums2[n--];
-			} else {
-				nums1[i] = nums1[m--];
-			}
-			i--;
-		}
-	}
-
-	public ListNode partition(ListNode head, int x) {
-		if (head == null || head.next == null) {
-			return head;
-		}
-		ListNode head1 = new ListNode(0);
-		ListNode head2 = new ListNode(0);
-		ListNode p = head, p1 = head1, p2 = head2;
-		while (p != null) {
-			if (p.val < x) {
-				p1.next = p;
-				p1 = p1.next;
-			} else {
-				p2.next = p;
-				p2 = p2.next;
-			}
-			p = p.next;
-		}
-		p2.next = null;
-		p1.next = head2.next;
-		return head1.next;
-	}
-
-	public ListNode rotateRight(ListNode head, int k) {
-		if (head == null || head.next == null) {
-			return head;
-		}
-		int size = 1;
-		ListNode p = head;
-		while (p.next != null) {
-			size++;
-			p = p.next;
-		}
-		int add = size - k % size;
-		if (add == size) {
-			return head;
-		}
-		p.next = head;
-		while (add-- > 0 ) {
-			p = p.next;
-		}
-		head = p.next;
-		p.next = null;
-		return  head;
-	}
-
-	public ListNode swapPairs2(ListNode head) {
-		if  (head == null || head.next == null) {
-			return head;
-		}
-		ListNode dummy = new ListNode(0, head.next);
-		ListNode pre = dummy;
-		while (head != null && head.next != null) {
-			ListNode next = head.next;
-			head.next = next.next;
-			next.next = head;
-			pre.next = next;
-			pre = head;
-			head = head.next;
-		}
-		return dummy.next;
-	}
-
-	public ListNode mergeKLists2(ListNode[] lists) {
-		ListNode dummy = new ListNode(0) ;
-		ListNode cur = dummy ;
-		List<ListNode> list = Arrays.stream(lists).collect(Collectors.toList());
-		while (!list.isEmpty() && list.size() > 1) {
-			Iterator<ListNode> iterator = list.iterator();
-			Integer min = null ;
-			int i = 0 ;
-			while (iterator.hasNext()) {
-				ListNode node = iterator.next();
-				if (node == null) {
-					iterator.remove();
-					i--;
-				} else if (min == null || node.val < list.get(min).val ) {
-					min = i;
-				}
-				i++;
-			}
-			if (min != null) {
-				ListNode t = list.get(min);
-				cur.next = t ;
-				list.set(min, t.next);
-				cur = t;
-			}
-		}
-		cur.next = list.size() == 1 ? list.get(0) : null;
-		return dummy.next;
-	}
-
-	public ListNode mergeKLists(ListNode[] lists) {
-		ListNode ans = null;
-		for (ListNode list : lists) {
-			ans = mergeTwoLists(ans, list);
-		}
-		return ans;
-	}
-
-	public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
-		if  (list1 == null) {
-			return list2;
-		} else if (list2 == null) {
-			return list1;
-		}
-		ListNode dummy = new ListNode(0) ;
-		ListNode cur = dummy ;
-		while (list1 != null && list2 != null) {
-			if (list1.val < list2.val) {
-				cur.next = list1;
-				list1 = list1.next;
-			} else  {
-				cur.next = list2;
-				list2 = list2.next;
-			}
-			cur = cur.next;
-		}
-		if (list1 != null) {
-			cur.next = list1;
-		}
-		if (list2 != null) {
-			cur.next = list2;
-		}
-		return dummy.next;
-	}
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if (left == right) {
+            return head;
+        }
+        int i = 1;
+        ListNode l1;
+        ListNode p = new ListNode(0, head);
+        while (i < left) {
+            p = p.next;
+            i++;
+        }
+        l1 = p;
+        p = p.next;
+        ListNode pre = null, lNode = p;
+        // 翻转
+        while (p != null && i <= right) {
+            ListNode next = p.next;
+            p.next = pre;
+            pre = p;
+            p = next;
+            i++;
+        }
+        // 前面连接
+        if (left != 1) {
+            l1.next = pre;
+        } else {
+            head = pre;
+        }
+        // 后面连接
+        if (lNode != null) {
+            lNode.next = p;
+        }
+        return head;
+    }
 
 
-	public ListNode removeNthFromEnd(ListNode head, int n) {
-		if (head == null) {
-			return null;
-		}
-		ListNode dummy = new ListNode(0, head);
-		ListNode f = head, r = dummy;
-		while (n-- > 0) {
-			if (f.next == null) {
-				return head;
-			}
-			f = f.next;
-		}
-		while (f != null) {
-			f = f.next;
-			r = r.next;
-		}
-		r.next = r.next.next;
-		return dummy.next;
-	}
-
-	public ListNode removeNthFromEnd2(ListNode head, int n) {
-		ListNode cur = head;
-		int length = 0;
-		while (cur != null) {
-			cur = cur.next;
-			length++;
-		}
-		if (length < n) {
-			return head;
-		}
-		ListNode dummy = new ListNode(0, head);
-		cur = dummy;
-		for (int i = 0; i < length - n; i++) {
-			cur = cur.next;
-		}
-		cur.next = cur.next.next;
-		return dummy.next;
-	}
+    public List<Integer> grayCode(int n) {
+        List<Integer> ans = new ArrayList<>();
+        for (int i = 0; i < 1 << n; i++) {
+            ans.add((i >> 1) ^ i);
+        }
+        return ans;
+    }
 
 
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int i = m + n - 1;
+        m--;
+        n--;
+        while (m >= 0 || n >= 0) {
+            if (m >= 0 && n >= 0) {
+                if (nums1[m] > nums2[n]) {
+                    nums1[i] = nums1[m--];
+                } else {
+                    nums1[i] = nums2[n--];
+                }
+            } else if (m < 0) {
+                nums1[i] = nums2[n--];
+            } else {
+                nums1[i] = nums1[m--];
+            }
+            i--;
+        }
+    }
 
-	/**
-	 * https://leetcode.cn/problems/reorder-list/
-	 *  重排链表
-	 * @param head
-	 */
-	public void reorderList(ListNode head) {
-		if (head == null || head.next == null) {
-			return;
-		}
-		ListNode slow = head, fast = head, pre= null;
-		while (fast != null && fast.next != null) {
-			pre = slow;
-			slow = slow.next;
-			fast = fast.next.next;
-		}
-		pre.next = null;
-		slow = reverseList(slow);
-		ListNode cur = head;
-		while(cur.next != null) {
-			ListNode t = cur.next;
-			cur.next = slow;
-			slow = slow.next;
-			cur.next.next =t;
-			cur = t;
-		}
-		cur.next  = slow;
-	}
+    public ListNode partition(ListNode head, int x) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode head1 = new ListNode(0);
+        ListNode head2 = new ListNode(0);
+        ListNode p = head, p1 = head1, p2 = head2;
+        while (p != null) {
+            if (p.val < x) {
+                p1.next = p;
+                p1 = p1.next;
+            } else {
+                p2.next = p;
+                p2 = p2.next;
+            }
+            p = p.next;
+        }
+        p2.next = null;
+        p1.next = head2.next;
+        return head1.next;
+    }
 
-	/**
-	 * 环形链表 II
-	 * https://leetcode.cn/problems/linked-list-cycle-ii/
-	 * @param head
-	 * @return
-	 */
-	public ListNode detectCycle(ListNode head) {
-		if (head == null) {
-			return null;
-		}
-		ListNode slow = head, fast = head;
-		while (fast != null) {
-			slow = slow.next;
-			if (fast.next != null) {
-				fast = fast.next.next;
-			} else {
-				return null;
-			}
-			if (fast == slow) {
-				ListNode cur = head;
-				while (cur != slow) {
-					cur = cur.next;
-					slow = slow.next;
-				}
-				return slow;
-			}
-		}
-		return null;
-	}
+    public ListNode rotateRight(ListNode head, int k) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        int size = 1;
+        ListNode p = head;
+        while (p.next != null) {
+            size++;
+            p = p.next;
+        }
+        int add = size - k % size;
+        if (add == size) {
+            return head;
+        }
+        p.next = head;
+        while (add-- > 0) {
+            p = p.next;
+        }
+        head = p.next;
+        p.next = null;
+        return head;
+    }
 
-	/**
-	 * 141.环形链表
-	 * https://leetcode.cn/problems/linked-list-cycle/
-	 * @param head
-	 * @return
-	 */
-	public boolean hasCycle(ListNode head) {
-		ListNode slow = head, fast = head.next;
-		while (fast != null && fast.next != null) {
-			slow = slow.next;
-			fast = fast.next.next;
-			if (fast == slow) {
-				return true;
-			}
-		}
-		return false;
-	}
+    public ListNode swapPairs2(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode dummy = new ListNode(0, head.next);
+        ListNode pre = dummy;
+        while (head != null && head.next != null) {
+            ListNode next = head.next;
+            head.next = next.next;
+            next.next = head;
+            pre.next = next;
+            pre = head;
+            head = head.next;
+        }
+        return dummy.next;
+    }
 
+    public ListNode mergeKLists2(ListNode[] lists) {
+        ListNode dummy = new ListNode(0);
+        ListNode cur = dummy;
+        List<ListNode> list = Arrays.stream(lists).collect(Collectors.toList());
+        while (!list.isEmpty() && list.size() > 1) {
+            Iterator<ListNode> iterator = list.iterator();
+            Integer min = null;
+            int i = 0;
+            while (iterator.hasNext()) {
+                ListNode node = iterator.next();
+                if (node == null) {
+                    iterator.remove();
+                    i--;
+                } else if (min == null || node.val < list.get(min).val) {
+                    min = i;
+                }
+                i++;
+            }
+            if (min != null) {
+                ListNode t = list.get(min);
+                cur.next = t;
+                list.set(min, t.next);
+                cur = t;
+            }
+        }
+        cur.next = list.size() == 1 ? list.get(0) : null;
+        return dummy.next;
+    }
 
+    public ListNode mergeKLists(ListNode[] lists) {
+        ListNode ans = null;
+        for (ListNode list : lists) {
+            ans = mergeTwoLists(ans, list);
+        }
+        return ans;
+    }
 
-	/**
-	 * 复制带随机指针的链表
-	 *  旧1-新1-旧2-新2 交错的方式，可以避免使用hashmap记录，因为得到旧i，就能得到新i，这样方便查询到random节点
-	 * https://leetcode.cn/problems/copy-list-with-random-pointer/
-	 * @param head
-	 * @return
-	 */
-	public Node copyRandomList(Node head) {
-		// 合并
-		for (Node cur = head; cur != null ; cur = cur.next.next) {
-			Node node = new Node(cur.val);
-			node.next = cur.next;
-			cur.next = node;
-		}
-
-		for (Node cur = head; cur != null ; cur = cur.next.next) {
-			if (cur.random != null) {
-				cur.next.random = cur.random.next;
-			}
-		}
-		Node newHead = new Node(-1);
-		for (Node cur = head, new_cur = newHead; cur != null;) {
-			new_cur.next = cur.next;
-			new_cur = cur.next;
-			cur.next = cur.next.next;
-			cur = cur.next;
-		}
-		return newHead.next;
-	}
-
-	public Node copyRandomList2(Node head) {
-		if (head == null) return null;
-		Node dummy = new Node(head.val);
-		// 记录已经出现的节点
-		HashMap<Node, Node> map = new HashMap<>();
-		Node current = dummy;
-		while (head != null) {
-			Node node = map.get(head);
-			if (node == null) {
-				node = new Node(head.val);
-				map.put(head, node);
-			}
-			current.next = node;
-			current = node;
-			if (head.random != null) {
-				Node random = map.get(head.random);
-				if (random == null) {
-					random = new Node(head.random.val);
-					map.put(head.random, random);
-				}
-				current.random = random;
-			}
-			head = head.next;
-		}
-		return dummy.next;
-	}
-
-
-	public ListNode reverseKGroup(ListNode head, int k) {
-		int i = 0;
-		ListNode p = head;
-		ListNode prev = new ListNode(-1, head);
-		ListNode f = prev;
-		while( p != null) {
-			if (++i == k) {
-				ListNode begin = f.next ,end = p;
-				p = p.next;
-				ListNode reverse = reverse(f, begin, end);
-				f = begin;
-				i=0;
-			} else {
-				p = p.next;
-			}
-		}
-		return prev.next;
-	}
-
-	public ListNode reverse(ListNode pre, ListNode head, ListNode end) {
-		ListNode endNext = end == null? null: end.next;
-		if (pre == null) {
-			pre = new ListNode(-1, head);
-		}
-		ListNode p = head, cur = p.next, next ;
-		while (cur != endNext) {
-			pre.next = cur;
-			next = cur.next;
-			cur.next = p;
-			p=cur;
-			cur = next;
-		}
-		head.next = endNext;
-		return pre.next;
-	}
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        if (list1 == null) {
+            return list2;
+        } else if (list2 == null) {
+            return list1;
+        }
+        ListNode dummy = new ListNode(0);
+        ListNode cur = dummy;
+        while (list1 != null && list2 != null) {
+            if (list1.val < list2.val) {
+                cur.next = list1;
+                list1 = list1.next;
+            } else {
+                cur.next = list2;
+                list2 = list2.next;
+            }
+            cur = cur.next;
+        }
+        if (list1 != null) {
+            cur.next = list1;
+        }
+        if (list2 != null) {
+            cur.next = list2;
+        }
+        return dummy.next;
+    }
 
 
-	/**
-	 * 反转链表
-	 * https://leetcode.cn/problems/reverse-linked-list/
-	 * @param head
-	 * @return
-	 */
-	public ListNode reverseList(ListNode head) {
-		if (head == null || head.next == null) {
-			return head;
-		}
-		ListNode newHead = reverseList(head.next);
-		head.next.next = head;
-		head.next = null;
-		return newHead;
-	}
-	public ListNode reverseList2(ListNode head) {
-		ListNode p = head, pre = null;
-		while(p != null) {
-			ListNode next = p.next;
-			p.next = pre;
-			pre = p;
-			p = next;
-		}
-		return pre;
-	}
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        if (head == null) {
+            return null;
+        }
+        ListNode dummy = new ListNode(0, head);
+        ListNode f = head, r = dummy;
+        while (n-- > 0) {
+            if (f.next == null) {
+                return head;
+            }
+            f = f.next;
+        }
+        while (f != null) {
+            f = f.next;
+            r = r.next;
+        }
+        r.next = r.next.next;
+        return dummy.next;
+    }
+
+    public ListNode removeNthFromEnd2(ListNode head, int n) {
+        ListNode cur = head;
+        int length = 0;
+        while (cur != null) {
+            cur = cur.next;
+            length++;
+        }
+        if (length < n) {
+            return head;
+        }
+        ListNode dummy = new ListNode(0, head);
+        cur = dummy;
+        for (int i = 0; i < length - n; i++) {
+            cur = cur.next;
+        }
+        cur.next = cur.next.next;
+        return dummy.next;
+    }
 
 
+    /**
+     * https://leetcode.cn/problems/reorder-list/
+     * 重排链表
+     *
+     * @param head
+     */
+    public void reorderList(ListNode head) {
+        if (head == null || head.next == null) {
+            return;
+        }
+        ListNode slow = head, fast = head, pre = null;
+        while (fast != null && fast.next != null) {
+            pre = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        pre.next = null;
+        slow = reverseList(slow);
+        ListNode cur = head;
+        while (cur.next != null) {
+            ListNode t = cur.next;
+            cur.next = slow;
+            slow = slow.next;
+            cur.next.next = t;
+            cur = t;
+        }
+        cur.next = slow;
+    }
 
-	/**
-	 * 两两交换链表中的节点
-	 * https://leetcode.cn/problems/swap-nodes-in-pairs/
-	 * @param head
-	 * @return
-	 */
-	public ListNode swapPairs(ListNode head) {
-		if (head == null || head.next == null ) {
-			return head;
-		}
-		ListNode first = new ListNode(-1);
-		ListNode pre = first, cur = head, next = head.next;
-		while(next != null) {
-			pre.next = next;
-			cur.next = next.next;
-			next.next=cur;
+    /**
+     * 环形链表 II
+     * https://leetcode.cn/problems/linked-list-cycle-ii/
+     *
+     * @param head
+     * @return
+     */
+    public ListNode detectCycle(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        ListNode slow = head, fast = head;
+        while (fast != null) {
+            slow = slow.next;
+            if (fast.next != null) {
+                fast = fast.next.next;
+            } else {
+                return null;
+            }
+            if (fast == slow) {
+                ListNode cur = head;
+                while (cur != slow) {
+                    cur = cur.next;
+                    slow = slow.next;
+                }
+                return slow;
+            }
+        }
+        return null;
+    }
 
-			pre = cur;
-			cur = pre.next;
-			next = cur == null? null: cur.next;
-		}
-		return  first.next;
-	}
-
-	/**
-	 * 删除排序链表中的重复元素 II
-	 * https://leetcode.cn/problems/remove-duplicates-from-sorted-list-ii/
-	 * @param head
-	 * @return
-	 */
-	public ListNode deleteDuplicates2(ListNode head) {
-		if (head == null || head.next == null) {
-			return head;
-		}
-		ListNode newHead = new ListNode(Integer.MIN_VALUE);
-		newHead.next = head;
-		ListNode cur=head, pre = newHead;
-		while(cur != null) {
-			boolean flag = false;
-			while (cur.next!= null && cur.val == cur.next.val) {
-				flag = true;
-				cur = cur.next;
-			}
-			if (flag) {
-				cur = cur.next;
-				continue;
-			}
-			pre.next = cur;
-			pre = pre.next;
-			cur = cur.next;
-		}
-		// 后面都不符合要设置为null
-		pre.next = null;
-		return newHead.next;
-	}
-
-	/**
-	 * 删除排序链表中的重复元素
-	 * https://leetcode.cn/problems/remove-duplicates-from-sorted-list/
-	 * @param head
-	 * @return
-	 */
-	public ListNode deleteDuplicates(ListNode head) {
-		if (head == null) {
-			return head;
-		}
-		ListNode cur=head, p = head.next;
-		while(p != null) {
-			if (cur.val != p.val) {
-				cur.next = p;
-				cur = p;
-			}
-			p = p.next;
-		}
-		cur.next = null;
-		return head;
-	}
-
-	/**
-	 * 分隔链表
-	 * https://leetcode.cn/problems/partition-list/
-	 * @param head
-	 * @param x
-	 * @return
-	 */
-	public ListNode partition1(ListNode head, int x) {
-		ListNode less = null, big = null;
-		ListNode l = null, b = null;
-		while (head != null) {
-			if (head.val < x) {
-				if (less == null) {
-					less = l = head;
-				} else {
-					l.next = head;
-					l = l.next;
-				}
-			} else {
-				if (big == null ) {
-					big = b = head;
-				}else {
-					b.next = head;
-					b = b.next;
-				}
-			}
-			head = head.next;
-		}
-		if (b != null) {
-			b.next = null;
-		}
-		if (l != null) {
-			l.next = big;
-		} else {
-			return big;
-		}
-		return less;
-	}
+    /**
+     * 141.环形链表
+     * https://leetcode.cn/problems/linked-list-cycle/
+     *
+     * @param head
+     * @return
+     */
+    public boolean hasCycle(ListNode head) {
+        ListNode slow = head, fast = head.next;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (fast == slow) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
-	/**
-	 *  两数相加
-	 *  https://leetcode.cn/problems/add-two-numbers/
-	 * @param l1
-	 * @param l2
-	 * @return
-	 */
-	public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-		ListNode newList = new ListNode(0);
-		ListNode p = newList;
-		int cur = 0;
-		while (l1 != null || l2 != null) {
-			if (l1 != null) {
-				cur += l1.val;
-				l1 = l1.next;
-			}
-			if (l2 != null) {
-				cur += l2.val;
-				l2 = l2.next;
-			}
-			p.next = new ListNode(cur % 10);
-			p = p.next;
-			cur = cur / 10;
-		}
-		if (cur != 0) {
-			p.next = new ListNode(cur);
-		}
-		return newList.next;
-	}
+    /**
+     * 复制带随机指针的链表
+     * 旧1-新1-旧2-新2 交错的方式，可以避免使用hashmap记录，因为得到旧i，就能得到新i，这样方便查询到random节点
+     * https://leetcode.cn/problems/copy-list-with-random-pointer/
+     *
+     * @param head
+     * @return
+     */
+    public Node copyRandomList(Node head) {
+        // 合并
+        for (Node cur = head; cur != null; cur = cur.next.next) {
+            Node node = new Node(cur.val);
+            node.next = cur.next;
+            cur.next = node;
+        }
 
+        for (Node cur = head; cur != null; cur = cur.next.next) {
+            if (cur.random != null) {
+                cur.next.random = cur.random.next;
+            }
+        }
+        Node newHead = new Node(-1);
+        for (Node cur = head, new_cur = newHead; cur != null; ) {
+            new_cur.next = cur.next;
+            new_cur = cur.next;
+            cur.next = cur.next.next;
+            cur = cur.next;
+        }
+        return newHead.next;
+    }
+
+    public Node copyRandomList2(Node head) {
+        if (head == null) {
+            return null;
+        }
+        Node dummy = new Node(head.val);
+        // 记录已经出现的节点
+        HashMap<Node, Node> map = new HashMap<>();
+        Node current = dummy;
+        while (head != null) {
+            Node node = map.get(head);
+            if (node == null) {
+                node = new Node(head.val);
+                map.put(head, node);
+            }
+            current.next = node;
+            current = node;
+            if (head.random != null) {
+                Node random = map.get(head.random);
+                if (random == null) {
+                    random = new Node(head.random.val);
+                    map.put(head.random, random);
+                }
+                current.random = random;
+            }
+            head = head.next;
+        }
+        return dummy.next;
+    }
+
+
+    public ListNode reverseKGroup(ListNode head, int k) {
+        int i = 0;
+        ListNode p = head;
+        ListNode prev = new ListNode(-1, head);
+        ListNode f = prev;
+        while (p != null) {
+            if (++i == k) {
+                ListNode begin = f.next, end = p;
+                p = p.next;
+                ListNode reverse = reverse(f, begin, end);
+                f = begin;
+                i = 0;
+            } else {
+                p = p.next;
+            }
+        }
+        return prev.next;
+    }
+
+    public ListNode reverse(ListNode pre, ListNode head, ListNode end) {
+        ListNode endNext = end == null ? null : end.next;
+        if (pre == null) {
+            pre = new ListNode(-1, head);
+        }
+        ListNode p = head, cur = p.next, next;
+        while (cur != endNext) {
+            pre.next = cur;
+            next = cur.next;
+            cur.next = p;
+            p = cur;
+            cur = next;
+        }
+        head.next = endNext;
+        return pre.next;
+    }
+
+
+    /**
+     * 反转链表
+     * https://leetcode.cn/problems/reverse-linked-list/
+     *
+     * @param head
+     * @return
+     */
+    public ListNode reverseList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode newHead = reverseList(head.next);
+        head.next.next = head;
+        head.next = null;
+        return newHead;
+    }
+
+    public ListNode reverseList2(ListNode head) {
+        ListNode p = head, pre = null;
+        while (p != null) {
+            ListNode next = p.next;
+            p.next = pre;
+            pre = p;
+            p = next;
+        }
+        return pre;
+    }
+
+
+    /**
+     * 两两交换链表中的节点
+     * https://leetcode.cn/problems/swap-nodes-in-pairs/
+     *
+     * @param head
+     * @return
+     */
+    public ListNode swapPairs(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode first = new ListNode(-1);
+        ListNode pre = first, cur = head, next = head.next;
+        while (next != null) {
+            pre.next = next;
+            cur.next = next.next;
+            next.next = cur;
+
+            pre = cur;
+            cur = pre.next;
+            next = cur == null ? null : cur.next;
+        }
+        return first.next;
+    }
+
+    /**
+     * 删除排序链表中的重复元素 II
+     * https://leetcode.cn/problems/remove-duplicates-from-sorted-list-ii/
+     *
+     * @param head
+     * @return
+     */
+    public ListNode deleteDuplicates2(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode newHead = new ListNode(Integer.MIN_VALUE);
+        newHead.next = head;
+        ListNode cur = head, pre = newHead;
+        while (cur != null) {
+            boolean flag = false;
+            while (cur.next != null && cur.val == cur.next.val) {
+                flag = true;
+                cur = cur.next;
+            }
+            if (flag) {
+                cur = cur.next;
+                continue;
+            }
+            pre.next = cur;
+            pre = pre.next;
+            cur = cur.next;
+        }
+        // 后面都不符合要设置为null
+        pre.next = null;
+        return newHead.next;
+    }
+
+    /**
+     * 删除排序链表中的重复元素
+     * https://leetcode.cn/problems/remove-duplicates-from-sorted-list/
+     *
+     * @param head
+     * @return
+     */
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null) {
+            return head;
+        }
+        ListNode cur = head, p = head.next;
+        while (p != null) {
+            if (cur.val != p.val) {
+                cur.next = p;
+                cur = p;
+            }
+            p = p.next;
+        }
+        cur.next = null;
+        return head;
+    }
+
+    /**
+     * 分隔链表
+     * https://leetcode.cn/problems/partition-list/
+     *
+     * @param head
+     * @param x
+     * @return
+     */
+    public ListNode partition1(ListNode head, int x) {
+        ListNode less = null, big = null;
+        ListNode l = null, b = null;
+        while (head != null) {
+            if (head.val < x) {
+                if (less == null) {
+                    less = l = head;
+                } else {
+                    l.next = head;
+                    l = l.next;
+                }
+            } else {
+                if (big == null) {
+                    big = b = head;
+                } else {
+                    b.next = head;
+                    b = b.next;
+                }
+            }
+            head = head.next;
+        }
+        if (b != null) {
+            b.next = null;
+        }
+        if (l != null) {
+            l.next = big;
+        } else {
+            return big;
+        }
+        return less;
+    }
+
+
+    /**
+     * 两数相加
+     * https://leetcode.cn/problems/add-two-numbers/
+     *
+     * @param l1
+     * @param l2
+     * @return
+     */
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode newList = new ListNode(0);
+        ListNode p = newList;
+        int cur = 0;
+        while (l1 != null || l2 != null) {
+            if (l1 != null) {
+                cur += l1.val;
+                l1 = l1.next;
+            }
+            if (l2 != null) {
+                cur += l2.val;
+                l2 = l2.next;
+            }
+            p.next = new ListNode(cur % 10);
+            p = p.next;
+            cur = cur / 10;
+        }
+        if (cur != 0) {
+            p.next = new ListNode(cur);
+        }
+        return newList.next;
+    }
 
 
 }

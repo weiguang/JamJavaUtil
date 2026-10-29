@@ -84,6 +84,28 @@ public class ArrayString {
     }
 
     /**
+     * 724. 寻找数组的中心下标
+     * @param nums nums
+     * @return ans
+     */
+    public int pivotIndex(int[] nums) {
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+        int ans = -1;
+        int leftSum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (leftSum == sum - leftSum - nums[i]) {
+                ans = i;
+                break;
+            }
+            leftSum += nums[i];
+        }
+        return ans;
+    }
+
+    /**
      * 714. 买卖股票的最佳时机含手续费
      * 第一种 dp 方法， 第二种是 贪心
      *
