@@ -70,6 +70,56 @@ public class StringJam {
     }
 
     /**
+     * 722. 删除注释
+     * @param source s
+     * @return ans
+     */
+    public List<String> removeComments(String[] source) {
+        List<String> ans = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        boolean inBlock = false; // 标记是否处于块注释 /* ... */ 中
+
+        for (String line : source) {
+            char[] chars = line.toCharArray();
+            int n = chars.length;
+            int i = 0;
+
+            while (i < n) {
+                if (inBlock) {
+                    // 检查块注释闭合符 */
+                    if (i + 1 < n && chars[i] == '*' && chars[i + 1] == '/') {
+                        inBlock = false;
+                        i++; // 跳过 '/'
+                    }
+                } else {
+                    // 检查行注释起始符 //
+                    if (i + 1 < n && chars[i] == '/' && chars[i + 1] == '/') {
+                        break; // 忽略本行后续所有字符
+                    }
+                    // 检查块注释起始符 /*
+                    else if (i + 1 < n && chars[i] == '/' && chars[i + 1] == '*') {
+                        inBlock = true;
+                        i++; // 跳过 '*'
+                    }
+                    // 普通有效字符
+                    else {
+                        sb.append(chars[i]);
+                    }
+                }
+                i++;
+            }
+
+            // 只有当不在块注释中，且当前累加的字符非空时，才存入结果
+            if (!inBlock && sb.length() > 0) {
+                ans.add(sb.toString());
+                sb.setLength(0); // 清空 StringBuilder 准备下一行
+            }
+        }
+        return ans;
+    }
+
+
+    /**
      * 720. 词典中最长的单词
      * @param words w
      * @return ans
