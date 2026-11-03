@@ -40,6 +40,29 @@ public class Grid {
     }
 
     /**
+     *  733. 图像渲染
+     * @param image image
+     * @param sr sr
+     * @param sc sc
+     * @param color color
+     * @return ans
+     */
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        if (image[sr][sc] == color) return image;
+        floodFillDfs(image, sr, sc, color, image[sr][sc]);
+        return image;
+    }
+
+    private void floodFillDfs(int[][] image, int sr, int sc, int color, int source) {
+        if (sr < 0 || sr >= image.length || sc < 0 || sc >= image[0].length) return;
+        if (image[sr][sc] != source) return;
+        image[sr][sc] = color;
+        for (int[] ints : DIRECTIONS4) {
+            floodFillDfs(image, sr + ints[0], sc + ints[1], color, source);
+        }
+    }
+
+    /**
      * 721. 账户合并
      * @param accounts a
      * @return ans
@@ -111,7 +134,7 @@ public class Grid {
     }
 
     // 骑士 8 个方向的相对坐标偏移量
-    private static final int[][] DIRECTIONS = {
+    private static final int[][] DIRECTIONS8 = {
             {-2, -1}, {-2, 1}, {-1, -2}, {-1, 2},
             {1, -2}, {1, 2}, {2, -1}, {2, 1}
     };
@@ -132,7 +155,7 @@ public class Grid {
 
         // 4. 遍历 8 个可能的移动方向，累加后一步的存活概率
         double totalProb = 0.0;
-        for (int[] dir : DIRECTIONS) {
+        for (int[] dir : DIRECTIONS8) {
             int nextR = r + dir[0];
             int nextC = c + dir[1];
             // 选择各个方向的概率均为 1/8
