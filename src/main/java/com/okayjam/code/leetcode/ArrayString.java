@@ -84,6 +84,30 @@ public class ArrayString {
     }
 
     /**
+     * 735. 小行星碰撞
+     * @param asteroids as
+     * @return ans
+     */
+    public int[] asteroidCollision(int[] asteroids) {
+        LinkedList<Integer> stack = new LinkedList<>();
+        for (int i = 0; i < asteroids.length; i++) {
+            int asteroid = asteroids[i];
+            if (asteroid > 0 || stack.isEmpty()) stack.push(asteroid);
+            else if (stack.peek() < 0 ) stack.push(asteroid);
+            else if (stack.peek() <= -asteroid) {
+                if (stack.pop() < -asteroid) {
+                    i--;
+                }
+            }
+        }
+        int[] ans = new int[stack.size()];
+        for (int i = stack.size() - 1; i >= 0; i--) {
+            ans[i] = stack.pop();
+        }
+        return ans;
+    }
+
+    /**
      * 724. 寻找数组的中心下标
      * @param nums nums
      * @return ans
