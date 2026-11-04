@@ -84,6 +84,28 @@ public class ArrayString {
     }
 
     /**
+     * 738. 单调递增的数字
+     * @param n n
+     * @return ans
+     */
+    public int monotoneIncreasingDigits(int n) {
+        char[] chars = String.valueOf(n).toCharArray();
+        int flag = chars.length; // 记录从哪个索引开始全变为 '9'
+        // 从右往左遍历比较相邻字符
+        for (int i = chars.length - 1; i > 0; i--) {
+            if (chars[i - 1] > chars[i]) {
+                chars[i - 1]--;
+                flag = i;
+            }
+        }
+        // 将 flag 及其之后的位置全部置为 '9'
+        for (int i = flag; i < chars.length; i++) {
+            chars[i] = '9';
+        }
+        return Integer.parseInt(new String(chars));
+    }
+
+    /**
      * 735. 小行星碰撞
      * @param asteroids as
      * @return ans
