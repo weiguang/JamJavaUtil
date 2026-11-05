@@ -84,6 +84,39 @@ public class ArrayString {
     }
 
     /**
+     * 740. 删除并获得点数
+     * 令 dp[i] 表示数值在 [0, i]范围内能获得的最大点数
+     * 不选 i：收益为 dp[i - 1]选择 i：收益为 dp[i - 2] + sum[i]
+     * 计算 dp[i] 只依赖 dp[i-1] 和 dp[i-2]，可以用两个变量维护状态，将空间复杂度降为 O(1)
+     * @param nums nums
+     * @return ans
+     */
+    public int deleteAndEarn(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        // 找最大值确定桶的大小
+        int maxVal = 0;
+        for (int num : nums) {
+            maxVal = Math.max(maxVal, num);
+        }
+        // 统计每个数值的总点数贡献
+        int[] sum = new int[maxVal + 1];
+        for (int num : nums) {
+            sum[num] += num;
+        }
+        // 滚动变量优化空间复杂度为 O(1)
+        int first = 0;
+        int second = sum[0];
+        for (int i = 1; i <= maxVal; i++) {
+            int temp = Math.max(second, first + sum[i]);
+            first = second;
+            second = temp;
+        }
+        return second;
+    }
+
+    /**
      * 738. 单调递增的数字
      * @param n n
      * @return ans
