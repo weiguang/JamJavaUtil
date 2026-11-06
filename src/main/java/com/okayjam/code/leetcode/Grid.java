@@ -40,6 +40,58 @@ public class Grid {
     }
 
     /**
+     * 743. 网络延迟时间
+     * @param times times
+     * @param n n
+     * @param k k
+     * @return ans
+     */
+    public int networkDelayTime(int[][] times, int n, int k) {
+        // 1. 建图
+        List<int[]>[] graph = new ArrayList[n + 1];
+        for (int i = 1; i <= n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        for (int[] edge : times) {
+            graph[edge[0]].add(new int[]{edge[1], edge[2]});
+        }
+
+        // 2. 初始化 dist 数组与优先队列
+        int[] dist = new int[n + 1];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[k] = 0;
+
+        // 堆中元素为 [node, current_dist]
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+        pq.offer(new int[]{k, 0});
+
+        // 3. Dijkstra 扩展
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            int u = cur[0], d = cur[1];
+
+            if (d > dist[u]) continue;
+
+            for (int[] neighbor : graph[u]) {
+                int v = neighbor[0], w = neighbor[1];
+                if (dist[u] + w < dist[v]) {
+                    dist[v] = dist[u] + w;
+                    pq.offer(new int[]{v, dist[v]});
+                }
+            }
+        }
+
+        // 4. 计算结果
+        int maxDelay = 0;
+        for (int i = 1; i <= n; i++) {
+            if (dist[i] == Integer.MAX_VALUE) return -1;
+            maxDelay = Math.max(maxDelay, dist[i]);
+        }
+
+        return maxDelay;
+    }
+
+    /**
      *  733. 图像渲染
      * @param image image
      * @param sr sr
