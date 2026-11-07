@@ -69,6 +69,28 @@ public class StringJam {
         String word = null; // 节点到达词根结尾时直接存储完整词根
     }
 
+
+    /**
+     * 744. 寻找比目标字母大的最小字母
+     * @param letters l
+     * @param target t
+     * @return ans
+     */
+    public char nextGreatestLetter(char[] letters, char target) {
+        if (target < letters[0] || target >= letters[letters.length - 1]) return  letters[0];
+        int l = 0, r = letters.length - 1;
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            if (letters[mid] <= target) {
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+        return letters[l];
+    }
+
+
     /**
      * 722. 删除注释
      * @param source s
