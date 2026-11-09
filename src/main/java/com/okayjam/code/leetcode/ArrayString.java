@@ -84,6 +84,40 @@ public class ArrayString {
     }
 
     /**
+     * 747. 至少是其他数字两倍的最大数
+     * @param nums nums
+     * @return ans
+     */
+    public int dominantIndex(int[] nums) {
+        int first = 0, second = -1;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] > nums[first]) {
+                second = first;
+                first = i;
+            } else if (second == -1 || nums[i] > nums[second]) {
+                second = i;
+            }
+        }
+        return nums[first] >= 2 * nums[second] ? first : -1;
+    }
+
+    /**
+     * 746. 使用最小花费爬楼梯
+     * @param cost cost
+     * @return ans
+     */
+    public int minCostClimbingStairs(int[] cost) {
+        int a = 0, b = 0;
+        for (int i = 2; i <= cost.length; i++) {
+            int c = Math.min(a + cost[i - 2], b + cost[i - 1]) ;
+            a = b;
+            b = c;
+        }
+        return b;
+    }
+
+
+    /**
      * 740. 删除并获得点数
      * 令 dp[i] 表示数值在 [0, i]范围内能获得的最大点数
      * 不选 i：收益为 dp[i - 1]选择 i：收益为 dp[i - 2] + sum[i]
