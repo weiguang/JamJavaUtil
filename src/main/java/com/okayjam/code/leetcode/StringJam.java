@@ -69,6 +69,51 @@ public class StringJam {
         String word = null; // 节点到达词根结尾时直接存储完整词根
     }
 
+    /**
+     * 748. 最短补全词
+     * @param licensePlate l
+     * @param words w
+     * @return ans
+     */
+    public String shortestCompletingWord(String licensePlate, String[] words) {
+        int[] map = new int[26];
+        int count = 0;
+        for (char c : licensePlate.toCharArray()) {
+            if (c >= 'a' && c <= 'z') {
+                map[c - 'a']++;
+                count++;
+            } else if (c >= 'A' && c <= 'Z') {
+                map[c - 'A']++;
+                count++;
+            }
+        }
+        String ans = null;
+        for (String word : words) {
+            if (word.length() < count) continue;
+            // 剪枝：如果已有答案且当前单词长度不够短，直接跳过
+            if (ans != null && word.length() >= ans.length()) {
+                continue;
+            }
+            if (isValid(word, map)) ans = word;
+        }
+        return "";
+    }
+
+    // 校验 word 是否包含 targetCnt 要求的所有字母及其对应频次
+    private boolean isValid(String word, int[] targetCnt) {
+        int[] wordCnt = new int[26];
+        for (int i = 0; i < word.length(); i++) {
+            wordCnt[word.charAt(i) - 'a']++;
+        }
+
+        for (int i = 0; i < 26; i++) {
+            if (wordCnt[i] < targetCnt[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     /**
      * 744. 寻找比目标字母大的最小字母
