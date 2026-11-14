@@ -63,11 +63,21 @@ public class ArrayString {
 //        System.out.println(new ArrayString().leastInterval(new char[]{'B','C','D','A','A','A','A','G'}, 1));
 //        System.out.println(new ArrayString().findClosestElements(new int[]{0,1,1,1,2,3,6,7,8,9}, 9, 4));
 //        System.out.println(new ArrayString().isPossible(new int[]{1,2,3,3,4,5}));
-        System.out.println(new ArrayString().findNumberOfLIS(new int[]{1,2,4,3,5,4,7,2}));
+//        System.out.println(new ArrayString().findNumberOfLIS(new int[]{1,2,4,3,5,4,7,2}));
 //        System.out.println(new ArrayString().maximumSwap(2736));
+        System.out.println(new ArrayString().countPrimeSetBits(6,10));
 
      }
 
+    public boolean isPrimes(int n) {
+        if (n==1) return false;
+        for (int i = 2; i * i <= n; i++) {
+            if (n % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public void reverse(int[] nums, int s, int e) {
         while (s < e) {
@@ -81,6 +91,60 @@ public class ArrayString {
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
+    }
+
+    /**
+     * 762. 二进制表示中质数个计算置位
+     * @param left l
+     * @param right r
+     * @return ans
+     */
+    public int countPrimeSetBits1(int left, int right) {
+        Set<Integer> set = new HashSet<>(Arrays.asList(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31));
+        int cnt = 0;
+        for (int i = left; i <= right; i++) {
+            int bitCount = Integer.bitCount(i);
+            if (set.contains(bitCount)) {cnt++;}
+        }
+        return cnt;
+    }
+
+    public int countPrimeSetBits(int left, int right) {
+        final int[] primes = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31};
+        int ans = 0;
+        for (int p : primes) {
+            ans += countWithKBits(right, p) - countWithKBits(left - 1, p);
+        }
+        return ans;
+    }
+
+    // 统计 [1, x] 中二进制恰好包含 k 个 1 的整数个数
+    private int countWithKBits(int x, int k) {
+        int count = 0;
+        for (int i = 30; i >= 0 && k >= 0; i--) {
+            if ((x & (1 << i)) != 0) {
+                // 当前位填 0，低 i 位任选 k 个位置填 1
+                count += comb(i, k);
+                // 当前位固定填 1，剩余需要填的 1 减一
+                k--;
+            }
+        }
+        // 如果循环结束 k 恰好减为 0，说明 x 本身也满足条件
+        if (k == 0) {
+            count++;
+        }
+        return count;
+    }
+
+    private int comb(int n, int k) {
+        if (k < 0 || k > n) return 0;
+        if (k == 0 || k == n) return 1;
+        k = Math.min(k, n - k);
+        long res = 1;
+        for (int i = 1; i <= k; i++) {
+            res = res * (n - i + 1) / i;
+        }
+        return (int) res;
     }
 
     /**
@@ -4158,14 +4222,7 @@ public class ArrayString {
         return ans;
     }
 
-    public boolean isPrimes(int n) {
-        for (int i = 2; i * i <= n; i++) {
-            if (n % i == 0) {
-                return false;
-            }
-        }
-        return true;
-    }
+
 
 
     /**
