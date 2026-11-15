@@ -70,6 +70,32 @@ public class StringJam {
     }
 
     /**
+     * 763. 划分字母区间
+     * @param s s
+     * @return ans
+     */
+    public List<Integer> partitionLabels(String s) {
+        char[] chars = s.toCharArray();
+        int n = chars.length;
+        int[] lastIndex = new int[26];
+        for (int i = 0; i < n; i++) {
+            lastIndex[chars[i] - 'a'] = i;
+        }
+
+        List<Integer> ans = new ArrayList<>();
+        int start = 0, end = 0;
+        for (int i = 0; i < n; i++) {
+            end = Math.max(end, lastIndex[chars[i] - 'a']);
+            if (i == end) {
+                ans.add(end - start + 1);
+                start = end + 1;
+            }
+        }
+        return ans;
+    }
+
+
+    /**
      * 748. 最短补全词
      * @param licensePlate l
      * @param words w
