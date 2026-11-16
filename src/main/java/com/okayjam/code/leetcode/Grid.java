@@ -40,6 +40,56 @@ public class Grid {
     }
 
     /**
+     * 764. 最大加号标志
+     * @param n n
+     * @param mines mines
+     * @return ans
+     */
+    public int orderOfLargestPlusSign(int n, int[][] mines) {
+        // 1. 合并 grid 和 dp：普通格子设为 n，地雷设为 0
+        int[][] dp = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(dp[i], n);
+        }
+        for (int[] m : mines) {
+            dp[m[0]][m[1]] = 0;
+        }
+        // 其实想法是预先计算每个单元格，上下左右的单元格延展1的格式，然后区最小的，这里做了写压缩
+        // 2. 按行扫描：用 count 分别替代 left[][] 和 right[][]
+        for (int i = 0; i < n; i++) {
+            int count = 0;
+            for (int j = 0; j < n; j++) { // 替代 left[i][j]
+                count = (dp[i][j] == 0) ? 0 : count + 1;
+                dp[i][j] = Math.min(dp[i][j], count);
+            }
+            count = 0;
+            for (int j = n - 1; j >= 0; j--) { // 替代 right[i][j]
+                count = (dp[i][j] == 0) ? 0 : count + 1;
+                dp[i][j] = Math.min(dp[i][j], count);
+            }
+        }
+
+        // 3. 按列扫描：用 count 分别替代 up[][] 和 down[][]，顺便统计最大值
+        int ans = 0;
+        for (int j = 0; j < n; j++) {
+            int count = 0;
+            for (int i = 0; i < n; i++) { // 替代 up[i][j]
+                count = (dp[i][j] == 0) ? 0 : count + 1;
+                dp[i][j] = Math.min(dp[i][j], count);
+            }
+            count = 0;
+            for (int i = n - 1; i >= 0; i--) { // 替代 down[i][j]
+                count = (dp[i][j] == 0) ? 0 : count + 1;
+                dp[i][j] = Math.min(dp[i][j], count);
+                // 四个方向都取完 min 后，此时 dp[i][j] 就是最终阶数
+                ans = Math.max(ans, dp[i][j]);
+            }
+        }
+
+        return ans;
+    }
+
+    /**
      * 743. 网络延迟时间
      * @param times times
      * @param n n
