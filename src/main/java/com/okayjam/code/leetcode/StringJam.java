@@ -70,7 +70,55 @@ public class StringJam {
     }
 
     /**
+     * 767. 重构字符串
+     * 创建一个长度为 n 的字符数组 res，设置偶数下标指针 evenIdx = 0 和奇数下标指针 oddIdx = 1。先把 maxChar 全部间隔填入偶数位（0, 2, 4...），并将它的计数清零。
+     * 若 evenIdx < n，继续往偶数位填，偶数位填满后，转向奇数位填入 oddIdx
+     * 为什么不会冲突？ 因为没有任何字符的出现次数超过  n/2 ，同一类字符在填充过程中要么全在偶数位隔开，要么跨越奇偶边界（此时末尾的偶数位与开头的奇数位 1 之间隔了整个数组，不可能相邻）。
+     *  @param s s
+     * @return ans
+     */
+    public String reorganizeString(String s) {
+        int n = s.length();
+        int[] counts = new int[26];
+        int maxCount = 0;
+        char maxChar = 'a';
+
+        for (char c : s.toCharArray()) {
+            int idx = c - 'a';
+            counts[idx]++;
+            if (counts[idx] > maxCount) {
+                maxCount = counts[idx];
+                maxChar = c;
+            }
+        }
+        // 这个是必要条件，不满足可以提前结束
+        if (maxCount > (n + 1) / 2) {return "";}
+        char[] res = new char[n];
+        int index = 0;
+
+        // 1. 先把出现次数最多的字符放在偶数下标
+        while (counts[maxChar - 'a'] > 0) {
+            res[index] = maxChar;
+            index += 2;
+            counts[maxChar - 'a']--;
+        }
+        // 2. 填充剩余字符
+        for (int i = 0; i < 26; i++) {
+            while (counts[i] > 0) {
+                // 偶数位填满后，切换至奇数位
+                if (index >= n) {index = 1;}
+                res[index] = (char) ('a' + i);
+                index += 2;
+                counts[i]--;
+            }
+        }
+        return new String(res);
+    }
+
+    /**
      * 763. 划分字母区间
+     * 奇偶下标间隔填充
+     *
      * @param s s
      * @return ans
      */
