@@ -70,6 +70,24 @@ public class StringJam {
     }
 
     /**
+     * 771. 宝石与石头
+     * @param jewels j
+     * @param stones s
+     * @return ans
+     */
+    public int numJewelsInStones(String jewels, String stones) {
+        boolean[] maps = new boolean[128];
+        for (char c : jewels.toCharArray()) {
+            maps[c] = true;
+        }
+        int ans = 0;
+        for (char c : stones.toCharArray()) {
+            if (maps[c])  ans++;
+        }
+        return ans;
+    }
+
+    /**
      * 767. 重构字符串
      * 创建一个长度为 n 的字符数组 res，设置偶数下标指针 evenIdx = 0 和奇数下标指针 oddIdx = 1。先把 maxChar 全部间隔填入偶数位（0, 2, 4...），并将它的计数清零。
      * 若 evenIdx < n，继续往偶数位填，偶数位填满后，转向奇数位填入 oddIdx
