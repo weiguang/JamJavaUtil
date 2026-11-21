@@ -94,6 +94,25 @@ public class ArrayString {
     }
 
     /**
+     * 775. 全局倒置与局部倒置
+     * 1、局部倒置一定是全局倒置：因为相邻下标 (i, i + 1) 本身就满足 i 小于 i + 1。
+     * 2、等价转化：全局倒置数量等于局部倒置数量，当且仅当数组中不存在任何“非局部倒置”——即不存在下标距离大于等于 2 的逆序对（j >= i + 2 且 nums[i] > nums[j]）。
+     * 只需维护前缀最大值 maxPrefix（记录 0 到 i 的最大值），检查它是否大于 nums[i + 2] 即可：
+     * @param nums nums
+     * @return ans
+     */
+    public boolean isIdealPermutation(int[] nums) {
+        int maxPrefix = 0;
+        for (int i = 0; i < nums.length - 2; i++) {
+            maxPrefix = Math.max(maxPrefix, nums[i]);
+            if (maxPrefix > nums[i + 2]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * 769. 最多能完成排序的块
      * 因为数组 arr 是 [0, n - 1] 的一个排列（没有重复数字，且最小值是 0），所以整个数组排好序后，下标 i 位置上放的数字必定是 i。
      * @param arr arr
