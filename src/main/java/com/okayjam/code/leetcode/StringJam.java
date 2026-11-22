@@ -70,6 +70,41 @@ public class StringJam {
     }
 
     /**
+     * 777. 在 LR 字符串中交换相邻字符
+     * @param start s
+     * @param result r
+     * @return ans
+     */
+    public boolean canTransform(String start, String result) {
+        int n = start.length();
+        int i = 0, j = 0;
+
+        while (i < n || j < n) {
+            // 跳过 start 中的 'X'
+            while (i < n && start.charAt(i) == 'X') {i++;}
+            // 跳过 result 中的 'X'
+            while (j < n && result.charAt(j) == 'X') {j++;}
+
+            // 只有一方到达末尾，说明非 'X' 字符数量不同
+            if (i == n || j == n) {return i == j;}
+
+            char c1 = start.charAt(i);
+            char c2 = result.charAt(j);
+
+            // 相对顺序不一致
+            if (c1 != c2) {return false;}
+
+            // 'L' 只能向左移动 (i >= j)，'R' 只能向右移动 (i <= j)
+            if (c1 == 'L' && i < j) {return false;}
+            if (c1 == 'R' && i > j) {return false;}
+
+            i++;
+            j++;
+        }
+        return true;
+    }
+
+    /**
      * 771. 宝石与石头
      * @param jewels j
      * @param stones s
