@@ -93,6 +93,40 @@ public class ArrayString {
         nums[j] = temp;
     }
 
+
+    /**
+     * 779. 第K个语法符号
+     * @param n n
+     * @param k k
+     * @return ans
+     */
+    public int kthGrammar(int n, int k) {
+        if (n == 1) {
+            return 0;
+        }
+        // 递归获取上一行父节点的值
+        int parent = kthGrammar(n - 1, (k + 1) / 2);
+        // k 为奇数保持不变，为偶数则异或 1 取反
+        return (k & 1) == 1 ? parent : (parent ^ 1);
+    }
+
+    public int kthGrammar1(int n, int k) {
+        // 统计 k - 1 二进制中 1 的个数，判断奇偶性
+        return Integer.bitCount(k - 1) & 1;
+    }
+
+    public int kthGrammar2(int n, int k) {
+        if (n == 1) {
+            return 0;
+        }
+        // 递归获取上一行父节点的值
+        int parent = kthGrammar(n - 1, (k + 1) / 2);
+        // k 为奇数保持不变，为偶数则异或 1 取反
+        return (k & 1) == 1 ? parent : (parent ^ 1);
+    }
+
+
+
     /**
      * 775. 全局倒置与局部倒置
      * 1、局部倒置一定是全局倒置：因为相邻下标 (i, i + 1) 本身就满足 i 小于 i + 1。
