@@ -95,6 +95,71 @@ public class ArrayString {
 
 
     /**
+     * 781. 森林中的兔子
+     * @param answers answers
+     * @return ans
+     */
+    public int numRabbits1(int[] answers) {
+        // key: 兔子回答的数字 x
+        // value: 当前这种颜色【还能再容纳】几只兔子（满员为 x + 1，首只占 1 个名额，剩 x 个）
+        Map<Integer, Integer> map = new HashMap<>();
+        int ans = 0;
+        for (int answer : answers) {
+            // 回答 0 说明森林里只有它自己这一种颜色，直接 +1
+            if (answer == 0) {
+                ans++;
+                continue;
+            }
+            // 尝试为该回答开启新颜色组（初始剩余名额为 answer）
+            // 如果已存在未满的组，putIfAbsent 会返回该组当前的剩余名额 i
+            Integer i = map.putIfAbsent(answer, answer);
+            if (i != null) {
+                // 存在未满的同色组，当前兔子直接归入该组
+                if (i == 1) {
+                    // 加上当前兔子后刚好满员，移除记录（下次再遇到同回答需开新组）
+                    map.remove(answer);
+                } else {
+                    // 剩余名额减 1
+                    map.put(answer, i - 1);
+                }
+            } else {
+                // 新开了一个颜色组，一次性把该组总人数 (answer + 1) 计入总数
+                ans += (answer + 1);
+            }
+        }
+        return ans;
+    }
+
+    public int numRabbits(int[] answers) {
+        // 1. 统计每种回答出现的次数（题目限定 0 <= answers[i] < 1000）
+        int[] count = new int[1000];
+        for (int x : answers) {
+            count[x]++;
+        }
+
+        int ans = 0;
+        for (int x = 0; x < 1000; x++) {
+            if (count[x] > 0) {
+                /*
+                 * 2. 计算至少需要几个颜色组（向上取整）：
+                 * - 每组固定容量 B = x + 1（回答者自己 + 另外 x 只同色兔）
+                 * - 整数除法向上取整通用公式：ceil(A / B) = (A + B - 1) / B
+                 * - 代入 A = count[x], B = x + 1：
+                 *   (count[x] + (x + 1) - 1) / (x + 1) = (count[x] + x) / (x + 1)
+                 * - 直观理解（补齐法）：分子提前补上 x（即 容量 - 1）：
+                 *   ① 刚好整除时：加上 x 也不够凑出新一组，商不变；
+                 *   ② 多出哪怕 1 只：1 + x = x + 1，刚好进位 +1 组。
+                 */
+                int groups = (count[x] + x) / (x + 1);
+
+                // 3. 组数 × 每组人数 = 该回答在森林中对应的最少兔子总数
+                ans += groups * (x + 1);
+            }
+        }
+        return ans;
+    }
+
+    /**
      * 779. 第K个语法符号
      * @param n n
      * @param k k
@@ -217,6 +282,67 @@ public class ArrayString {
             res = res * (n - i + 1) / i;
         }
         return (int) res;
+    }
+
+
+    /*
+     * 756. 金字塔转换矩阵
+     * @param bottom bottom
+     * @param allowed allowed
+     * @return ans
+     */
+    public boolean pyramidTransition(String bottom, List<String> allowed) {
+        // trans[i][j] 用位掩码记录底座为 (i, j) 时，顶部允许放置哪些字母（0~5 对应 'A'~'F'）,替换Map<String, List<Character>>，例如 "BC" -> ['C']
+        final int[][] trans = new int[6][6];
+        // 记录已经验证过无法到达塔尖的层状态，避免重复搜索
+        final Set<String> failed = new HashSet<>();
+        for (String s : allowed) {
+            int left = s.charAt(0) - 'A';
+            int right = s.charAt(1) - 'A';
+            int top = s.charAt(2) - 'A';
+            trans[left][right] |= (1 << top);
+        }
+        return buildNextLayer(bottom, new char[bottom.length() - 1], 0, trans, failed);
+    }
+
+    /**
+     * @param cur   当前层的字符串
+     * @param next  正在构建的上一层字符数组
+     * @param index 当前正在填充 next 的第 index 个位置
+     */
+    private boolean buildNextLayer(String cur, char[] next, int index, int[][] trans, Set<String> failed) {
+        // 当前层长度为 1，说明已成功搭到塔尖
+        if (cur.length() == 1) {
+            return true;
+        }
+        // 准备构建新的一层前，若该层状态已失败过则直接剪枝
+        if (index == 0 && failed.contains(cur)) {
+            return false;
+        }
+        // 当前的 next 层已全部填满，继续递归向上构建
+        if (index == cur.length() - 1) {
+            String nextStr = new String(next);
+            if (buildNextLayer(nextStr, new char[nextStr.length() - 1], 0, trans, failed)) {
+                return true;
+            }
+            failed.add(nextStr);
+            return false;
+        }
+
+        // 遍历所有允许放在 (cur[index], cur[index + 1]) 之上的字母
+        int left = cur.charAt(index) - 'A';
+        int right = cur.charAt(index + 1) - 'A';
+        int mask = trans[left][right];
+
+        for (int c = 0; c < 6; c++) {
+            if ((mask & (1 << c)) != 0) {
+                next[index] = (char) ('A' + c);
+                if (buildNextLayer(cur, next, index + 1, trans, failed)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
