@@ -70,6 +70,35 @@ public class StringJam {
     }
 
     /**
+     * 784. 字母大小写全排列
+     * @param s s
+     * @return ans
+     */
+    public List<String> letterCasePermutation(String s) {
+        List<String> ans = new ArrayList<>();
+        letterCasePermutationDfs(ans, s.toCharArray(), 0);
+        return ans;
+    }
+
+    public void letterCasePermutationDfs(List<String> ans, char[] chars, int idx) {
+        // 走完所有字符，收集当前完整结果
+        if (idx == chars.length) {
+            ans.add(new String(chars));
+            return;
+        }
+        // 分支 1：当前字符保持原样（数字和字母都要走这一步）
+        letterCasePermutationDfs(ans, chars, idx + 1);
+        // 分支 2：如果是字母，额外走一条“翻转大小写”的分支
+        if (Character.isLetter(chars[idx])) {
+            // ASCII 码表中，同一字母的大小写正好相差 32（即 $2^5$），在二进制中只表现为第 5 位（从右往左数，第 0 位起）不同；
+            // 而按位异或 ^ 32 的效果就是只翻转这一位，其余位原封不动
+            chars[idx] ^= 32; // ASCII 中大小写字母差 32，异或 32 可直接互转
+            letterCasePermutationDfs(ans, chars, idx + 1);
+            chars[idx] ^= 32; // 回溯：恢复现场
+        }
+    }
+
+    /**
      * 777. 在 LR 字符串中交换相邻字符
      * @param start s
      * @param result r
