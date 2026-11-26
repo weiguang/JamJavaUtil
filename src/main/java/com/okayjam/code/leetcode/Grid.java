@@ -41,6 +41,43 @@ public class Grid {
 
 
     /**
+     * 785. 判断二分图
+     * @param graph graph
+     * @return ans
+     */
+    public boolean isBipartite(int[][] graph) {
+        int n = graph.length;
+        // 0: 未染色, 1: 红色, -1: 蓝色
+        int[] color = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            // 图可能不连通，跳过已染色的连通分量
+            if (color[i] != 0) continue;
+            // 从节点 i 开始染色，默认先染成 1
+            if (!isBipartiteBfs(graph, color, i, 1)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isBipartiteBfs(int[][] graph, int[] color, int u, int c) {
+        color[u] = c;
+        for (int v : graph[u]) {
+            if (color[v] == c) {
+                // 相邻节点同色，不是二分图
+                return false;
+            }
+            if (color[v] == 0 && !isBipartiteBfs(graph, color, v, -c)) {
+                // 未染色节点尝试染成相反颜色 -c，若失败则向上传递 false
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    /**
      * 766. 托普利茨矩阵
      * @param matrix matrix
      * @return ans
